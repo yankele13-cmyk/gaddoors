@@ -28,13 +28,23 @@ function CatalogPage() {
   }, []);
 
   const filteredProducts = products.filter(product => {
+    // Helper to check for handle keywords in name or originalName
+    const checkHandle = (str) => str && (
+      str.toLowerCase().includes('handle') || 
+      str.toLowerCase().includes('poignée') ||
+      str.toLowerCase().includes('poigné') ||
+      str.toLowerCase().includes('modello') // New check since we renamed them
+    );
+
     // Filter to only show doors and handles (no other accessories)
-    const isHandle = product.name.toLowerCase().includes('handle') || 
-                     product.name.toLowerCase().includes('poignée') ||
-                     product.name.toLowerCase().includes('poigné');
+    const isHandle = checkHandle(product.name) || 
+                     checkHandle(product.originalName) || 
+                     product.category === 'Poignées';
+
     const isDoor = product.category === 'Portes Intérieures' || 
                    product.name.toLowerCase().includes('porte') ||
-                   product.name.toLowerCase().includes('door');
+                   product.name.toLowerCase().includes('door') ||
+                   (product.originalName && (product.originalName.toLowerCase().includes('porte') || product.originalName.toLowerCase().includes('door')));
     
     // First filter: only doors and handles allowed
     if (!isDoor && !isHandle) return false;
@@ -45,9 +55,9 @@ function CatalogPage() {
     if (filter === 'handles') return isHandle;
     return false;
   }).sort((a, b) => {
-    // Sort doors first, then handles
-    const isHandleA = a.name.toLowerCase().includes('handle') || a.name.toLowerCase().includes('poignée');
-    const isHandleB = b.name.toLowerCase().includes('handle') || b.name.toLowerCase().includes('poignée');
+    // Helper for sorting
+    const isHandleA = a.name.includes('Modello') || (a.originalName && a.originalName.toLowerCase().includes('handle'));
+    const isHandleB = b.name.includes('Modello') || (b.originalName && b.originalName.toLowerCase().includes('handle'));
     
     if (!isHandleA && isHandleB) return -1;
     if (isHandleA && !isHandleB) return 1;

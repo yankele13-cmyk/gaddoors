@@ -1,63 +1,96 @@
 /* src/components/features/CompanyInfo.module.css */
 
 .section {
-    padding: 4rem 0;
-    background-color: var(--color-primary);
+    padding: 6rem 0;
+    background: linear-gradient(180deg, #111 0%, #0a0a0a 100%);
     color: white;
+    position: relative;
+    border-top: 1px solid rgba(212, 175, 55, 0.1);
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 1300px;
     margin: 0 auto;
-    padding: 0 1rem;
+    padding: 0 1.5rem;
     text-align: center;
 }
 
 .sectionTitle {
     font-family: var(--font-heading);
-    font-size: 2.5rem;
-    color: white;
+    font-size: 2.8rem;
+    font-weight: 300;
+    color: #d4af37;
+    /* Gold */
     margin-bottom: 0.5rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
 }
 
 .sectionSubtitle {
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(255, 255, 255, 0.7);
     font-size: 1.1rem;
-    margin-bottom: 3rem;
+    margin-bottom: 4rem;
+    font-weight: 300;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+    padding-bottom: 2rem;
 }
 
 .infoGrid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
-    margin-bottom: 3rem;
+    gap: 2.5rem;
+    margin-bottom: 4rem;
 }
 
 .infoCard {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border-radius: var(--radius-md);
-    padding: 2rem;
+    background: linear-gradient(145deg, #1a1a1a, #151515);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    /* Plus carré, plus pro */
+    padding: 2.5rem 2rem;
     text-align: left;
-    transition: transform 0.3s ease, background 0.3s ease;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.infoCard::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 2px;
+    height: 0%;
+    background: #d4af37;
+    transition: height 0.4s ease;
 }
 
 .infoCard:hover {
-    transform: translateY(-5px);
-    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+    border-color: rgba(212, 175, 55, 0.2);
+}
+
+.infoCard:hover::before {
+    height: 100%;
 }
 
 .icon {
     font-size: 2.5rem;
     display: block;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
+    filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.3));
 }
 
 .cardTitle {
     font-family: var(--font-heading);
-    font-size: 1.3rem;
-    color: var(--color-accent);
-    margin-bottom: 1rem;
+    font-size: 1.4rem;
+    color: #fff;
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.05em;
 }
 
 .list {
@@ -68,45 +101,67 @@
 
 .list li {
     position: relative;
-    padding-left: 1.5rem;
-    margin-bottom: 0.5rem;
+    padding-left: 20px;
+    margin-bottom: 0.8rem;
     font-size: 0.95rem;
     line-height: 1.6;
+    color: rgba(255, 255, 255, 0.8);
 }
 
 .list li::before {
-    content: '✓';
+    content: '•';
     position: absolute;
     left: 0;
-    color: var(--color-accent);
-    font-weight: bold;
+    color: #d4af37;
+    font-size: 1.2rem;
+    line-height: 1.2rem;
 }
 
 .note {
-    font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.5);
     font-style: italic;
-    margin-top: 1rem;
-    padding-left: 1.5rem;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px dashed rgba(255, 255, 255, 0.1);
 }
 
 .experience {
-    padding: 2rem;
-    background: linear-gradient(135deg, var(--color-accent), #d4af37);
-    border-radius: var(--radius-md);
+    padding: 3rem;
+    background: radial-gradient(circle at center, #222 0%, #111 100%);
+    border: 1px solid #d4af37;
+    display: inline-block;
+    position: relative;
     margin-top: 2rem;
+}
+
+.experience::after {
+    content: '';
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    right: 5px;
+    bottom: 5px;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    pointer-events: none;
 }
 
 .experienceText {
     font-size: 1.2rem;
-    color: var(--color-primary);
+    color: #fff;
     margin: 0;
+    font-weight: 300;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
 }
 
 .experienceText strong {
-    font-size: 1.5rem;
+    font-size: 2.5rem;
     display: block;
+    color: #d4af37;
     margin-bottom: 0.5rem;
+    font-family: var(--font-heading);
+    font-weight: 400;
 }
 
 /* Tablet Breakpoint */
@@ -119,16 +174,11 @@
 /* Mobile Breakpoint */
 @media (max-width: 768px) {
     .section {
-        padding: 3rem 0;
+        padding: 4rem 0;
     }
 
     .sectionTitle {
-        font-size: 1.8rem;
-    }
-
-    .sectionSubtitle {
-        font-size: 1rem;
-        margin-bottom: 2rem;
+        font-size: 2rem;
     }
 
     .infoGrid {
@@ -137,45 +187,11 @@
     }
 
     .infoCard {
-        padding: 1.5rem;
-    }
-
-    .icon {
-        font-size: 2rem;
-    }
-
-    .cardTitle {
-        font-size: 1.2rem;
+        padding: 2rem 1.5rem;
     }
 
     .experience {
-        padding: 1.5rem;
-    }
-
-    .experienceText {
-        font-size: 1rem;
-    }
-
-    .experienceText strong {
-        font-size: 1.25rem;
-    }
-}
-
-/* Small Mobile Breakpoint */
-@media (max-width: 480px) {
-    .section {
-        padding: 2.5rem 0;
-    }
-
-    .sectionTitle {
-        font-size: 1.5rem;
-    }
-
-    .infoCard {
-        padding: 1.25rem;
-    }
-
-    .list li {
-        font-size: 0.9rem;
+        width: 100%;
+        box-sizing: border-box;
     }
 }
