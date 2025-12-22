@@ -8,6 +8,7 @@ import {
   CheckCircle, XCircle, Clock, MessageSquare, 
   MoreVertical, ArrowRight 
 } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 export default function LeadsPage() {
   const navigate = useNavigate();
@@ -44,8 +45,10 @@ export default function LeadsPage() {
       if (selectedLead?.id === leadId) {
         setSelectedLead(prev => ({ ...prev, status: newStatus, read: true }));
       }
+      toast.success(`Statut mis à jour : ${newStatus}`);
     } catch (error) {
       console.error("Failed to update status:", error);
+      toast.error("Erreur mise à jour statut.");
     }
   }
 

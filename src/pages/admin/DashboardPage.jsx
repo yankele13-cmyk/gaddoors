@@ -85,11 +85,11 @@ export default function DashboardPage() {
         {/* Left Col (2/3): Charts & Activity */}
         <div className="lg:col-span-2 space-y-6 flex flex-col h-full">
           {/* Revenue Chart */}
-          <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 flex-1 min-h-[300px]">
+          <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 min-h-[400px]">
              <h3 className="text-white font-bold mb-4 flex items-center gap-2 font-heading">
                <span className="text-[#d4af37]">📈</span> Croissance Annuelle
              </h3>
-             <div className="h-full pb-8">
+             <div style={{ width: '100%', height: 300 }} className="pb-8">
                <ResponsiveContainer width="100%" height="100%">
                  <AreaChart data={revenueData}>
                    <defs>

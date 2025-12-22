@@ -1,11 +1,13 @@
+
 import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { getProductById } from '../../services/db';
 // Nous créerons ce fichier de style juste après
 import styles from './ProductDetailPage.module.css';
 
-function ProductDetailPage() {
+export default function ProductDetailPage() {
   const { id } = useParams(); // Récupère l'ID depuis l'URL
+  const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -60,7 +62,12 @@ function ProductDetailPage() {
         <p className={styles.description}>{product.description || "Une porte d'exception alliant sécurité maximale et design contemporain. Finitions personnalisables sur demande."}</p>
         
         <div className={styles.actions}>
-           <button className={styles.quoteButton}>Demander un Devis</button>
+           <button 
+             onClick={() => navigate('/contact')}
+             className={styles.quoteButton}
+           >
+             Demander un Devis
+           </button>
         </div>
 
         <div className={styles.meta}>
@@ -70,6 +77,4 @@ function ProductDetailPage() {
     </div>
   );
 }
-
-export default ProductDetailPage;
 

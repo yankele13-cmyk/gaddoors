@@ -1,4 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
+import ScrollToTop from './components/layout/ScrollToTop';
 
 import MainLayout from './components/layout/MainLayout';
 import HomePage from './pages/public/HomePage';
@@ -20,6 +22,8 @@ import FinancePage from './pages/admin/FinancePage';
 function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
+      <Toaster position="bottom-right" toastOptions={{ duration: 4000, style: { background: '#333', color: '#fff' } }} />
       <AuthProvider>
         <Routes>
           {/* Public Routes */}

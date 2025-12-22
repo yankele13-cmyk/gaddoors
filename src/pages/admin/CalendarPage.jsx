@@ -8,9 +8,10 @@ import getDay from 'date-fns/getDay';
 import fr from 'date-fns/locale/fr';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import '../../components/admin/calendar/CalendarStyles.css';
-import { getAppointments, addAppointment } from '../../services/db';
-import { Plus, X } from 'lucide-react';
+import { getAppointments, addAppointment, deleteAppointment } from '../../services/db';
+import { Plus, X, Trash2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 
 // Setup Localizer
 const locales = {
@@ -28,22 +29,21 @@ const localizer = dateFnsLocalizer({
 export default function CalendarPage() {
   const [events, setEvents] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const { register, handleSubmit, reset } = useForm();
+  const [selectedEventId, setSelectedEventId] = useState(null);
+  const { register, handleSubmit, reset, setValue } = useForm();
 
   const { state } = useLocation();
 
   useEffect(() => {
     fetchEvents();
     if (state?.newEvent) {
-      // Pre-fill modal with data from navigation (e.g. from Leads Page)
-      reset({
-        title: state.newEvent.title,
-        notes: state.newEvent.notes,
-        type: 'meeting', // Default to meeting
-        start: new Date().toISOString().slice(0, 16) // Current time ~
-      });
+      // Pre-fill modal with data from navigation
+      clearModal();
+      setValue('title', state.newEvent.title);
+      setValue('notes', state.newEvent.notes);
+      setValue('type', 'meeting');
+      setValue('start', new Date().toISOString().slice(0, 16));
       setShowModal(true);
-      // Clear state to prevent reopening on refresh (optional/complex without clearing history)
     }
   }, [state]);
 
@@ -56,8 +56,55 @@ export default function CalendarPage() {
     }
   }
 
+  const clearModal = () => {
+    reset({ title: '', start: '', end: '', type: 'meeting', notes: '' });
+    setSelectedEventId(null);
+  };
+
+  const handleSelectEvent = (event) => {
+    setSelectedEventId(event.id);
+    setValue('title', event.title);
+    // Format dates for datetime-local input (YYYY-MM-DDThh:mm)
+    setValue('start', new Date(event.start).toISOString().slice(0, 16));
+    setValue('end', new Date(event.end).toISOString().slice(0, 16));
+    setValue('type', event.type);
+    setValue('notes', event.notes);
+    setShowModal(true);
+  };
+
+  const handleDelete = async () => {
+    if (!selectedEventId) return;
+    if (window.confirm("Supprimer cet événement ?")) {
+      try {
+        await deleteAppointment(selectedEventId);
+        toast.success("Événement supprimé");
+        fetchEvents();
+        setShowModal(false);
+        clearModal();
+      } catch (error) {
+        console.error(error);
+        toast.error("Erreur suppression");
+      }
+    }
+  };
+
   const onSubmit = async (data) => {
     try {
+      if (selectedEventId) {
+          // If editing logic existed, we'd update here. For now, we block editing or treat as add? 
+          // The prompt was just "Deletion", but UX implies edit. 
+          // I will block edit for now to stay safe or treating as new adds duplicates.
+          // Let's assume we just want to create new ones or delete. 
+          // Actually, basic "Edit" is expected if I populate the form. 
+          // But I don't have updateAppointment in db.js yet...
+          // I will Focus on DELETION as requested. 
+          // If user saves, it creates a new one currently. I should probably prevent that or implement Update.
+          // Given the instructions "Reparer l'Agenda (Ajout suppression)", I will focus on deletion.
+          // I will just add a comment.
+          toast.error("La modification n'est pas encore implémentée, seul l'ajout et la suppression.");
+          return; 
+      }
+
       const newEvent = {
         title: data.title,
         start: new Date(data.start),
@@ -69,9 +116,11 @@ export default function CalendarPage() {
       await addAppointment(newEvent);
       await fetchEvents();
       setShowModal(false);
-      reset();
+      clearModal();
+      toast.success("Événement ajouté");
     } catch (error) {
       console.error("Error adding event:", error);
+      toast.error("Erreur lors de l'ajout");
     }
   };
 
@@ -101,8 +150,8 @@ export default function CalendarPage() {
            <p className="text-gray-400 text-sm">Gérez vos installations et rendez-vous.</p>
         </div>
         <button 
-          onClick={() => setShowModal(true)}
-          className="flex items-center gap-2 bg-gold text-black hover:bg-yellow-500 font-bold py-2 px-4 rounded-lg transition"
+          onClick={() => { clearModal(); setShowModal(true); }}
+          className="flex items-center gap-2 bg-[#d4af37] text-black hover:bg-yellow-500 font-bold py-2 px-4 rounded-lg transition"
         >
           <Plus size={20} />
           Nouvel Événement
@@ -117,6 +166,7 @@ export default function CalendarPage() {
           endAccessor="end"
           style={{ height: '100%' }}
           culture="fr"
+          onSelectEvent={handleSelectEvent}
           eventPropGetter={eventStyleGetter}
           messages={{
             next: "Suivant",
@@ -134,7 +184,7 @@ export default function CalendarPage() {
         />
       </div>
 
-      {/* ADD EVENT MODAL */}
+      {/* ADD/EDIT EVENT MODAL */}
       {showModal && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
           <div className="bg-zinc-900 border border-zinc-700 rounded-xl w-full max-w-md p-6 relative">
@@ -145,14 +195,16 @@ export default function CalendarPage() {
               <X size={24} />
             </button>
             
-            <h2 className="text-xl font-bold mb-6 font-heading">Ajouter un événement</h2>
+            <h2 className="text-xl font-bold mb-6 font-heading">
+                {selectedEventId ? 'Détails Événement' : 'Ajouter un événement'}
+            </h2>
             
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <div>
                 <label className="block text-sm text-gray-400 mb-1">Titre</label>
                 <input 
                   {...register("title", { required: true })}
-                  className="w-full bg-zinc-800 border border-zinc-700 rounded p-2 text-white focus:border-gold outline-none"
+                  className="w-full bg-zinc-800 border border-zinc-700 rounded p-2 text-white focus:border-[#d4af37] outline-none"
                   placeholder="Installation M. Dupont" 
                 />
               </div>
@@ -163,7 +215,7 @@ export default function CalendarPage() {
                     <input 
                       type="datetime-local"
                       {...register("start", { required: true })}
-                      className="w-full bg-zinc-800 border border-zinc-700 rounded p-2 text-white focus:border-gold outline-none"
+                      className="w-full bg-zinc-800 border border-zinc-700 rounded p-2 text-white focus:border-[#d4af37] outline-none"
                     />
                  </div>
                  <div>
@@ -171,7 +223,7 @@ export default function CalendarPage() {
                     <input 
                       type="datetime-local"
                       {...register("end", { required: true })}
-                      className="w-full bg-zinc-800 border border-zinc-700 rounded p-2 text-white focus:border-gold outline-none"
+                      className="w-full bg-zinc-800 border border-zinc-700 rounded p-2 text-white focus:border-[#d4af37] outline-none"
                     />
                  </div>
               </div>
@@ -180,7 +232,7 @@ export default function CalendarPage() {
                 <label className="block text-sm text-gray-400 mb-1">Type</label>
                 <select 
                   {...register("type")}
-                  className="w-full bg-zinc-800 border border-zinc-700 rounded p-2 text-white focus:border-gold outline-none"
+                  className="w-full bg-zinc-800 border border-zinc-700 rounded p-2 text-white focus:border-[#d4af37] outline-none"
                 >
                   <option value="meeting">Rendez-vous Commercial (Bleu)</option>
                   <option value="installation">Installation (Vert)</option>
@@ -192,17 +244,28 @@ export default function CalendarPage() {
                 <label className="block text-sm text-gray-400 mb-1">Notes</label>
                 <textarea 
                   {...register("notes")}
-                  className="w-full bg-zinc-800 border border-zinc-700 rounded p-2 text-white focus:border-gold outline-none h-24"
+                  className="w-full bg-zinc-800 border border-zinc-700 rounded p-2 text-white focus:border-[#d4af37] outline-none h-24"
                   placeholder="Détails supplémentaires..." 
                 />
               </div>
 
-              <button 
-                type="submit"
-                className="w-full bg-gold hover:bg-yellow-500 text-black font-bold py-3 rounded mt-4 transition"
-              >
-                Enregistrer
-              </button>
+              <div className="flex gap-3 pt-2">
+                 {selectedEventId && (
+                     <button 
+                        type="button"
+                        onClick={handleDelete}
+                        className="bg-red-900/30 text-red-400 border border-red-900/50 hover:bg-red-900/50 font-bold py-3 px-4 rounded transition flex items-center justify-center"
+                     >
+                        <Trash2 size={20} />
+                     </button>
+                 )}
+                 <button 
+                    type="submit"
+                    className="flex-1 bg-[#d4af37] hover:bg-yellow-500 text-black font-bold py-3 rounded transition"
+                 >
+                    {selectedEventId ? 'Enregistrer (Copie)' : 'Enregistrer'}
+                 </button>
+              </div>
             </form>
           </div>
         </div>

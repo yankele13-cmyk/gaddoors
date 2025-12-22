@@ -280,12 +280,33 @@ export async function getDashboardStats() {
   const productsColl = collection(db, "products");
   const productsSnapshot = await getCountFromServer(productsColl);
 
+  // Calculate Monthly Revenue (Real Data)
+  const invoicesColl = collection(db, "invoices");
+  const now = new Date();
+  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+  
+  // Note: Storing dates as timestamp in Firestore is best practice, but our service might be mixing strings/dates.
+  // Ideally, use a query with where('createdAt', '>=', startOfMonth).
+  // For safety/speed given the mixed usage, we'll fetch all and filter in JS (assuming low volume for now).
+  // In a large app, we would enforce Timestamp objects and use db query.
+  const invoicesSnapshot = await getDocs(invoicesColl);
+  
+  let monthlyRevenue = 0;
+  invoicesSnapshot.forEach(doc => {
+    const data = doc.data();
+    // Check if invoice date is in current month
+    const invDate = data.createdAt ? data.createdAt.toDate() : (data.date ? new Date(data.date) : new Date());
+    
+    if (invDate >= startOfMonth) {
+       monthlyRevenue += (data.totals?.totalTTC || 0);
+    }
+  });
+
   return {
     unreadMessages: unreadSnapshot.data().count,
     totalProducts: productsSnapshot.data().count,
-    // Mocked financial stats for now
-    monthlyRevenue: 45000,
-    pendingInstallations: 3
+    monthlyRevenue: monthlyRevenue, 
+    pendingInstallations: 3 // Kept as mock for now or link to calendar logic later
   };
 }
 
@@ -336,6 +357,11 @@ export async function addAppointment(appointmentData) {
     createdAt: serverTimestamp()
   });
   return docRef.id;
+}
+
+export async function deleteAppointment(id) {
+  const docRef = doc(db, "appointments", id);
+  await deleteDoc(docRef);
 }
 
 // --- PRODUCTS CMS ---

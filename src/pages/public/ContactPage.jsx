@@ -48,46 +48,6 @@ export default function ContactPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-white">
           {/* Contact Info */}
-          <div className="space-y-8 bg-zinc-900/50 p-8 rounded-2xl border border-zinc-800 h-fit">
-            <h2 className="text-2xl font-bold font-heading text-white mb-6">Nos Coordonnées</h2>
-            
-            <div className="flex items-start gap-4">
-              <div className="p-3 bg-[#d4af37]/10 rounded-lg text-[#d4af37]">
-                <Phone size={24} />
-              </div>
-              <div>
-                <h3 className="font-bold text-lg">Téléphone</h3>
-                <p className="text-gray-400 mt-1 cursor-pointer hover:text-white transition">+972 55 278 3693</p>
-                <p className="text-sm text-gray-500 mt-1">Du Lundi au Vendredi, 9h-18h</p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-4">
-              <div className="p-3 bg-[#d4af37]/10 rounded-lg text-[#d4af37]">
-                <Mail size={24} />
-              </div>
-              <div>
-                <h3 className="font-bold text-lg">Email</h3>
-                <p className="text-gray-400 mt-1 cursor-pointer hover:text-white transition">yankele13@gmail.com</p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-4">
-              <div className="p-3 bg-[#d4af37]/10 rounded-lg text-[#d4af37]">
-                <MapPin size={24} />
-              </div>
-              <div>
-                <h3 className="font-bold text-lg">Showroom</h3>
-                <p className="text-gray-400 mt-1">
-                  Aaron Eshkoli 115<br/>
-                  Jerusalem
-                </p>
-                <p className="text-sm text-gray-500 mt-1">Sur rendez-vous uniquement</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Contact Form */}
           <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8">
             <h2 className="text-2xl font-bold font-heading text-white mb-6">Envoyez-nous un message</h2>
             
@@ -110,6 +70,7 @@ export default function ContactPage() {
                     type="text"
                     name="name"
                     required
+                    autoFocus
                     value={formData.name}
                     onChange={handleChange}
                     className="w-full bg-zinc-800 border border-zinc-700 rounded-lg p-3 text-white focus:border-[#d4af37] focus:ring-1 focus:ring-[#d4af37] outline-none transition"
@@ -173,6 +134,46 @@ export default function ContactPage() {
                 )}
               </form>
             )}
+          </div>
+          
+          {/* Contact Info */}
+          <div className="space-y-8 bg-zinc-900/50 p-8 rounded-2xl border border-zinc-800 h-fit">
+            <h2 className="text-2xl font-bold font-heading text-white mb-6">Nos Coordonnées</h2>
+            
+            <div className="flex items-start gap-4">
+              <div className="p-3 bg-[#d4af37]/10 rounded-lg text-[#d4af37]">
+                <Phone size={24} />
+              </div>
+              <div>
+                <h3 className="font-bold text-lg">Téléphone</h3>
+                <p className="text-gray-400 mt-1 cursor-pointer hover:text-white transition">+972 55 278 3693</p>
+                <p className="text-sm text-gray-500 mt-1">Du Lundi au Vendredi, 9h-18h</p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-4">
+              <div className="p-3 bg-[#d4af37]/10 rounded-lg text-[#d4af37]">
+                <Mail size={24} />
+              </div>
+              <div>
+                <h3 className="font-bold text-lg">Email</h3>
+                <p className="text-gray-400 mt-1 cursor-pointer hover:text-white transition">yankele13@gmail.com</p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-4">
+              <div className="p-3 bg-[#d4af37]/10 rounded-lg text-[#d4af37]">
+                <MapPin size={24} />
+              </div>
+              <div>
+                <h3 className="font-bold text-lg">Showroom</h3>
+                <p className="text-gray-400 mt-1">
+                  Aaron Eshkoli 115<br/>
+                  Jerusalem
+                </p>
+                <p className="text-sm text-gray-500 mt-1">Sur rendez-vous uniquement</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>

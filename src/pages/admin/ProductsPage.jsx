@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { getProducts, addProduct, updateProduct, deleteProduct, uploadProductImage } from '../../services/db';
 import { Plus, Edit2, Trash2, X, Search, Package, Image as ImageIcon } from 'lucide-react';
 import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 
 export default function ProductsPage() {
   const [products, setProducts] = useState([]);
@@ -83,8 +84,10 @@ export default function ProductsPage() {
       await fetchProducts();
       setShowModal(false);
       reset();
+      toast.success(editingProduct ? "Produit mis à jour !" : "Produit créé avec succès !");
     } catch (error) {
       console.error("Error saving product:", error);
+      toast.error("Erreur lors de l'enregistrement.");
     } finally {
       setUploading(false);
     }
@@ -95,8 +98,10 @@ export default function ProductsPage() {
       try {
         await deleteProduct(id);
         await fetchProducts();
+        toast.success("Produit supprimé.");
       } catch (error) {
          console.error("Error deleting product:", error);
+         toast.error("Erreur lors de la suppression.");
       }
     }
   };
