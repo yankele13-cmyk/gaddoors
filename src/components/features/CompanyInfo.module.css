@@ -1,0 +1,181 @@
+/* src/components/features/CompanyInfo.module.css */
+
+.section {
+    padding: 4rem 0;
+    background-color: var(--color-primary);
+    color: white;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    text-align: center;
+}
+
+.sectionTitle {
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    color: white;
+    margin-bottom: 0.5rem;
+}
+
+.sectionSubtitle {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1.1rem;
+    margin-bottom: 3rem;
+}
+
+.infoGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.infoCard {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: var(--radius-md);
+    padding: 2rem;
+    text-align: left;
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.infoCard:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.icon {
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: 1rem;
+}
+
+.cardTitle {
+    font-family: var(--font-heading);
+    font-size: 1.3rem;
+    color: var(--color-accent);
+    margin-bottom: 1rem;
+}
+
+.list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.list li {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.list li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--color-accent);
+    font-weight: bold;
+}
+
+.note {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-style: italic;
+    margin-top: 1rem;
+    padding-left: 1.5rem;
+}
+
+.experience {
+    padding: 2rem;
+    background: linear-gradient(135deg, var(--color-accent), #d4af37);
+    border-radius: var(--radius-md);
+    margin-top: 2rem;
+}
+
+.experienceText {
+    font-size: 1.2rem;
+    color: var(--color-primary);
+    margin: 0;
+}
+
+.experienceText strong {
+    font-size: 1.5rem;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+/* Tablet Breakpoint */
+@media (max-width: 1024px) {
+    .infoGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Mobile Breakpoint */
+@media (max-width: 768px) {
+    .section {
+        padding: 3rem 0;
+    }
+
+    .sectionTitle {
+        font-size: 1.8rem;
+    }
+
+    .sectionSubtitle {
+        font-size: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .infoGrid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .infoCard {
+        padding: 1.5rem;
+    }
+
+    .icon {
+        font-size: 2rem;
+    }
+
+    .cardTitle {
+        font-size: 1.2rem;
+    }
+
+    .experience {
+        padding: 1.5rem;
+    }
+
+    .experienceText {
+        font-size: 1rem;
+    }
+
+    .experienceText strong {
+        font-size: 1.25rem;
+    }
+}
+
+/* Small Mobile Breakpoint */
+@media (max-width: 480px) {
+    .section {
+        padding: 2.5rem 0;
+    }
+
+    .sectionTitle {
+        font-size: 1.5rem;
+    }
+
+    .infoCard {
+        padding: 1.25rem;
+    }
+
+    .list li {
+        font-size: 0.9rem;
+    }
+}

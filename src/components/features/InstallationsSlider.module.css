@@ -1,0 +1,480 @@
+/* src/components/features/InstallationsSlider.module.css */
+
+.section {
+    padding: 5rem 0;
+    background: linear-gradient(180deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+        radial-gradient(ellipse at 20% 20%, rgba(212, 175, 55, 0.03) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(212, 175, 55, 0.03) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    position: relative;
+    z-index: 1;
+}
+
+/* Gallery Header */
+.galleryHeader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.headerLine {
+    flex: 1;
+    max-width: 200px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.6), transparent);
+}
+
+.sectionTitle {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    font-weight: 300;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: #fff;
+    margin: 0;
+    white-space: nowrap;
+}
+
+/* Slider Wrapper */
+.sliderWrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.slider {
+    width: 100%;
+    max-width: 1000px;
+    overflow: hidden;
+    border-radius: 4px;
+    position: relative;
+}
+
+.slidesTrack {
+    display: flex;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.slide {
+    min-width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 0 1rem;
+}
+
+/* Image Frame - Premium Look */
+.imageFrame {
+    position: relative;
+    background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+    padding: 12px;
+    border-radius: 8px;
+    box-shadow:
+        0 25px 50px -12px rgba(0, 0, 0, 0.8),
+        0 0 0 1px rgba(212, 175, 55, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    overflow: hidden;
+}
+
+.imageFrame::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 8px;
+    padding: 1px;
+    background: linear-gradient(145deg, rgba(212, 175, 55, 0.3), transparent 50%, rgba(212, 175, 55, 0.1));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+}
+
+.slideImage {
+    width: 100%;
+    height: 500px;
+    object-fit: contain;
+    display: block;
+    background-color: #0d0d0d;
+    border-radius: 4px;
+}
+
+.imageShine {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(90deg,
+            transparent,
+            rgba(255, 255, 255, 0.03),
+            transparent);
+    animation: shine 8s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes shine {
+
+    0%,
+    100% {
+        left: -100%;
+    }
+
+    50% {
+        left: 150%;
+    }
+}
+
+/* Navigation Buttons */
+.navButton {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: rgba(26, 26, 26, 0.9);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    color: #d4af37;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    z-index: 10;
+}
+
+.navButton:hover {
+    background: rgba(212, 175, 55, 0.15);
+    border-color: rgba(212, 175, 55, 0.5);
+    transform: translateY(-50%) scale(1.05);
+    box-shadow: 0 0 30px rgba(212, 175, 55, 0.2);
+}
+
+.navButton svg {
+    transition: transform 0.3s ease;
+}
+
+.navButton:hover svg {
+    transform: scale(1.1);
+}
+
+.prevButton {
+    left: 0;
+}
+
+.nextButton {
+    right: 0;
+}
+
+/* Progress Container */
+.progressContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+}
+
+.progressBar {
+    width: 200px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 1px;
+    overflow: hidden;
+}
+
+.progressFill {
+    height: 100%;
+    background: linear-gradient(90deg, #d4af37, #f4d03f);
+    border-radius: 1px;
+    transition: width 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.progressText {
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* View All Button */
+.viewAllButton {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 3rem;
+    padding: 1rem 2rem;
+    background: transparent;
+    border: 1px solid rgba(212, 175, 55, 0.4);
+    color: #d4af37;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-size: 0.8rem;
+    border-radius: 2px;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    position: relative;
+    overflow: hidden;
+}
+
+.viewAllButton::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+    transition: left 0.5s ease;
+}
+
+.viewAllButton:hover::before {
+    left: 100%;
+}
+
+.viewAllButton:hover {
+    background: rgba(212, 175, 55, 0.1);
+    border-color: #d4af37;
+    box-shadow: 0 0 30px rgba(212, 175, 55, 0.15);
+    transform: translateY(-2px);
+}
+
+.viewAllButton svg {
+    transition: transform 0.3s ease;
+}
+
+.viewAllButton:hover svg {
+    transform: translateX(4px);
+}
+
+/* Placeholder & Loader */
+.placeholder {
+    height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(26, 26, 26, 0.5);
+    border-radius: 8px;
+    border: 1px solid rgba(212, 175, 55, 0.1);
+}
+
+.loader {
+    width: 40px;
+    height: 40px;
+    border: 2px solid rgba(212, 175, 55, 0.2);
+    border-top-color: #d4af37;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Tablet Breakpoint */
+@media (max-width: 1024px) {
+    .section {
+        padding: 4rem 0;
+    }
+
+    .container {
+        padding: 0 1.5rem;
+    }
+
+    .galleryHeader {
+        gap: 1.5rem;
+        margin-bottom: 2.5rem;
+    }
+
+    .headerLine {
+        max-width: 120px;
+    }
+
+    .sectionTitle {
+        font-size: 1.5rem;
+        letter-spacing: 0.2em;
+    }
+
+    .slideImage {
+        height: 420px;
+    }
+
+    .navButton {
+        width: 48px;
+        height: 48px;
+    }
+
+    .progressBar {
+        width: 150px;
+    }
+}
+
+/* Mobile Breakpoint */
+@media (max-width: 768px) {
+    .section {
+        padding: 3rem 0;
+    }
+
+    .container {
+        padding: 0 1rem;
+    }
+
+    .galleryHeader {
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .headerLine {
+        max-width: 60px;
+    }
+
+    .sectionTitle {
+        font-size: 1.1rem;
+        letter-spacing: 0.15em;
+    }
+
+    .imageFrame {
+        padding: 8px;
+    }
+
+    .slideImage {
+        height: 320px;
+    }
+
+    .navButton {
+        width: 42px;
+        height: 42px;
+    }
+
+    .navButton svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .progressContainer {
+        margin-top: 1.5rem;
+        gap: 1rem;
+    }
+
+    .progressBar {
+        width: 120px;
+    }
+
+    .progressText {
+        font-size: 0.75rem;
+    }
+
+    .viewAllButton {
+        margin-top: 2rem;
+        padding: 0.875rem 1.5rem;
+        font-size: 0.75rem;
+    }
+
+    .placeholder {
+        height: 320px;
+    }
+}
+
+/* Small Mobile Breakpoint */
+@media (max-width: 480px) {
+    .section {
+        padding: 2.5rem 0;
+    }
+
+    .galleryHeader {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .headerLine {
+        width: 60px;
+        max-width: none;
+    }
+
+    .sectionTitle {
+        font-size: 1rem;
+    }
+
+    .slide {
+        padding: 0 0.5rem;
+    }
+
+    .imageFrame {
+        padding: 6px;
+    }
+
+    .slideImage {
+        height: 260px;
+    }
+
+    .navButton {
+        width: 36px;
+        height: 36px;
+    }
+
+    .navButton svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .prevButton {
+        left: 0.25rem;
+    }
+
+    .nextButton {
+        right: 0.25rem;
+    }
+
+    .progressContainer {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .progressBar {
+        width: 100%;
+        max-width: 200px;
+    }
+
+    .viewAllButton {
+        width: 100%;
+        justify-content: center;
+        max-width: 280px;
+    }
+
+    .placeholder {
+        height: 260px;
+    }
+
+    .loader {
+        width: 32px;
+        height: 32px;
+    }
+}

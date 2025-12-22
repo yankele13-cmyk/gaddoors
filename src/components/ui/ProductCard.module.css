@@ -1,0 +1,131 @@
+/* src/components/ui/ProductCard.module.css */
+
+.card {
+  position: relative;
+  background-color: #1a1a1a;
+  /* Dark card background */
+  border-radius: 4px;
+  /* Sharper corners for premium feel */
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  /* Subtle border */
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow:
+    0 15px 30px -10px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(212, 175, 55, 0.3);
+  /* Gold border on hover */
+}
+
+.imageContainer {
+  position: relative;
+  width: 100%;
+  padding-top: 130%;
+  /* Aspect ratio ~3:4 (vertical rectangle for doors) */
+  background: linear-gradient(135deg, #252525 0%, #151515 100%);
+  overflow: hidden;
+}
+
+.image {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  /* Give it some breathing room */
+  height: 90%;
+  object-fit: contain;
+  /* CRITICAL: Ensures the whole door is visible */
+  transition: transform 0.6s ease;
+  filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.3));
+  /* Shadow BEHIND the door object */
+}
+
+.card:hover .image {
+  transform: translate(-50%, -50%) scale(1.05);
+}
+
+.content {
+  padding: 1.5rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(to bottom, #1a1a1a, #151515);
+  border-top: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  margin: 0 0 0.5rem 0;
+  color: #fff;
+  font-weight: 300;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: color 0.3s ease;
+}
+
+.card:hover .title {
+  color: #d4af37;
+  /* Gold on hover */
+}
+
+/* Optional: Decorative line */
+.content::after {
+  content: '';
+  display: block;
+  width: 30px;
+  height: 1px;
+  background-color: #d4af37;
+  margin-top: 1rem;
+  opacity: 0.5;
+  transition: width 0.3s ease;
+}
+
+.card:hover .content::after {
+  width: 50px;
+  opacity: 1;
+}
+
+.link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  height: 100%;
+}
+
+/* Tablet Breakpoint */
+@media (max-width: 1024px) {
+  .content {
+    padding: 1.25rem;
+  }
+}
+
+/* Mobile Breakpoint */
+@media (max-width: 768px) {
+  .imageContainer {
+    padding-top: 120%;
+    /* Slightly shorter on mobile */
+  }
+
+  .content {
+    padding: 1rem;
+  }
+
+  .title {
+    font-size: 1rem;
+  }
+}
+
+/* Small Mobile Breakpoint */
+@media (max-width: 480px) {
+  .content {
+    padding: 0.875rem;
+  }
+}

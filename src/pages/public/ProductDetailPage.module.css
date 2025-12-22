@@ -1,0 +1,225 @@
+/* src/pages/public/ProductDetailPage.module.css */
+
+.container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 8rem 2rem;
+    /* Account for fixed header if any, generally spacious */
+    min-height: 100vh;
+    animation: fadeIn 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    background: linear-gradient(180deg, #0a0a0a 0%, #1a1a1a 100%);
+    position: relative;
+}
+
+.container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 60%;
+    height: 100%;
+    background: radial-gradient(circle at 70% 20%, rgba(212, 175, 55, 0.03), transparent 60%);
+    pointer-events: none;
+}
+
+.imageContainer {
+    position: relative;
+    background: linear-gradient(145deg, #151515, #0d0d0d);
+    border-radius: 4px;
+    /* Slightly sharper */
+    box-shadow:
+        0 25px 50px -12px rgba(0, 0, 0, 0.9),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    /* Highlight top edge */
+    padding: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 70vh;
+    /* Fixed height frame for grandeur */
+    max-height: 800px;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    /* CRITICAL: Prevent distortion */
+    filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.5));
+    transition: transform 0.5s ease;
+}
+
+.image:hover {
+    transform: scale(1.02);
+}
+
+.details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-right: 2rem;
+}
+
+.category {
+    text-transform: uppercase;
+    color: #d4af37;
+    /* Gold accent */
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+}
+
+.title {
+    font-family: var(--font-heading);
+    font-size: 3.5rem;
+    margin-bottom: 2rem;
+    line-height: 1.1;
+    color: #fff;
+    font-weight: 300;
+}
+
+.description {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 4rem;
+    max-width: 600px;
+    font-weight: 300;
+}
+
+.meta {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 2rem;
+    margin-top: auto;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.85rem;
+    font-weight: 300;
+    letter-spacing: 0.05em;
+}
+
+.actions {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.quoteButton {
+    background-color: #d4af37;
+    color: #000;
+    border: none;
+    padding: 1rem 2.5rem;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 2px;
+}
+
+.quoteButton:hover {
+    background-color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(212, 175, 55, 0.2);
+}
+
+.backLink {
+    display: inline-flex;
+    align-items: center;
+    margin-bottom: 3rem;
+    color: rgba(255, 255, 255, 0.5);
+    text-decoration: none;
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+    transition: color 0.3s ease;
+}
+
+.backLink:hover {
+    color: #d4af37;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Tablet Breakpoint */
+@media (max-width: 1024px) {
+    .container {
+        gap: 3rem;
+        padding: 5rem 1.5rem;
+    }
+
+    .title {
+        font-size: 2.5rem;
+    }
+
+    .imageContainer {
+        height: 50vh;
+    }
+}
+
+/* Mobile Breakpoint */
+@media (max-width: 900px) {
+    .container {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+        padding: 5rem 1.5rem;
+        height: auto;
+    }
+
+    .imageContainer {
+        height: 400px;
+        padding: 2rem;
+    }
+
+    .details {
+        padding-right: 0;
+    }
+
+    .title {
+        font-size: 2.2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 4rem 1rem;
+    }
+
+    .imageContainer {
+        height: 300px;
+        padding: 1rem;
+    }
+
+    .category {
+        font-size: 0.7rem;
+    }
+
+    .title {
+        font-size: 1.75rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .description {
+        font-size: 1rem;
+        margin-bottom: 2.5rem;
+    }
+
+    .quoteButton {
+        width: 100%;
+        text-align: center;
+    }
+}

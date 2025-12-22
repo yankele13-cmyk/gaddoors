@@ -1,0 +1,522 @@
+[
+  {
+    "id": "door-concrete-window",
+    "name": "Concrete Window",
+    "description": "Découvrez la Concrete Window, une porte qui allie design sophistiqué et bois soigneusement sélectionné. Parfait pour rehausser votre espace. Cette porte offre une isolation acoustique optimale et une esthétique qui transformera votre pièce.",
+    "price": 2549,
+    "category": "Portes Intérieures",
+    "imageUrl": "/images/studioDoors/door-concrete-window.jpg",
+    "stock": 25,
+    "createdAt": "2025-12-21T16:05:15.104Z"
+  },
+  {
+    "id": "door-epoxy-style-5",
+    "name": "Epoxy Style 5",
+    "description": "Découvrez la Epoxy Style 5, une porte qui allie charme naturel et conception robuste. Une addition sublime à votre maison. Cette porte offre une isolation acoustique optimale et une esthétique qui transformera votre pièce.",
+    "price": 1209,
+    "category": "Portes Intérieures",
+    "imageUrl": "/images/studioDoors/door-epoxy-style-5.jpg",
+    "stock": 28,
+    "createdAt": "2025-12-21T16:05:15.105Z"
+  },
+  {
+    "id": "door-formica-style-4",
+    "name": "Formica Style 4",
+    "description": "Découvrez la Formica Style 4, une porte qui allie finition impeccable et conception robuste. Conçu pour les espaces contemporains. Cette porte offre une isolation acoustique optimale et une esthétique qui transformera votre pièce.",
+    "price": 2609,
+    "category": "Portes Intérieures",
+    "imageUrl": "/images/studioDoors/door-formica-style-4.jpg",
+    "stock": 32,
+    "createdAt": "2025-12-21T16:05:15.105Z"
+  },
+  {
+    "id": "door-luxury-style-1",
+    "name": "Luxury Style 1",
+    "description": "Découvrez la Luxury Style 1, une porte qui allie élégance intemporelle et matériaux de haute qualité. Parfait pour rehausser votre espace. Cette porte offre une isolation acoustique optimale et une esthétique qui transformera votre pièce.",
+    "price": 2659,
+    "category": "Portes Intérieures",
+    "imageUrl": "/images/studioDoors/door-luxury-style-1.jpg",
+    "stock": 18,
+    "createdAt": "2025-12-21T16:05:15.105Z"
+  },
+  {
+    "id": "door-luxury-style-2",
+    "name": "Luxury Style 2",
+    "description": "Découvrez la Luxury Style 2, une porte qui allie design sophistiqué et conception robuste. Conçu pour les espaces contemporains. Cette porte offre une isolation acoustique optimale et une esthétique qui transformera votre pièce.",
+    "price": 2989,
+    "category": "Portes Intérieures",
+    "imageUrl": "/images/studioDoors/door-luxury-style-2.jpg",
+    "stock": 26,
+    "createdAt": "2025-12-21T16:05:15.105Z"
+  },
+  {
+    "id": "door-luxury-style-3",
+    "name": "Luxury Style 3",
+    "description": "Découvrez la Luxury Style 3, une porte qui allie design sophistiqué et alliage résistant. Conçu pour les espaces contemporains. Cette porte offre une isolation acoustique optimale et une esthétique qui transformera votre pièce.",
+    "price": 2139,
+    "category": "Portes Intérieures",
+    "imageUrl": "/images/studioDoors/door-luxury-style-3.jpg",
+    "stock": 21,
+    "createdAt": "2025-12-21T16:05:15.105Z"
+  },
+  {
+    "id": "door-mocha-window",
+    "name": "Mocha Window",
+    "description": "Découvrez la Mocha Window, une porte qui allie design sophistiqué et alliage résistant. Idéal pour tout intérieur moderne. Cette porte offre une isolation acoustique optimale et une esthétique qui transformera votre pièce.",
+    "price": 2749,
+    "category": "Portes Intérieures",
+    "imageUrl": "/images/studioDoors/door-mocha-window.jpg",
+    "stock": 10,
+    "createdAt": "2025-12-21T16:05:15.105Z"
+  },
+  {
+    "id": "door-nova-style",
+    "name": "Nova Style",
+    "description": "Découvrez la Nova Style, une porte qui allie finition impeccable et structure durable. Idéal pour tout intérieur moderne. Cette porte offre une isolation acoustique optimale et une esthétique qui transformera votre pièce.",
+    "price": 1729,
+    "category": "Portes Intérieures",
+    "imageUrl": "/images/studioDoors/door-nova-style.jpg",
+    "stock": 17,
+    "createdAt": "2025-12-21T16:05:15.105Z"
+  },
+  {
+    "id": "door-walnut-dark",
+    "name": "Walnut Dark",
+    "description": "Découvrez la Walnut Dark, une porte qui allie touche de luxe et conception robuste. Une addition sublime à votre maison. Cette porte offre une isolation acoustique optimale et une esthétique qui transformera votre pièce.",
+    "price": 1829,
+    "category": "Portes Intérieures",
+    "imageUrl": "/images/studioDoors/door-walnut-dark.jpg",
+    "stock": 53,
+    "createdAt": "2025-12-21T16:05:15.105Z"
+  },
+  {
+    "id": "door-walnut-nickel-lines",
+    "name": "Walnut Nickel Lines",
+    "description": "Découvrez la Walnut Nickel Lines, une porte qui allie touche de luxe et structure durable. Une addition sublime à votre maison. Cette porte offre une isolation acoustique optimale et une esthétique qui transformera votre pièce.",
+    "price": 2019,
+    "category": "Portes Intérieures",
+    "imageUrl": "/images/studioDoors/door-walnut-nickel-lines.jpg",
+    "stock": 59,
+    "createdAt": "2025-12-21T16:05:15.106Z"
+  },
+  {
+    "id": "door-walnut-salvador",
+    "name": "Walnut Salvador",
+    "description": "Découvrez la Walnut Salvador, une porte qui allie finition impeccable et conception robuste. Parfait pour rehausser votre espace. Cette porte offre une isolation acoustique optimale et une esthétique qui transformera votre pièce.",
+    "price": 2539,
+    "category": "Portes Intérieures",
+    "imageUrl": "/images/studioDoors/door-walnut-salvador.jpg",
+    "stock": 55,
+    "createdAt": "2025-12-21T16:05:15.106Z"
+  },
+  {
+    "id": "door-walnut-style-44",
+    "name": "Walnut Style 44",
+    "description": "Découvrez la Walnut Style 44, une porte qui allie finition impeccable et alliage résistant. Idéal pour tout intérieur moderne. Cette porte offre une isolation acoustique optimale et une esthétique qui transformera votre pièce.",
+    "price": 1799,
+    "category": "Portes Intérieures",
+    "imageUrl": "/images/studioDoors/door-walnut-style-44.jpg",
+    "stock": 15,
+    "createdAt": "2025-12-21T16:05:15.106Z"
+  },
+  {
+    "id": "door-wenge-complete",
+    "name": "Wenge Complete",
+    "description": "Découvrez la Wenge Complete, une porte qui allie charme naturel et bois soigneusement sélectionné. Une addition sublime à votre maison. Cette porte offre une isolation acoustique optimale et une esthétique qui transformera votre pièce.",
+    "price": 2789,
+    "category": "Portes Intérieures",
+    "imageUrl": "/images/studioDoors/door-wenge-complete.jpg",
+    "stock": 49,
+    "createdAt": "2025-12-21T16:05:15.106Z"
+  },
+  {
+    "id": "door-wenge-style-3",
+    "name": "Wenge Style 3",
+    "description": "Découvrez la Wenge Style 3, une porte qui allie élégance intemporelle et conception robuste. Parfait pour rehausser votre espace. Cette porte offre une isolation acoustique optimale et une esthétique qui transformera votre pièce.",
+    "price": 1279,
+    "category": "Portes Intérieures",
+    "imageUrl": "/images/studioDoors/door-wenge-style-3.jpg",
+    "stock": 15,
+    "createdAt": "2025-12-21T16:05:15.106Z"
+  },
+  {
+    "id": "door-wenge-style-4",
+    "name": "Wenge Style 4",
+    "description": "Découvrez la Wenge Style 4, une porte qui allie élégance intemporelle et matériaux de haute qualité. Une addition sublime à votre maison. Cette porte offre une isolation acoustique optimale et une esthétique qui transformera votre pièce.",
+    "price": 1629,
+    "category": "Portes Intérieures",
+    "imageUrl": "/images/studioDoors/door-wenge-style-4.jpg",
+    "stock": 11,
+    "createdAt": "2025-12-21T16:05:15.106Z"
+  },
+  {
+    "id": "door-wenge-wave",
+    "name": "Wenge Wave",
+    "description": "Découvrez la Wenge Wave, une porte qui allie élégance intemporelle et structure durable. Parfait pour rehausser votre espace. Cette porte offre une isolation acoustique optimale et une esthétique qui transformera votre pièce.",
+    "price": 1539,
+    "category": "Portes Intérieures",
+    "imageUrl": "/images/studioDoors/door-wenge-wave.jpg",
+    "stock": 22,
+    "createdAt": "2025-12-21T16:05:15.106Z"
+  },
+  {
+    "id": "door-wenge-window",
+    "name": "Wenge Window",
+    "description": "Découvrez la Wenge Window, une porte qui allie design sophistiqué et bois soigneusement sélectionné. Idéal pour tout intérieur moderne. Cette porte offre une isolation acoustique optimale et une esthétique qui transformera votre pièce.",
+    "price": 2929,
+    "category": "Portes Intérieures",
+    "imageUrl": "/images/studioDoors/door-wenge-window.jpg",
+    "stock": 54,
+    "createdAt": "2025-12-21T16:05:15.106Z"
+  },
+  {
+    "id": "door-white-2-panels",
+    "name": "White 2 Panels",
+    "description": "Découvrez la White 2 Panels, une porte qui allie charme naturel et conception robuste. Conçu pour les espaces contemporains. Cette porte offre une isolation acoustique optimale et une esthétique qui transformera votre pièce.",
+    "price": 1439,
+    "category": "Portes Intérieures",
+    "imageUrl": "/images/studioDoors/door-white-2-panels.png",
+    "stock": 46,
+    "createdAt": "2025-12-21T16:05:15.106Z"
+  },
+  {
+    "id": "door-white-3-grooves",
+    "name": "White 3 Grooves",
+    "description": "Découvrez la White 3 Grooves, une porte qui allie élégance intemporelle et bois soigneusement sélectionné. Parfait pour rehausser votre espace. Cette porte offre une isolation acoustique optimale et une esthétique qui transformera votre pièce.",
+    "price": 2409,
+    "category": "Portes Intérieures",
+    "imageUrl": "/images/studioDoors/door-white-3-grooves.png",
+    "stock": 35,
+    "createdAt": "2025-12-21T16:05:15.106Z"
+  },
+  {
+    "id": "door-white-glass-panel",
+    "name": "White Glass Panel",
+    "description": "Découvrez la White Glass Panel, une porte qui allie finition impeccable et structure durable. Idéal pour tout intérieur moderne. Cette porte offre une isolation acoustique optimale et une esthétique qui transformera votre pièce.",
+    "price": 1879,
+    "category": "Portes Intérieures",
+    "imageUrl": "/images/studioDoors/door-white-glass-panel.jpg",
+    "stock": 40,
+    "createdAt": "2025-12-21T16:05:15.106Z"
+  },
+  {
+    "id": "door-white-laminato",
+    "name": "White Laminato",
+    "description": "Découvrez la White Laminato, une porte qui allie charme naturel et bois soigneusement sélectionné. Une addition sublime à votre maison. Cette porte offre une isolation acoustique optimale et une esthétique qui transformera votre pièce.",
+    "price": 1859,
+    "category": "Portes Intérieures",
+    "imageUrl": "/images/studioDoors/door-white-laminato.jpg",
+    "stock": 24,
+    "createdAt": "2025-12-21T16:05:15.106Z"
+  },
+  {
+    "id": "door-white-large-window",
+    "name": "White Large Window",
+    "description": "Découvrez la White Large Window, une porte qui allie élégance intemporelle et matériaux de haute qualité. Conçu pour les espaces contemporains. Cette porte offre une isolation acoustique optimale et une esthétique qui transformera votre pièce.",
+    "price": 1829,
+    "category": "Portes Intérieures",
+    "imageUrl": "/images/studioDoors/door-white-large-window.jpg",
+    "stock": 38,
+    "createdAt": "2025-12-21T16:05:15.106Z"
+  },
+  {
+    "id": "door-white-small-window",
+    "name": "White Small Window",
+    "description": "Découvrez la White Small Window, une porte qui allie touche de luxe et structure durable. Idéal pour tout intérieur moderne. Cette porte offre une isolation acoustique optimale et une esthétique qui transformera votre pièce.",
+    "price": 2249,
+    "category": "Portes Intérieures",
+    "imageUrl": "/images/studioDoors/door-white-small-window.jpg",
+    "stock": 23,
+    "createdAt": "2025-12-21T16:05:15.106Z"
+  },
+  {
+    "id": "door-white-wide-grooves",
+    "name": "White Wide Grooves",
+    "description": "Découvrez la White Wide Grooves, une porte qui allie élégance intemporelle et alliage résistant. Une addition sublime à votre maison. Cette porte offre une isolation acoustique optimale et une esthétique qui transformera votre pièce.",
+    "price": 1809,
+    "category": "Portes Intérieures",
+    "imageUrl": "/images/studioDoors/door-white-wide-grooves.png",
+    "stock": 50,
+    "createdAt": "2025-12-21T16:05:15.106Z"
+  },
+  {
+    "id": "accessory-handle-style-1",
+    "name": "Handle Style 1",
+    "description": "Cet accessoire Handle Style 1 se distingue par son élégance intemporelle. Fabriqué avec des alliage résistant, il est une addition sublime à votre maison. Un détail qui fait toute la différence.",
+    "price": 379,
+    "category": "Accessoires",
+    "imageUrl": "/images/studioAccessories/accessory-handle-style-1.jpg",
+    "stock": 38,
+    "createdAt": "2025-12-21T16:05:15.106Z"
+  },
+  {
+    "id": "accessory-handle-style-10",
+    "name": "Handle Style 10",
+    "description": "Cet accessoire Handle Style 10 se distingue par son finition impeccable. Fabriqué avec des alliage résistant, il est idéal pour tout intérieur moderne. Un détail qui fait toute la différence.",
+    "price": 539,
+    "category": "Accessoires",
+    "imageUrl": "/images/studioAccessories/accessory-handle-style-10.jpg",
+    "stock": 28,
+    "createdAt": "2025-12-21T16:05:15.106Z"
+  },
+  {
+    "id": "accessory-handle-style-11",
+    "name": "Handle Style 11",
+    "description": "Cet accessoire Handle Style 11 se distingue par son design sophistiqué. Fabriqué avec des conception robuste, il est idéal pour tout intérieur moderne. Un détail qui fait toute la différence.",
+    "price": 789,
+    "category": "Accessoires",
+    "imageUrl": "/images/studioAccessories/accessory-handle-style-11.jpg",
+    "stock": 46,
+    "createdAt": "2025-12-21T16:05:15.107Z"
+  },
+  {
+    "id": "accessory-handle-style-12",
+    "name": "Handle Style 12",
+    "description": "Cet accessoire Handle Style 12 se distingue par son charme naturel. Fabriqué avec des alliage résistant, il est une addition sublime à votre maison. Un détail qui fait toute la différence.",
+    "price": 639,
+    "category": "Accessoires",
+    "imageUrl": "/images/studioAccessories/accessory-handle-style-12.jpg",
+    "stock": 33,
+    "createdAt": "2025-12-21T16:05:15.107Z"
+  },
+  {
+    "id": "accessory-handle-style-2",
+    "name": "Handle Style 2",
+    "description": "Cet accessoire Handle Style 2 se distingue par son charme naturel. Fabriqué avec des structure durable, il est une addition sublime à votre maison. Un détail qui fait toute la différence.",
+    "price": 669,
+    "category": "Accessoires",
+    "imageUrl": "/images/studioAccessories/accessory-handle-style-2.jpg",
+    "stock": 53,
+    "createdAt": "2025-12-21T16:05:15.107Z"
+  },
+  {
+    "id": "accessory-handle-style-3",
+    "name": "Handle Style 3",
+    "description": "Cet accessoire Handle Style 3 se distingue par son design sophistiqué. Fabriqué avec des structure durable, il est une addition sublime à votre maison. Un détail qui fait toute la différence.",
+    "price": 449,
+    "category": "Accessoires",
+    "imageUrl": "/images/studioAccessories/accessory-handle-style-3.jpg",
+    "stock": 39,
+    "createdAt": "2025-12-21T16:05:15.107Z"
+  },
+  {
+    "id": "accessory-handle-style-4",
+    "name": "Handle Style 4",
+    "description": "Cet accessoire Handle Style 4 se distingue par son touche de luxe. Fabriqué avec des bois soigneusement sélectionné, il est une addition sublime à votre maison. Un détail qui fait toute la différence.",
+    "price": 309,
+    "category": "Accessoires",
+    "imageUrl": "/images/studioAccessories/accessory-handle-style-4.jpg",
+    "stock": 43,
+    "createdAt": "2025-12-21T16:05:15.107Z"
+  },
+  {
+    "id": "accessory-handle-style-5",
+    "name": "Handle Style 5",
+    "description": "Cet accessoire Handle Style 5 se distingue par son design sophistiqué. Fabriqué avec des alliage résistant, il est une addition sublime à votre maison. Un détail qui fait toute la différence.",
+    "price": 379,
+    "category": "Accessoires",
+    "imageUrl": "/images/studioAccessories/accessory-handle-style-5.jpg",
+    "stock": 16,
+    "createdAt": "2025-12-21T16:05:15.107Z"
+  },
+  {
+    "id": "accessory-handle-style-6",
+    "name": "Handle Style 6",
+    "description": "Cet accessoire Handle Style 6 se distingue par son touche de luxe. Fabriqué avec des conception robuste, il est conçu pour les espaces contemporains. Un détail qui fait toute la différence.",
+    "price": 529,
+    "category": "Accessoires",
+    "imageUrl": "/images/studioAccessories/accessory-handle-style-6.jpg",
+    "stock": 39,
+    "createdAt": "2025-12-21T16:05:15.107Z"
+  },
+  {
+    "id": "accessory-handle-style-7",
+    "name": "Handle Style 7",
+    "description": "Cet accessoire Handle Style 7 se distingue par son charme naturel. Fabriqué avec des conception robuste, il est parfait pour rehausser votre espace. Un détail qui fait toute la différence.",
+    "price": 359,
+    "category": "Accessoires",
+    "imageUrl": "/images/studioAccessories/accessory-handle-style-7.jpg",
+    "stock": 58,
+    "createdAt": "2025-12-21T16:05:15.107Z"
+  },
+  {
+    "id": "accessory-handle-style-8",
+    "name": "Handle Style 8",
+    "description": "Cet accessoire Handle Style 8 se distingue par son touche de luxe. Fabriqué avec des bois soigneusement sélectionné, il est parfait pour rehausser votre espace. Un détail qui fait toute la différence.",
+    "price": 439,
+    "category": "Accessoires",
+    "imageUrl": "/images/studioAccessories/accessory-handle-style-8.jpg",
+    "stock": 42,
+    "createdAt": "2025-12-21T16:05:15.107Z"
+  },
+  {
+    "id": "accessory-handle-style-9",
+    "name": "Handle Style 9",
+    "description": "Cet accessoire Handle Style 9 se distingue par son charme naturel. Fabriqué avec des structure durable, il est une addition sublime à votre maison. Un détail qui fait toute la différence.",
+    "price": 529,
+    "category": "Accessoires",
+    "imageUrl": "/images/studioAccessories/accessory-handle-style-9.jpg",
+    "stock": 15,
+    "createdAt": "2025-12-21T16:05:15.107Z"
+  },
+  {
+    "id": "accessory-hardware-style-1",
+    "name": "Hardware Style 1",
+    "description": "Cet accessoire Hardware Style 1 se distingue par son élégance intemporelle. Fabriqué avec des bois soigneusement sélectionné, il est idéal pour tout intérieur moderne. Un détail qui fait toute la différence.",
+    "price": 309,
+    "category": "Accessoires",
+    "imageUrl": "/images/studioAccessories/accessory-hardware-style-1.jpg",
+    "stock": 51,
+    "createdAt": "2025-12-21T16:05:15.107Z"
+  },
+  {
+    "id": "accessory-hardware-style-10",
+    "name": "Hardware Style 10",
+    "description": "Cet accessoire Hardware Style 10 se distingue par son finition impeccable. Fabriqué avec des structure durable, il est parfait pour rehausser votre espace. Un détail qui fait toute la différence.",
+    "price": 249,
+    "category": "Accessoires",
+    "imageUrl": "/images/studioAccessories/accessory-hardware-style-10.jpg",
+    "stock": 46,
+    "createdAt": "2025-12-21T16:05:15.107Z"
+  },
+  {
+    "id": "accessory-hardware-style-11",
+    "name": "Hardware Style 11",
+    "description": "Cet accessoire Hardware Style 11 se distingue par son design sophistiqué. Fabriqué avec des alliage résistant, il est une addition sublime à votre maison. Un détail qui fait toute la différence.",
+    "price": 559,
+    "category": "Accessoires",
+    "imageUrl": "/images/studioAccessories/accessory-hardware-style-11.jpg",
+    "stock": 14,
+    "createdAt": "2025-12-21T16:05:15.107Z"
+  },
+  {
+    "id": "accessory-hardware-style-12",
+    "name": "Hardware Style 12",
+    "description": "Cet accessoire Hardware Style 12 se distingue par son design sophistiqué. Fabriqué avec des conception robuste, il est idéal pour tout intérieur moderne. Un détail qui fait toute la différence.",
+    "price": 489,
+    "category": "Accessoires",
+    "imageUrl": "/images/studioAccessories/accessory-hardware-style-12.jpg",
+    "stock": 53,
+    "createdAt": "2025-12-21T16:05:15.107Z"
+  },
+  {
+    "id": "accessory-hardware-style-13",
+    "name": "Hardware Style 13",
+    "description": "Cet accessoire Hardware Style 13 se distingue par son design sophistiqué. Fabriqué avec des matériaux de haute qualité, il est parfait pour rehausser votre espace. Un détail qui fait toute la différence.",
+    "price": 789,
+    "category": "Accessoires",
+    "imageUrl": "/images/studioAccessories/accessory-hardware-style-13.jpg",
+    "stock": 49,
+    "createdAt": "2025-12-21T16:05:15.107Z"
+  },
+  {
+    "id": "accessory-hardware-style-14",
+    "name": "Hardware Style 14",
+    "description": "Cet accessoire Hardware Style 14 se distingue par son charme naturel. Fabriqué avec des alliage résistant, il est une addition sublime à votre maison. Un détail qui fait toute la différence.",
+    "price": 439,
+    "category": "Accessoires",
+    "imageUrl": "/images/studioAccessories/accessory-hardware-style-14.jpg",
+    "stock": 57,
+    "createdAt": "2025-12-21T16:05:15.107Z"
+  },
+  {
+    "id": "accessory-hardware-style-15",
+    "name": "Hardware Style 15",
+    "description": "Cet accessoire Hardware Style 15 se distingue par son design sophistiqué. Fabriqué avec des conception robuste, il est conçu pour les espaces contemporains. Un détail qui fait toute la différence.",
+    "price": 449,
+    "category": "Accessoires",
+    "imageUrl": "/images/studioAccessories/accessory-hardware-style-15.jpg",
+    "stock": 30,
+    "createdAt": "2025-12-21T16:05:15.107Z"
+  },
+  {
+    "id": "accessory-hardware-style-16",
+    "name": "Hardware Style 16",
+    "description": "Cet accessoire Hardware Style 16 se distingue par son élégance intemporelle. Fabriqué avec des alliage résistant, il est parfait pour rehausser votre espace. Un détail qui fait toute la différence.",
+    "price": 559,
+    "category": "Accessoires",
+    "imageUrl": "/images/studioAccessories/accessory-hardware-style-16.jpg",
+    "stock": 46,
+    "createdAt": "2025-12-21T16:05:15.107Z"
+  },
+  {
+    "id": "accessory-hardware-style-2",
+    "name": "Hardware Style 2",
+    "description": "Cet accessoire Hardware Style 2 se distingue par son design sophistiqué. Fabriqué avec des structure durable, il est parfait pour rehausser votre espace. Un détail qui fait toute la différence.",
+    "price": 249,
+    "category": "Accessoires",
+    "imageUrl": "/images/studioAccessories/accessory-hardware-style-2.jpg",
+    "stock": 27,
+    "createdAt": "2025-12-21T16:05:15.107Z"
+  },
+  {
+    "id": "accessory-hardware-style-3",
+    "name": "Hardware Style 3",
+    "description": "Cet accessoire Hardware Style 3 se distingue par son design sophistiqué. Fabriqué avec des conception robuste, il est idéal pour tout intérieur moderne. Un détail qui fait toute la différence.",
+    "price": 349,
+    "category": "Accessoires",
+    "imageUrl": "/images/studioAccessories/accessory-hardware-style-3.jpg",
+    "stock": 16,
+    "createdAt": "2025-12-21T16:05:15.107Z"
+  },
+  {
+    "id": "accessory-hardware-style-4",
+    "name": "Hardware Style 4",
+    "description": "Cet accessoire Hardware Style 4 se distingue par son élégance intemporelle. Fabriqué avec des bois soigneusement sélectionné, il est conçu pour les espaces contemporains. Un détail qui fait toute la différence.",
+    "price": 709,
+    "category": "Accessoires",
+    "imageUrl": "/images/studioAccessories/accessory-hardware-style-4.jpg",
+    "stock": 52,
+    "createdAt": "2025-12-21T16:05:15.107Z"
+  },
+  {
+    "id": "accessory-hardware-style-5",
+    "name": "Hardware Style 5",
+    "description": "Cet accessoire Hardware Style 5 se distingue par son élégance intemporelle. Fabriqué avec des structure durable, il est parfait pour rehausser votre espace. Un détail qui fait toute la différence.",
+    "price": 379,
+    "category": "Accessoires",
+    "imageUrl": "/images/studioAccessories/accessory-hardware-style-5.jpg",
+    "stock": 26,
+    "createdAt": "2025-12-21T16:05:15.107Z"
+  },
+  {
+    "id": "accessory-hardware-style-6",
+    "name": "Hardware Style 6",
+    "description": "Cet accessoire Hardware Style 6 se distingue par son charme naturel. Fabriqué avec des conception robuste, il est une addition sublime à votre maison. Un détail qui fait toute la différence.",
+    "price": 519,
+    "category": "Accessoires",
+    "imageUrl": "/images/studioAccessories/accessory-hardware-style-6.jpg",
+    "stock": 50,
+    "createdAt": "2025-12-21T16:05:15.107Z"
+  },
+  {
+    "id": "accessory-hardware-style-7",
+    "name": "Hardware Style 7",
+    "description": "Cet accessoire Hardware Style 7 se distingue par son charme naturel. Fabriqué avec des alliage résistant, il est une addition sublime à votre maison. Un détail qui fait toute la différence.",
+    "price": 629,
+    "category": "Accessoires",
+    "imageUrl": "/images/studioAccessories/accessory-hardware-style-7.jpg",
+    "stock": 10,
+    "createdAt": "2025-12-21T16:05:15.107Z"
+  },
+  {
+    "id": "accessory-hardware-style-8",
+    "name": "Hardware Style 8",
+    "description": "Cet accessoire Hardware Style 8 se distingue par son touche de luxe. Fabriqué avec des matériaux de haute qualité, il est conçu pour les espaces contemporains. Un détail qui fait toute la différence.",
+    "price": 259,
+    "category": "Accessoires",
+    "imageUrl": "/images/studioAccessories/accessory-hardware-style-8.jpg",
+    "stock": 21,
+    "createdAt": "2025-12-21T16:05:15.107Z"
+  },
+  {
+    "id": "accessory-hardware-style-9",
+    "name": "Hardware Style 9",
+    "description": "Cet accessoire Hardware Style 9 se distingue par son touche de luxe. Fabriqué avec des matériaux de haute qualité, il est idéal pour tout intérieur moderne. Un détail qui fait toute la différence.",
+    "price": 479,
+    "category": "Accessoires",
+    "imageUrl": "/images/studioAccessories/accessory-hardware-style-9.jpg",
+    "stock": 19,
+    "createdAt": "2025-12-21T16:05:15.107Z"
+  }
+]
