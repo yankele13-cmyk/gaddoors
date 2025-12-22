@@ -1,5 +1,5 @@
 // src/services/db.js
-import { collection, getDocs, doc, getDoc, addDoc, serverTimestamp } from "firebase/firestore";
+import { collection, getDocs, doc, getDoc, addDoc, updateDoc, deleteDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "./firebase"; // Importe l'instance de la base de données
 
 /**
@@ -246,11 +246,131 @@ export async function getInstallations() {
 
 
 export async function sendMessage(messageData) {
-  const messagesCollection = collection(db, "messages");
   const docRef = await addDoc(messagesCollection, {
     ...messageData,
     createdAt: serverTimestamp(), // Utilise le timestamp serveur pour la fiabilité
     read: false
   });
   return docRef.id;
+}
+
+// --- ADMIN HELPERS ---
+
+import { query, orderBy, limit, where, getCountFromServer } from "firebase/firestore";
+
+export async function getRecentMessages(limitCount = 5) {
+  const messagesCollection = collection(db, "messages");
+  const q = query(messagesCollection, orderBy("createdAt", "desc"), limit(limitCount));
+  const snapshot = await getDocs(q);
+  return snapshot.docs.map(doc => ({ 
+    id: doc.id, 
+    ...doc.data(),
+    createdAt: doc.data().createdAt?.toDate() || new Date()
+  }));
+}
+
+export async function getDashboardStats() {
+  const messagesColl = collection(db, "messages");
+  
+  // Count unread messages
+  const unreadQuery = query(messagesColl, where("read", "==", false));
+  const unreadSnapshot = await getCountFromServer(unreadQuery);
+  
+  // Count total products
+  const productsColl = collection(db, "products");
+  const productsSnapshot = await getCountFromServer(productsColl);
+
+  return {
+    unreadMessages: unreadSnapshot.data().count,
+    totalProducts: productsSnapshot.data().count,
+    // Mocked financial stats for now
+    monthlyRevenue: 45000,
+    pendingInstallations: 3
+  };
+}
+
+export async function getLeads() {
+  const messagesCollection = collection(db, "messages");
+  const q = query(messagesCollection, orderBy("createdAt", "desc"));
+  const snapshot = await getDocs(q);
+  return snapshot.docs.map(doc => ({ 
+    id: doc.id, 
+    ...doc.data(),
+    createdAt: doc.data().createdAt?.toDate() || new Date()
+  }));
+}
+
+export async function updateLeadStatus(id, newStatus) {
+  const docRef = doc(db, "messages", id);
+  await updateDoc(docRef, { 
+    status: newStatus,
+    read: true, // Auto-mark as read if status changes
+    updatedAt: serverTimestamp()
+  });
+}
+
+// --- CALENDAR / APPOINTMENTS ---
+
+export async function getAppointments() {
+  const appointmentsCollection = collection(db, "appointments");
+  const q = query(appointmentsCollection, orderBy("start", "asc"));
+  const snapshot = await getDocs(q);
+  return snapshot.docs.map(doc => {
+    const data = doc.data();
+    return {
+      id: doc.id,
+      ...data,
+      start: data.start?.toDate() || new Date(),
+      end: data.end?.toDate() || new Date()
+    };
+  });
+}
+
+export async function addAppointment(appointmentData) {
+  const appointmentsCollection = collection(db, "appointments");
+  // Convert JS Dates to Firestore Timestamps implicitly or explicitly if needed, 
+  // but addDoc handles Date objects well usually. 
+  // We ensure clean data passing.
+  const docRef = await addDoc(appointmentsCollection, {
+    ...appointmentData,
+    createdAt: serverTimestamp()
+  });
+  return docRef.id;
+}
+
+// --- PRODUCTS CMS ---
+
+export async function addProduct(productData) {
+  const productsCollection = collection(db, "products");
+  const docRef = await addDoc(productsCollection, {
+    ...productData,
+    createdAt: serverTimestamp()
+  });
+  return docRef.id;
+}
+
+export async function updateProduct(id, productData) {
+  const docRef = doc(db, "products", id);
+  await updateDoc(docRef, {
+    ...productData,
+    updatedAt: serverTimestamp()
+  });
+}
+
+export async function deleteProduct(id) {
+  const docRef = doc(db, "products", id);
+  await deleteDoc(docRef);
+}
+
+// --- STORAGE ---
+
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { storage } from "./firebase";
+
+export async function uploadProductImage(file) {
+  if (!file) return null;
+  const storageRef = ref(storage, `products/${Date.now()}_${file.name}`);
+  const snapshot = await uploadBytes(storageRef, file);
+  const downloadURL = await getDownloadURL(snapshot.ref);
+  return downloadURL;
 }

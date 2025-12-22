@@ -13,7 +13,7 @@ function Footer() {
           <h3>Contact</h3>
           <p>Téléphone : +972 55-278-3693</p>
           <p>Email : yankele13@gmail.com</p>
-          <p>Adresse : Aaron Eskoli 115,jerusalem</p>
+          <p>Adresse : Aaron Eshkoli 115, Jerusalem</p>
         </div>
         <div className={styles.column}>
           <h3>Liens Rapides</h3>

@@ -14,23 +14,7 @@ function HomePage() {
         </div>
       </section>
 
-      <section className={styles.features}>
-        <div className={styles.featureCard}>
-          <span className={styles.featureIcon}>🛡️</span>
-          <h3 className={styles.featureTitle}>Sécurité Maximale</h3>
-          <p>Nos portes blindées offrent une résistance certifiée contre les effractions, pour votre tranquillité d'esprit.</p>
-        </div>
-        <div className={styles.featureCard}>
-          <span className={styles.featureIcon}>✨</span>
-          <h3 className={styles.featureTitle}>Design Sur Mesure</h3>
-          <p>Chaque intérieur est unique. Nos designs s'adaptent à votre style, du classique au contemporain.</p>
-        </div>
-        <div className={styles.featureCard}>
-          <span className={styles.featureIcon}>🛠️</span>
-          <h3 className={styles.featureTitle}>Installation Expert</h3>
-          <p>Notre équipe qualifiée assure une pose parfaite et des finitions soignées pour un résultat impeccable.</p>
-        </div>
-      </section>
+
 
       <InstallationsSlider />
       
