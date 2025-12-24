@@ -1,0 +1,166 @@
+import { useState, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { productsService } from '../../services/products.service';
+import { Save, X, Upload, Image as ImageIcon } from 'lucide-react';
+import toast from 'react-hot-toast';
+
+export default function ProductForm({ product, onClose, onSuccess }) {
+  const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm({
+    defaultValues: {
+      name: '',
+      category: 'Portes Intérieures',
+      price: 0,
+      description: '',
+      ...product // Merge existing product data if editing
+    }
+  });
+
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState(product?.image || null);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [saving, setSaving] = useState(false);
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImageFile(file);
+      setImagePreview(URL.createObjectURL(file));
+    }
+  };
+
+  const onSubmit = async (data) => {
+    setSaving(true);
+    try {
+      let imageUrl = product?.image || '';
+
+      if (imageFile) {
+        imageUrl = await productsService.uploadImage(imageFile, (progress) => {
+          setUploadProgress(progress);
+        });
+      }
+
+      const finalData = {
+        ...data,
+        price: Number(data.price),
+        image: imageUrl
+      };
+
+      if (product?.id) {
+        await productsService.update(product.id, finalData);
+        toast.success("Produit mis à jour");
+      } else {
+        await productsService.create(finalData);
+        toast.success("Produit créé");
+      }
+
+      onSuccess();
+    } catch (error) {
+      console.error(error);
+      toast.error("Erreur sauvegarde");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
+      <div className="bg-zinc-900 border border-zinc-800 rounded-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto flex flex-col">
+        {/* Header */}
+        <div className="p-6 border-b border-zinc-800 flex justify-between items-center bg-zinc-950 sticky top-0 z-10">
+          <h2 className="text-xl font-bold font-heading text-white">
+            {product ? 'Modifier Produit' : 'Nouveau Produit'}
+          </h2>
+          <button onClick={onClose} className="text-gray-400 hover:text-white"><X size={24} /></button>
+        </div>
+
+        <form onSubmit={handleSubmit(onSubmit)} className="p-6 space-y-6">
+          {/* Image Upload */}
+          <div className="flex justify-center">
+             <div className="relative group w-32 h-32 rounded-xl overflow-hidden border-2 border-dashed border-zinc-700 hover:border-[#d4af37] bg-zinc-800 transition cursor-pointer">
+                {imagePreview ? (
+                    <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
+                ) : (
+                    <div className="w-full h-full flex flex-col items-center justify-center text-gray-500">
+                        <ImageIcon size={24} />
+                        <span className="text-xs mt-2">Image</span>
+                    </div>
+                )}
+                
+                <input 
+                    type="file" 
+                    accept="image/*" 
+                    onChange={handleImageChange}
+                    className="absolute inset-0 opacity-0 cursor-pointer"
+                />
+
+                {/* Overlay on hover */}
+                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white transition">
+                    <Upload size={20} />
+                </div>
+             </div>
+          </div>
+          {/* Progress Bar */}
+          {uploadProgress > 0 && uploadProgress < 100 && (
+             <div className="w-full bg-zinc-800 rounded-full h-2">
+                <div className="bg-[#d4af37] h-2 rounded-full transition-all" style={{ width: `${uploadProgress}%` }}></div>
+             </div>
+          )}
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <label className="block text-sm font-medium text-gray-400 mb-2">Nom du Produit</label>
+                <input 
+                  {...register("name", { required: true })}
+                  className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-3 text-white focus:border-[#d4af37] outline-none"
+                  placeholder="Porte WPC..."
+                />
+            </div>
+            <div>
+                <label className="block text-sm font-medium text-gray-400 mb-2">Catégorie</label>
+                <select 
+                   {...register("category")}
+                   className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-3 text-white focus:border-[#d4af37] outline-none"
+                >
+                    <option value="Portes Intérieures">Portes Intérieures</option>
+                    <option value="Portes Blindées">Portes Blindées</option>
+                    <option value="Poignées">Poignées</option>
+                    <option value="Accessoires">Accessoires</option>
+                </select>
+            </div>
+          </div>
+
+          <div>
+             <label className="block text-sm font-medium text-gray-400 mb-2">Prix de base (NIS)</label>
+             <input 
+                type="number"
+                {...register("price", { required: true, min: 0 })}
+                className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-3 text-white focus:border-[#d4af37] outline-none font-mono"
+             />
+          </div>
+
+          <div>
+             <label className="block text-sm font-medium text-gray-400 mb-2">Description</label>
+             <textarea 
+                {...register("description")}
+                rows={4}
+                className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-3 text-white focus:border-[#d4af37] outline-none resize-none"
+                placeholder="Détails techniques..."
+             />
+          </div>
+
+          <div className="flex justify-end gap-3 pt-4 border-t border-zinc-800">
+             <button type="button" onClick={onClose} className="px-6 py-3 rounded-lg text-gray-400 hover:text-white hover:bg-zinc-800 transition">Annuler</button>
+             <button 
+                type="submit" 
+                disabled={saving}
+                className="px-6 py-3 bg-[#d4af37] hover:bg-yellow-500 text-black font-bold rounded-lg transition flex items-center gap-2 disabled:opacity-50"
+             >
+                <Save size={20} />
+                {saving ? 'Enregistrement...' : 'Enregistrer'}
+             </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}

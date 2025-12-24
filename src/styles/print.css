@@ -1,0 +1,53 @@
+/* PRINT STYLES */
+@media print {
+
+    /* Hide everything by default */
+    body * {
+        visibility: hidden;
+    }
+
+    /* Show only the printable content */
+    .printable-content,
+    .printable-content * {
+        visibility: visible;
+    }
+
+    .printable-content {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        background: white !important;
+        color: black !important;
+    }
+
+    /* Reset layout constraints */
+    #root {
+        display: block !important;
+        height: auto !important;
+        overflow: visible !important;
+    }
+
+    /* Hide admin UI elements definitively */
+    aside,
+    header,
+    nav,
+    button,
+    .no-print {
+        display: none !important;
+    }
+
+    /* Page break utilities */
+    .page-break {
+        page-break-after: always;
+    }
+}
+
+/* Screen styles */
+@media screen {
+    .hidden-on-screen {
+        display: none;
+    }
+}

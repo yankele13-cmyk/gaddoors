@@ -1,0 +1,328 @@
+{
+  "welcome": "Welcome to Gad Doors",
+  "home": {
+    "hero": {
+      "title": "The Elegance of Security",
+      "subtitle": "Discover our exclusive collection of interior doors. Designed to last, crafted to impress.",
+      "cta": "View Catalog"
+    },
+    "installations": {
+      "title": "Our Projects",
+      "explore": "Explore Gallery"
+    },
+    "company": {
+      "title": "Why Choose Us?",
+      "subtitle": "18 years of experience in importing and installing quality doors",
+      "experience": "<strong>18 years</strong> of expertise in importing and installing superior quality doors",
+      "cards": {
+        "guarantee": {
+          "title": "Solid Warranties",
+          "list": [
+            "1 year warranty on mechanisms",
+            "7 years warranty against water and termites"
+          ]
+        },
+        "process": {
+          "title": "Our Process",
+          "list": [
+            "Professional visit for measurements",
+            "Personalized advice on doors and colors",
+            "Quote provided on the spot",
+            "Delivery, dismantling, and installation included"
+          ],
+          "note": "* Delivery price increases from 3rd floor up"
+        },
+        "specialties": {
+          "title": "Our Specialties",
+          "list": [
+            "MAMAD doors (with or without frame)",
+            "Doors imported from China and Italy",
+            "Rigorous quality control"
+          ]
+        },
+        "locks": {
+          "title": "Lock Types",
+          "list": [
+            "Key locks",
+            "Butterfly locks",
+            "Security cylinders",
+            "Magnetic locks",
+            "Peephole for WC or bathroom"
+          ]
+        }
+      }
+    }
+  },
+  "footer": {
+    "about": "Excellence in carpentry for your interior. Design, security, and custom-made.",
+    "contact": {
+      "title": "Contact",
+      "phone": "Phone",
+      "email": "Email",
+      "address": "Address"
+    },
+    "links": {
+      "title": "Quick Links",
+      "catalogue": "Catalogue",
+      "realisations": "Portfolio",
+      "contact": "Contact"
+    },
+    "rights": "© 2025 Gad Doors. All rights reserved."
+  },
+  "catalog": {
+    "title": "Our Collection",
+    "loading": "Loading collection...",
+    "error": "Unable to load products.",
+    "filters": {
+      "all": "View All",
+      "doors": "Doors",
+      "handles": "Design Handles"
+    }
+  },
+  "installations": {
+    "title": "OUR PROJECTS",
+    "loading": "Loading projects...",
+    "error": "Unable to load projects."
+  },
+  "product": {
+    "loading": "Loading product...",
+    "error": "Error loading product.",
+    "notFound": "Product not found.",
+    "back": "← Back to catalog",
+    "defaultDescription": "An exceptional door combining maximum security and contemporary design. Customizable finishes on request.",
+    "quote": "Request a Quote",
+    "reference": "Model Reference :"
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "A question about our security doors or exclusive Italian models? Our expert team is at your disposal.",
+    "form": {
+      "title": "Send us a message",
+      "success": "Message sent!",
+      "retry": "Send another message",
+      "name": "Full Name",
+      "namePlaceholder": "Your Name",
+      "email": "Email",
+      "phone": "Phone",
+      "message": "Project Details",
+      "messagePlaceholder": "Describe your needs (door type, dimensions, style...)",
+      "submit": "Send Request",
+      "sending": "Sending..."
+    },
+    "info": {
+      "title": "Contact Info",
+      "phone": "Phone",
+      "email": "Email",
+      "showroom": "Showroom",
+      "appointment": "By appointment only"
+    }
+  },
+  "nav": {
+    "home": "Home",
+    "catalogue": "Catalogue",
+    "realisations": "Portfolio",
+    "contact": "Contact"
+  },
+  "admin": {
+    "title": "GAD COMMAND",
+    "version": "Stable v1.0.0",
+    "logout": "Logout",
+    "menu": {
+      "dashboard": "Dashboard",
+      "products": "Products",
+      "leads": "Leads",
+      "calendar": "Calendar",
+      "quotes": "Quotes",
+      "finance": "Finance"
+    },
+    "dashboard": "Dashboard",
+    "productsPage": {
+      "title": "Product Management",
+      "subtitle": "Manage your inventory of doors and accessories",
+      "buttons": {
+        "add": "New Product"
+      },
+      "searchPlaceholder": "Search...",
+      "table": {
+        "image": "Image",
+        "name": "Name",
+        "category": "Category",
+        "price": "Price",
+        "actions": "Actions",
+        "empty": "No products found.",
+        "loading": "Loading..."
+      },
+      "modal": {
+        "titleAdd": "Add Product",
+        "titleEdit": "Edit Product",
+        "labels": {
+          "name": "Product Name",
+          "category": "Category",
+          "price": "Price",
+          "image": "Product Image",
+          "current": "Current:",
+          "description": "Description"
+        },
+        "buttons": {
+          "create": "Create Product",
+          "update": "Update",
+          "uploading": "Uploading..."
+        }
+      },
+      "toasts": {
+        "deleteConfirm": "Are you sure you want to delete this product?",
+        "deleteSuccess": "Product deleted!",
+        "createSuccess": "Product created successfully!",
+        "updateSuccess": "Product updated!",
+        "errorFetch": "Error loading products."
+      }
+    },
+    "quotes": {
+      "title": "Quote Generator",
+      "subtitle": "Configure doors and generate offers.",
+      "clientInfo": "Client Info",
+      "history": "Quote History",
+      "docLanguage": "Document Language",
+      "toasts": {
+        "nameRequired": "Client name required",
+        "empty": "Quote is empty",
+        "success": "Quote saved successfully!"
+      },
+      "placeholders": {
+        "name": "Client Name",
+        "phone": "Phone",
+        "email": "Email",
+        "address": "Site Address"
+      },
+      "buttons": {
+        "configDoor": "Config Door",
+        "delivery": "Delivery",
+        "install": "Installation",
+        "crane": "Crane",
+        "save": "Save Quote"
+      },
+      "table": {
+        "desc": "Description & Specs",
+        "qty": "Qty",
+        "unitPrice": "Unit Price",
+        "total": "Total",
+        "actions": "Actions"
+      },
+      "quickActions": {
+        "delivery": {
+          "promptFloor": "Which floor? (0 = Ground)",
+          "promptElevator": "Is there an elevator to floor {{floor}}?",
+          "label": "Delivery (Floor {{floor}})",
+          "noElevator": "[NO ELEVATOR +{{extra}}NIS]"
+        },
+        "install": "Professional Installation",
+        "crane": "Crane Service (Manof)",
+        "added": "Added: {{name}}"
+      },
+      "doorBuilder": {
+        "title": "Door Configurator",
+        "selectModel": "1. DOOR MODEL",
+        "choose": "Choose a model...",
+        "sections": {
+          "tech": "2. TECHNICAL CONFIG",
+          "hardware": "3. HARDWARE & OPTIONS",
+          "pricing": "4. PRICING"
+        },
+        "labels": {
+          "range": "Series (Finish)",
+          "structure": "Wall Structure",
+          "lock": "Lock Type",
+          "stopper": "Door Stopper",
+          "peephole": "Peephole",
+          "qty": "Quantity",
+          "basePrice": "Base Price: "
+        },
+        "options": {
+          "wpcStd": "WPC Standard (Included)",
+          "wpcPaint": "WPC Painted (+Double)",
+          "formica": "Formica",
+          "wallStd": "Standard (Block/Concrete)",
+          "mamadFrame": "Mamad (On Frame)",
+          "mamadNoFrame": "Mamad (No Frame)",
+          "mechanical": "Mechanical (Standard)",
+          "magnetic": "Magnetic (+150NIS)",
+          "butterfly": "Butterfly (+100NIS)"
+        },
+        "buttons": {
+          "cancel": "Cancel",
+          "submit": "Add Configuration"
+        }
+      },
+      "modal": {
+        "title": "Door Configurator"
+      }
+    },
+    "finance": {
+      "title": "New Invoice",
+      "sender": "Sender",
+      "billTo": "Bill To",
+      "items": "Line Items",
+      "history": "Invoice History",
+      "form": {
+        "senderName": "Company Name",
+        "invoiceNum": "Invoice #",
+        "date": "Date",
+        "clientName": "Name / Company",
+        "clientAddress": "Address",
+        "clientEmail": "Email",
+        "clientNamePlaceholder": "Client name...",
+        "taxRate": "VAT Rate (%)"
+      },
+      "buttons": {
+        "add": "Add Item",
+        "save": "Save Invoice",
+        "download": "Download PDF",
+        "view": "View"
+      },
+      "table": {
+        "desc": "Description",
+        "qty": "Qty",
+        "price": "Price",
+        "total": "Total",
+        "status": "Status",
+        "actions": "Action"
+      },
+      "historyTable": {
+        "invoiceNum": "Invoice #",
+        "date": "Date",
+        "client": "Client",
+        "amount": "Total (Inc. Tax)",
+        "status": "Status",
+        "action": "Action",
+        "loading": "Loading..."
+      },
+      "status": {
+        "paid": "Paid",
+        "pending": "Pending"
+      },
+      "toasts": {
+        "saved": "Invoice saved!",
+        "error": "Error saving invoice.",
+        "loaded": "Invoice loaded in preview (Read-only)"
+      }
+    },
+    "documents": {
+      "quoteTitle": "QUOTE",
+      "invoiceTitle": "INVOICE",
+      "billTo": "Bill To:",
+      "date": "Date:",
+      "number": "No.:",
+      "desc": "DESCRIPTION",
+      "qty": "QTY",
+      "price": "UNIT PRICE",
+      "total": "TOTAL",
+      "subtotal": "Subtotal",
+      "vat": "VAT",
+      "grandTotal": "TOTAL",
+      "validity": "* Valid for 30 days.",
+      "signature": "Signature",
+      "previewClose": "Close Preview",
+      "previewTitle": "Preview:"
+    }
+  }
+}

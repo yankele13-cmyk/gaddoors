@@ -152,33 +152,15 @@ export async function getProducts() {
 
   const productList = productsSnapshot.docs.map(doc => {
     const data = doc.data();
-    let name = data.name;
-
-    // Detection
-    const isHandle = name.toLowerCase().includes('handle') || 
-                     name.toLowerCase().includes('poignée') || 
-                     data.category === 'Poignées';
-                     
-    const isDoor = name.toLowerCase().includes('porte') || 
-                   name.toLowerCase().includes('door') || 
-                   data.category === 'Portes Intérieures' ||
-                   data.category === 'Portes Blindées';
-
-    if (isHandle) {
-      // On cycle sur les clés disponibles
-      name = HANDLE_KEYS[handleIndex % HANDLE_KEYS.length];
-      handleIndex++;
-    } else if (isDoor) {
-      name = DOOR_KEYS[doorIndex % DOOR_KEYS.length];
-      doorIndex++;
-    }
+    // We now trust the Name in Firestore (since we ran the scripts)
+    const name = data.name;
 
     return {
       ...data,
       id: doc.id, 
       originalName: data.name,
       name: name,
-      description: generateDescription(name)
+      description: generateDescription(name) || data.description || "Design Italien d'Exception"
     };
   });
   

@@ -5,21 +5,19 @@ import CompanyInfo from '../../components/features/CompanyInfo';
 
 function HomePage() {
   return (
-    <div className="container">
+    <>
       <section className={styles.hero}>
         <div className={styles.heroContent}>
-          <h1 className={styles.title}>L'Élégance de la Sécurité</h1>
+          <h1 className={styles.title}>L'Élégance de la Qualité</h1>
           <p className={styles.subtitle}>Découvrez notre collection exclusive de portes d'intérieur. Conçues pour durer, dessinées pour impressionner.</p>
           <Link to="/catalogue" className={styles.ctaButton}>Voir le Catalogue</Link>
         </div>
       </section>
 
-
-
       <InstallationsSlider />
       
       <CompanyInfo />
-    </div>
+    </>
   );
 }
 

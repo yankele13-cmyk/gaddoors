@@ -33,7 +33,10 @@ function CatalogPage() {
       str.toLowerCase().includes('handle') || 
       str.toLowerCase().includes('poignée') ||
       str.toLowerCase().includes('poigné') ||
-      str.toLowerCase().includes('modello') // New check since we renamed them
+      str.toLowerCase().includes('poignée') ||
+      str.toLowerCase().includes('poigné') ||
+      str.toLowerCase().includes('modello') ||
+      str.toLowerCase().includes('maniglia') // Fix: Allow renormalized handles to show
     );
 
     // Filter to only show doors and handles (no other accessories)

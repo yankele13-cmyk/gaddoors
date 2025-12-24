@@ -1,0 +1,126 @@
+{
+  "welcome": "Bienvenue chez Gad Doors",
+  "home": {
+    "hero": {
+      "title": "L'Élégance de la Sécurité",
+      "subtitle": "Découvrez notre collection exclusive de portes d'intérieur. Conçues pour durer, dessinées pour impressionner.",
+      "cta": "Voir le Catalogue"
+    },
+    "installations": {
+      "title": "Nos Réalisations",
+      "explore": "Explorer la Galerie"
+    },
+    "company": {
+      "title": "Pourquoi Nous Choisir ?",
+      "subtitle": "18 ans d'expérience dans l'importation et la pose de portes de qualité",
+      "experience": "<strong>18 ans</strong> d'expertise dans l'importation et la pose de portes de qualité supérieure",
+      "cards": {
+        "guarantee": {
+          "title": "Garanties Solides",
+          "list": [
+            "1 an de garantie sur les mécanismes",
+            "7 ans de garantie contre l'eau et les termites"
+          ]
+        },
+        "process": {
+          "title": "Notre Processus",
+          "list": [
+            "Visite d'un professionnel pour prendre les mesures",
+            "Conseils personnalisés sur les portes et couleurs",
+            "Devis établi sur place",
+            "Livraison, démontage et pose inclus"
+          ],
+          "note": "* À partir de 3 étages, le prix de livraison augmente"
+        },
+        "specialties": {
+          "title": "Nos Spécialités",
+          "list": [
+            "Portes de MAMAD (avec ou sans monture)",
+            "Portes importées de Chine et d'Italie",
+            "Contrôle qualité rigoureux"
+          ]
+        },
+        "locks": {
+          "title": "Types de Serrures",
+          "list": [
+            "Serrures à clés",
+            "Serrures papillon",
+            "Cylindres de sécurité",
+            "Serrures magnétiques",
+            "Œilleton pour WC ou salle de bain"
+          ]
+        }
+      }
+    }
+  },
+  "footer": {
+    "about": "L'excellence de la menuiserie pour votre intérieur. Design, sécurité et sur-mesure.",
+    "contact": {
+      "title": "Contact",
+      "phone": "Téléphone",
+      "email": "Email",
+      "address": "Adresse"
+    },
+    "links": {
+      "title": "Liens Rapides",
+      "catalogue": "Catalogue",
+      "realisations": "Réalisations",
+      "contact": "Contact"
+    },
+    "rights": "© 2025 Gad Doors. Tous droits réservés."
+  },
+  "catalog": {
+    "title": "Notre Collection",
+    "loading": "Chargement de la collection...",
+    "error": "Impossible de charger les produits.",
+    "filters": {
+      "all": "Tout Voir",
+      "doors": "Portes",
+      "handles": "Poignées Design"
+    }
+  },
+  "installations": {
+    "title": "NOS RÉALISATIONS",
+    "loading": "Chargement des réalisations...",
+    "error": "Impossible de charger les réalisations."
+  },
+  "product": {
+    "loading": "Chargement du produit...",
+    "error": "Erreur lors du chargement du produit.",
+    "notFound": "Produit non trouvé.",
+    "back": "← Retour au catalogue",
+    "defaultDescription": "Une porte d'exception alliant sécurité maximale et design contemporain. Finitions personnalisables sur demande.",
+    "quote": "Demander un Devis",
+    "reference": "Référence Modèle :"
+  },
+  "contact": {
+    "title": "Contactez-nous",
+    "subtitle": "Une question sur nos portes blindées ou nos modèles italiens exclusifs ? Notre équipe d'experts est à votre disposition.",
+    "form": {
+      "title": "Envoyez-nous un message",
+      "success": "Message envoyé !",
+      "retry": "Envoyer un autre message",
+      "name": "Nom complet",
+      "namePlaceholder": "Votre Nom",
+      "email": "Email",
+      "phone": "Téléphone",
+      "message": "Message de votre projet",
+      "messagePlaceholder": "Décrivez votre besoin (type de porte, dimensions, style...)",
+      "submit": "Envoyer ma demande",
+      "sending": "Envoi..."
+    },
+    "info": {
+      "title": "Nos Coordonnées",
+      "phone": "Téléphone",
+      "email": "Email",
+      "showroom": "Showroom",
+      "appointment": "Sur rendez-vous uniquement"
+    }
+  },
+  "nav": {
+    "home": "Accueil",
+    "catalogue": "Catalogue",
+    "realisations": "Réalisations",
+    "contact": "Contact"
+  }
+}
