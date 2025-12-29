@@ -1,60 +1,7 @@
 {
-  "welcome": "Welcome to Gad Doors",
-  "home": {
-    "hero": {
-      "title": "The Elegance of Security",
-      "subtitle": "Discover our exclusive collection of interior doors. Designed to last, crafted to impress.",
-      "cta": "View Catalog"
-    },
-    "installations": {
-      "title": "Our Projects",
-      "explore": "Explore Gallery"
-    },
-    "company": {
-      "title": "Why Choose Us?",
-      "subtitle": "18 years of experience in importing and installing quality doors",
-      "experience": "<strong>18 years</strong> of expertise in importing and installing superior quality doors",
-      "cards": {
-        "guarantee": {
-          "title": "Solid Warranties",
-          "list": [
-            "1 year warranty on mechanisms",
-            "7 years warranty against water and termites"
-          ]
-        },
-        "process": {
-          "title": "Our Process",
-          "list": [
-            "Professional visit for measurements",
-            "Personalized advice on doors and colors",
-            "Quote provided on the spot",
-            "Delivery, dismantling, and installation included"
-          ],
-          "note": "* Delivery price increases from 3rd floor up"
-        },
-        "specialties": {
-          "title": "Our Specialties",
-          "list": [
-            "MAMAD doors (with or without frame)",
-            "Doors imported from China and Italy",
-            "Rigorous quality control"
-          ]
-        },
-        "locks": {
-          "title": "Lock Types",
-          "list": [
-            "Key locks",
-            "Butterfly locks",
-            "Security cylinders",
-            "Magnetic locks",
-            "Peephole for WC or bathroom"
-          ]
-        }
-      }
-    }
-  },
+  "welcome": "Welcome to GADDOORS",
   "footer": {
-    "about": "Excellence in carpentry for your interior. Design, security, and custom-made.",
+    "about": "Carpentry excellence for your interior. Design, security, and custom-made solutions.",
     "contact": {
       "title": "Contact",
       "phone": "Phone",
@@ -63,11 +10,11 @@
     },
     "links": {
       "title": "Quick Links",
-      "catalogue": "Catalogue",
-      "realisations": "Portfolio",
+      "catalogue": "Catalog",
+      "realisations": "Projects",
       "contact": "Contact"
     },
-    "rights": "© 2025 Gad Doors. All rights reserved."
+    "rights": "© 2025 GADDOORS. All rights reserved."
   },
   "catalog": {
     "title": "Our Collection",
@@ -76,7 +23,7 @@
     "filters": {
       "all": "View All",
       "doors": "Doors",
-      "handles": "Design Handles"
+      "handles": "Designer Handles"
     }
   },
   "installations": {
@@ -89,13 +36,13 @@
     "error": "Error loading product.",
     "notFound": "Product not found.",
     "back": "← Back to catalog",
-    "defaultDescription": "An exceptional door combining maximum security and contemporary design. Customizable finishes on request.",
+    "defaultDescription": "An exceptional door combining maximum security and contemporary design. Custom finishes available upon request.",
     "quote": "Request a Quote",
-    "reference": "Model Reference :"
+    "reference": "Model Reference:"
   },
   "contact": {
     "title": "Contact Us",
-    "subtitle": "A question about our security doors or exclusive Italian models? Our expert team is at your disposal.",
+    "subtitle": "Have a question about our armored doors or exclusive Italian models? Our expert team is at your disposal.",
     "form": {
       "title": "Send us a message",
       "success": "Message sent!",
@@ -114,215 +61,116 @@
       "phone": "Phone",
       "email": "Email",
       "showroom": "Showroom",
-      "appointment": "By appointment only"
+      "appointment": "By appointment only",
+      "hours": "Mon-Fri, 9am-6pm"
     }
   },
   "nav": {
     "home": "Home",
-    "catalogue": "Catalogue",
-    "realisations": "Portfolio",
+    "catalogue": "Catalog",
+    "realisations": "Projects",
     "contact": "Contact"
   },
+  "productDescriptions": {
+    "Modello Roma": "Timeless design inspired by the Colosseum. Aged brass finish for a noble and historic look. Ideal for classic interiors.",
+    "Modello Venezia": "Flowing lines reminiscent of Venetian canals. Shiny chrome for a touch of brilliance and luxury in a modern space.",
+    "Modello Firenze": "Renaissance art within reach. Sculpted bronze finish, offering perfect ergonomics and an artistic style.",
+    "Modello Verona": "Romantic and robust. Matte black zinc alloy, perfect for contrasting with light doors. Discreet charm.",
+    "Modello Siena": "Sienna earth and warm colors. Brushed copper finish, bringing unique warmth to your decoration.",
+    "Modello Pisa": "Architectural audacity. Slightly inclined design for an original and comfortable grip. Satin nickel finish.",
+    "Modello Lucca": "Protected and solid. Massive and reassuring design, brushed steel finish for fail-safe durability.",
+    "Modello San Gimignano": "The height of style. Long and thin handle, ideal for tall modern doors. Titanium finish.",
+    "Modello Positano": "The softness of the Amalfi coast. Rounded shapes and white ceramic finish for a Mediterranean touch.",
+    "Modello Amalfi": "Coastal luxury. Discreet inlays and pale gold finish. Perfect for a bright and sophisticated entrance.",
+    "Modello Sorrento": "Lemon and sun. Bright golden brass finish, to illuminate a dark door with striking contrast.",
+    "Modello Capri": "Island elegance. Ultra-thin minimalist design, mirror chrome finish. Absolute purity.",
+    "Modello Portofino": "Exclusive chic. Stitched leather on metal finish, for a luxurious feel and incomparable aesthetic.",
+    "Modello Bellagio": " The pearl of the lake. Fluid aquatic lines, polished black nickel finish. A jewel for your door.",
+    "Modello Como": "Serenity and depth. Rigorous square design, textured anthracite gray finish. For contemporary interiors.",
+    "Porte Milano": "The vanguard of design. Armored door with black tempered glass exterior panel and steel inserts. A2P BP3 security.",
+    "Porte Torino": "Industrial and chic. Polished concrete look finish with metallic details. 45dB sound insulation for absolute quiet.",
+    "Porte Bologna": "Learned tradition. Solid stained oak wood, deep moldings. 7-point lock for reinforced traditional security.",
+    "Porte Genova": "Opening to the world. Door with secured porthole and marine wrought iron grille. Ideal for seaside homes.",
+    "Porte Napoli": "Vibrant and solid. Deep red lacquered panel, structure reinforced against violent break-ins. An assertive character.",
+    "Porte Palermo": "Solar and rich. Light wood finish with fine marquetry. An entrance door that tells a story. A+ thermal insulation.",
+    "Porte Bari": "Simplicty of Puglia. Pure matte white, engraved horizontal lines. Perfect for modern minimalist architectures.",
+    "Porte Catania": "The strength of the volcano. Dark lava stone finish (composite). Extreme resistance to weather and impacts.",
+    "Porte Trieste": "Crossroads of cultures. Revisited Austro-Hungarian design, dark wood and brass finish. Diplomatic elegance.",
+    "Porte Padova": "Structural intelligence. Steel core, maintenance-free composite wood cladding. Technology at the service of daily life.",
+    "Porte Parma": "Classic refinement. Soft cream color, centered handle. Discreet elegance for beautiful mansions.",
+    "Porte Modena": "Speed and line. Inspired by supercars, red lacquer or carbon black finish. Concealed hinges and biometric lock.",
+    "Porte Brescia": "Pure steel. Fully metallic door with raw varnished finish. For lofts and industrial spaces.",
+    "Porte Perugia": "Green heart. Eco-designed door with certified wood and natural cork insulation. High thermal performance.",
+    "Porte Livorno": "Port-like and robust. Epoxy paint resistant to salt and humidity. The ideal door for exposed areas."
+  },
   "admin": {
-    "title": "GAD COMMAND",
-    "version": "Stable v1.0.0",
-    "logout": "Logout",
-    "menu": {
-      "dashboard": "Dashboard",
-      "products": "Products",
-      "leads": "Leads",
-      "calendar": "Calendar",
-      "quotes": "Quotes",
-      "finance": "Finance"
+    "title": {
+      "new": "New Product",
+      "edit": "Edit Product"
     },
-    "dashboard": "Dashboard",
-    "productsPage": {
-      "title": "Product Management",
-      "subtitle": "Manage your inventory of doors and accessories",
-      "buttons": {
-        "add": "New Product"
-      },
-      "searchPlaceholder": "Search...",
-      "table": {
-        "image": "Image",
-        "name": "Name",
-        "category": "Category",
-        "price": "Price",
-        "actions": "Actions",
-        "empty": "No products found.",
-        "loading": "Loading..."
-      },
-      "modal": {
-        "titleAdd": "Add Product",
-        "titleEdit": "Edit Product",
-        "labels": {
-          "name": "Product Name",
-          "category": "Category",
-          "price": "Price",
-          "image": "Product Image",
-          "current": "Current:",
-          "description": "Description"
-        },
-        "buttons": {
-          "create": "Create Product",
-          "update": "Update",
-          "uploading": "Uploading..."
-        }
-      },
-      "toasts": {
-        "deleteConfirm": "Are you sure you want to delete this product?",
-        "deleteSuccess": "Product deleted!",
-        "createSuccess": "Product created successfully!",
-        "updateSuccess": "Product updated!",
-        "errorFetch": "Error loading products."
-      }
-    },
-    "quotes": {
-      "title": "Quote Generator",
-      "subtitle": "Configure doors and generate offers.",
-      "clientInfo": "Client Info",
-      "history": "Quote History",
-      "docLanguage": "Document Language",
-      "toasts": {
-        "nameRequired": "Client name required",
-        "empty": "Quote is empty",
-        "success": "Quote saved successfully!"
-      },
-      "placeholders": {
-        "name": "Client Name",
-        "phone": "Phone",
-        "email": "Email",
-        "address": "Site Address"
-      },
-      "buttons": {
-        "configDoor": "Config Door",
-        "delivery": "Delivery",
-        "install": "Installation",
-        "crane": "Crane",
-        "save": "Save Quote"
-      },
-      "table": {
-        "desc": "Description & Specs",
-        "qty": "Qty",
-        "unitPrice": "Unit Price",
-        "total": "Total",
-        "actions": "Actions"
-      },
-      "quickActions": {
-        "delivery": {
-          "promptFloor": "Which floor? (0 = Ground)",
-          "promptElevator": "Is there an elevator to floor {{floor}}?",
-          "label": "Delivery (Floor {{floor}})",
-          "noElevator": "[NO ELEVATOR +{{extra}}NIS]"
-        },
-        "install": "Professional Installation",
-        "crane": "Crane Service (Manof)",
-        "added": "Added: {{name}}"
-      },
-      "doorBuilder": {
-        "title": "Door Configurator",
-        "selectModel": "1. DOOR MODEL",
-        "choose": "Choose a model...",
-        "sections": {
-          "tech": "2. TECHNICAL CONFIG",
-          "hardware": "3. HARDWARE & OPTIONS",
-          "pricing": "4. PRICING"
-        },
-        "labels": {
-          "range": "Series (Finish)",
-          "structure": "Wall Structure",
-          "lock": "Lock Type",
-          "stopper": "Door Stopper",
-          "peephole": "Peephole",
-          "qty": "Quantity",
-          "basePrice": "Base Price: "
-        },
-        "options": {
-          "wpcStd": "WPC Standard (Included)",
-          "wpcPaint": "WPC Painted (+Double)",
-          "formica": "Formica",
-          "wallStd": "Standard (Block/Concrete)",
-          "mamadFrame": "Mamad (On Frame)",
-          "mamadNoFrame": "Mamad (No Frame)",
-          "mechanical": "Mechanical (Standard)",
-          "magnetic": "Magnetic (+150NIS)",
-          "butterfly": "Butterfly (+100NIS)"
-        },
-        "buttons": {
-          "cancel": "Cancel",
-          "submit": "Add Configuration"
-        }
-      },
-      "modal": {
-        "title": "Door Configurator"
-      }
-    },
-    "finance": {
-      "title": "New Invoice",
-      "sender": "Sender",
-      "billTo": "Bill To",
-      "items": "Line Items",
-      "history": "Invoice History",
-      "form": {
-        "senderName": "Company Name",
-        "invoiceNum": "Invoice #",
-        "date": "Date",
-        "clientName": "Name / Company",
-        "clientAddress": "Address",
-        "clientEmail": "Email",
-        "clientNamePlaceholder": "Client name...",
-        "taxRate": "VAT Rate (%)"
-      },
-      "buttons": {
-        "add": "Add Item",
-        "save": "Save Invoice",
-        "download": "Download PDF",
-        "view": "View"
-      },
-      "table": {
-        "desc": "Description",
-        "qty": "Qty",
-        "price": "Price",
-        "total": "Total",
-        "status": "Status",
-        "actions": "Action"
-      },
-      "historyTable": {
-        "invoiceNum": "Invoice #",
-        "date": "Date",
-        "client": "Client",
-        "amount": "Total (Inc. Tax)",
-        "status": "Status",
-        "action": "Action",
-        "loading": "Loading..."
-      },
-      "status": {
-        "paid": "Paid",
-        "pending": "Pending"
-      },
-      "toasts": {
-        "saved": "Invoice saved!",
-        "error": "Error saving invoice.",
-        "loaded": "Invoice loaded in preview (Read-only)"
-      }
-    },
-    "documents": {
-      "quoteTitle": "QUOTE",
-      "invoiceTitle": "INVOICE",
-      "billTo": "Bill To:",
-      "date": "Date:",
-      "number": "No.:",
-      "desc": "DESCRIPTION",
-      "qty": "QTY",
-      "price": "UNIT PRICE",
-      "total": "TOTAL",
-      "subtotal": "Subtotal",
-      "vat": "VAT",
-      "grandTotal": "TOTAL",
-      "validity": "* Valid for 30 days.",
-      "signature": "Signature",
-      "previewClose": "Close Preview",
-      "previewTitle": "Preview:"
+    "form": {
+      "image": "Product Image",
+      "upload": "Click to upload",
+      "name": "Product Name *",
+      "namePlaceholder": "Ex: Galaxy Door",
+      "nameRequired": "Name is required",
+      "category": "Category",
+      "price": "Price (₪) *",
+      "stock": "Stock",
+      "description": "Description",
+      "save": "Save Changes",
+      "saving": "Saving..."
     }
-  }
+  },
+  "home": {
+    "hero": {
+      "title": "The Elegance of Quality",
+      "subtitle": "Discover our exclusive collection of interior doors. Designed to last, styled to impress.",
+      "cta": "View Catalog"
+    },
+    "installations": {
+      "title": "Our Projects",
+      "explorer": "Explore Gallery",
+      "error": "Unable to load projects."
+    },
+    "company": {
+      "title": "Why Choose Us?",
+      "subtitle": "18 years of experience in importing and installing quality doors",
+      "guarantee": {
+        "title": "Solid Warranties",
+        "mech": "1-year warranty on mechanisms",
+        "water": "7-year warranty against water and termites"
+      },
+      "process": {
+        "title": "Our Process",
+        "visit": "Professional visit for measurements",
+        "advice": "Personalized advice on doors and colors",
+        "quote": "On-site quotation",
+        "delivery": "Delivery, disassembly, and installation included",
+        "note": "* For 3rd floor and above, delivery price increases"
+      },
+      "specialties": {
+        "title": "Our Specialties",
+        "mamad": "MAMAD doors (with or without frame)",
+        "import": "Imported doors from China and Italy",
+        "quality": "Rigorous quality control"
+      },
+      "locks": {
+        "title": "Types of Locks",
+        "key": "Key locks",
+        "butterfly": "Butterfly locks",
+        "cyl": "Security cylinders",
+        "mag": "Magnetic locks",
+        "wc": "Eyelet for WC or bathroom"
+      },
+      "experienceLabel": "18 years",
+      "experienceText": "of expertise in importing and installing high-standard doors"
+    }
+  },
+  "Porte Intérieure": "Interior Door",
+  "Porte Blindée": "Armored Door",
+  "Porte Extérieure": "Exterior Door",
+  "Poignée": "Handle",
+  "Serrure": "Lock",
+  "Accessoire": "Accessory"
 }

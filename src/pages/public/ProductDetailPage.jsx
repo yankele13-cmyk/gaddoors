@@ -1,11 +1,13 @@
 
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { getProductById } from '../../services/db';
 // Nous créerons ce fichier de style juste après
 import styles from './ProductDetailPage.module.css';
 
 export default function ProductDetailPage() {
+  const { t } = useTranslation();
   const { id } = useParams(); // Récupère l'ID depuis l'URL
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);
@@ -34,16 +36,16 @@ export default function ProductDetailPage() {
   }, [id]); // Se redéclenche si l'ID dans l'URL change
 
   if (loading) {
-    return <p>Chargement du produit...</p>;
+    return <p>{t('product.loading')}</p>;
   }
 
   if (error) {
-    return <p style={{ color: 'red' }}>{error}</p>;
+    return <p style={{ color: 'red' }}>{t('product.error')}</p>;
   }
   
   if (!product) {
     // Ce cas est techniquement couvert par l'erreur, mais c'est une bonne pratique
-    return <p>Produit non trouvé.</p>;
+    return <p>{t('product.notFound')}</p>;
   }
 
   return (
@@ -56,22 +58,22 @@ export default function ProductDetailPage() {
         />
       </div>
       <div className={styles.details}>
-        <Link to="/catalogue" className={styles.backLink}>← Retour au catalogue</Link>
+        <Link to="/catalogue" className={styles.backLink}>{t('product.back')}</Link>
         <span className={styles.category}>{product.category}</span>
         <h1 className={styles.title}>{product.name}</h1>
-        <p className={styles.description}>{product.description || "Une porte d'exception alliant sécurité maximale et design contemporain. Finitions personnalisables sur demande."}</p>
+        <p className={styles.description}>{product.description || t('product.defaultDescription')}</p>
         
         <div className={styles.actions}>
            <button 
              onClick={() => navigate('/contact')}
              className={styles.quoteButton}
            >
-             Demander un Devis
+             {t('product.quote')}
            </button>
         </div>
 
         <div className={styles.meta}>
-          <p>Référence Modèle : {product.id}</p>
+          <p>{t('product.reference')} {product.id}</p>
         </div>
       </div>
     </div>

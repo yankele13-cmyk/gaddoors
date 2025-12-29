@@ -1,9 +1,12 @@
 // src/components/layout/Header.jsx
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+import LanguageSelector from '../common/LanguageSelector';
 import styles from './Header.module.css';
 
 function Header() {
+  const { t } = useTranslation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -31,10 +34,11 @@ function Header() {
 
       <nav className={`${styles.nav} ${isMenuOpen ? styles.menuOpen : ''}`}>
         <ul className={styles.navList}>
-          <li><Link to="/" className={styles.navLink} onClick={closeMenu}>Accueil</Link></li>
-          <li><Link to="/catalogue" className={styles.navLink} onClick={closeMenu}>Catalogue</Link></li>
-          <li><Link to="/realisations" className={styles.navLink} onClick={closeMenu}>Nos Réalisations</Link></li>
-          <li><Link to="/contact" className={styles.navLink} onClick={closeMenu}>Contact</Link></li>
+          <li><Link to="/" className={styles.navLink} onClick={closeMenu}>{t('nav.home')}</Link></li>
+          <li><Link to="/catalogue" className={styles.navLink} onClick={closeMenu}>{t('nav.catalogue')}</Link></li>
+          <li><Link to="/realisations" className={styles.navLink} onClick={closeMenu}>{t('nav.realisations')}</Link></li>
+          <li><Link to="/contact" className={styles.navLink} onClick={closeMenu}>{t('nav.contact')}</Link></li>
+          <li><div className="flex items-center justify-center mt-4 md:mt-0 md:ml-4"><LanguageSelector variant="minimal" /></div></li>
         </ul>
       </nav>
     </header>

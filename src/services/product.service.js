@@ -106,10 +106,23 @@ export const ProductService = {
       const snapshot = await getDocs(q);
       
       if (!snapshot.empty) {
-          // If excluding (Update mode), check if the found doc is NOT the current one
-          const conflict = snapshot.docs.find(d => d.id !== excludeId);
+          // If excluding (Update mode), check if the found doc is NOT the current one (Safe comparison with trim)
+          const conflict = snapshot.docs.find(d => {
+              const dId = d.id;
+              const exId = excludeId || '';
+              
+              // DEBUG LOGS
+              console.log(`[checkNameUnique] Checking: Name="${name}"`);
+              console.log(`[checkNameUnique] Found Doc ID: "${dId}"`);
+              console.log(`[checkNameUnique] Exclude ID: "${exId}"`);
+              console.log(`[checkNameUnique] Match? ${dId.trim() === exId.trim()}`);
+              
+              return dId.trim() !== exId.trim();
+          });
+          
           if (conflict) {
-              throw new Error(`Un produit portant le nom "${name}" existe déjà.`);
+              console.error(`[checkNameUnique] Conflict Found! ID: ${conflict.id}`);
+              throw new Error(`Le nom "${name}" est déjà utilisé par un autre produit (ID: ${conflict.id}). Veuillez choisir un autre nom ou modifier l'autre produit.`);
           }
       }
       return true;

@@ -1,166 +1,74 @@
 // src/services/db.js
-import { collection, getDocs, doc, getDoc, addDoc, updateDoc, deleteDoc, serverTimestamp } from "firebase/firestore";
-import { db } from "./firebase"; // Importe l'instance de la base de données
+import { 
+  collection, 
+  getDocs, 
+  doc, 
+  getDoc, 
+  addDoc, 
+  updateDoc, 
+  deleteDoc, 
+  serverTimestamp, 
+  query, 
+  where, 
+  orderBy, 
+  limit, 
+  getCountFromServer 
+} from "firebase/firestore";
+import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
+import { db, storage } from "./firebase";
+import i18n from '../i18n';
+
+// Helper to generate localized description
+export function generateDescription(name) {
+  const key = `productDescriptions.${name}`;
+  if (i18n.exists(key)) {
+    return i18n.t(key);
+  }
+  return i18n.t('product.defaultDescription'); 
+}
+
+const HANDLE_KEYS = ["Modello Roma", "Modello Venezia", "Modello Firenze", "Modello Verona", "Modello Siena", "Modello Pisa", "Modello Lucca", "Modello San Gimignano", "Modello Positano", "Modello Amalfi", "Modello Sorrento", "Modello Capri", "Modello Portofino", "Modello Bellagio", "Modello Como"];
+const DOOR_KEYS = ["Porte Milano", "Porte Torino", "Porte Bologna", "Porte Genova", "Porte Napoli", "Porte Palermo", "Porte Bari", "Porte Catania", "Porte Trieste", "Porte Padova", "Porte Parma", "Porte Modena", "Porte Brescia", "Porte Perugia", "Porte Livorno"];
 
 /**
  * Récupère tous les produits de la collection "products" dans Firestore.
  * @returns {Promise<Array<Object>>} Une promesse qui résout en un tableau d'objets produits.
  */
-// Dictionnaire des descriptions uniques par ville (simulant une base de données riche)
-const CITY_DESCRIPTIONS = {
-  // --- POIGNÉES (HANDLES) ---
-  "Modello Roma": {
-    city: "Roma",
-    desc: "Un design intemporel inspiré du Colisée. Finition laiton vieilli pour un rendu noble et historique. Idéale pour les intérieurs classiques."
-  },
-  "Modello Venezia": {
-    city: "Venezia",
-    desc: "Lignes fluides rappelant les canaux vénitiens. Chrome brillant pour une touche d'éclat et de luxe dans un intérieur moderne."
-  },
-  "Modello Firenze": {
-    city: "Firenze",
-    desc: "L'art de la Renaissance à portée de main. Finition bronze sculptée, offrant une ergonomie parfaite et un style artistique."
-  },
-  "Modello Verona": {
-    city: "Verona",
-    desc: "Romantique et robuste. Alliage de zinc noir mat, parfait pour contraster avec des portes claires. Un charme discret."
-  },
-  "Modello Siena": {
-    city: "Siena",
-    desc: "Terre de Sienne et couleurs chaudes. Finition cuivre brossé, apportant une chaleur unique à votre décoration."
-  },
-  "Modello Pisa": {
-    city: "Pisa",
-    desc: "Une audace architecturale. Design légèrement incliné pour une prise en main originale et confortable. Finition nickel satiné."
-  },
-  "Modello Lucca": {
-    city: "Lucca",
-    desc: "Protégée et solide. Design massif et sécurisant, finition acier brossé pour une durabilité à toute épreuve."
-  },
-  "Modello San Gimignano": {
-    city: "San Gimignano",
-    desc: "La hauteur du style. Poignée allongée et fine, idéale pour les grandes portes modernes. Finition titane."
-  },
-  "Modello Positano": {
-    city: "Positano",
-    desc: "La douceur de la côte amalfitaine. Formes arrondies et finition céramique blanche pour une touche méditerranéenne."
-  },
-  "Modello Amalfi": {
-    city: "Amalfi",
-    desc: "Luxe côtier. Incrustations discrètes et finition or pâle. Parfaite pour une entrée lumineuse et sophistiquée."
-  },
-  "Modello Sorrento": {
-    city: "Sorrento",
-    desc: "Citron et soleil. Finition laiton doré vif, pour illuminer une porte sombre avec un contraste saisissant."
-  },
-  "Modello Capri": {
-    city: "Capri",
-    desc: "L'élégance insulaire. Design minimaliste ultra-fin, finition chrome miroir. La pureté absolue."
-  },
-  "Modello Portofino": {
-    city: "Portofino",
-    desc: "Le chic exclusif. Finition cuir piqué sur métal, pour un toucher luxueux et une esthétique incomparable."
-  },
-  "Modello Bellagio": {
-    city: "Bellagio",
-    desc: "La perle du lac. Lignes aquatiques et fluides, finition nickel noir poli. Un bijou pour votre porte."
-  },
-  "Modello Como": {
-    city: "Como",
-    desc: "Sérénité et profondeur. Design carré et rigoureux, finition gris anthracite texturé. Pour les intérieurs contemporains."
-  },
-
-  // --- PORTES (DOORS) ---
-  "Porte Milano": {
-    city: "Milano",
-    desc: "L'avant-garde du design. Porte blindée avec panneau extérieur en verre trempé noir et inserts en acier. Sécurité A2P BP3."
-  },
-  "Porte Torino": {
-    city: "Torino",
-    desc: "Industrielle et chic. Finition aspect béton ciré avec détails métalliques. Isolation phonique 45dB pour un calme absolu."
-  },
-  "Porte Bologna": {
-    city: "Bologna",
-    desc: "La tradition savante. Bois massif de chêne teinté, moulures profondes. Serrure 7 points pour une sécurité traditionnelle renforcée."
-  },
-  "Porte Genova": {
-    city: "Genova",
-    desc: "L'ouverture sur le monde. Porte avec hublot sécurisé et grille en fer forgé marin. Idéale pour les maisons bord de mer."
-  },
-  "Porte Napoli": {
-    city: "Napoli",
-    desc: "Vibrante et solide. Panneau rouge profond laqué, structure renforcée contre les effractions violentes. Un caractère affirmé."
-  },
-  "Porte Palermo": {
-    city: "Palermo",
-    desc: "Solaire et riche. Finition bois clair avec marqueterie fine. Une porte d'entrée qui raconte une histoire. Isolation thermique A+."
-  },
-  "Porte Bari": {
-    city: "Bari",
-    desc: "Sobriété des Pouilles. Blanc pur mat, lignes horizontales gravées. Parfaite pour les architectures minimalistes modernes."
-  },
-  "Porte Catania": {
-    city: "Catania",
-    desc: "La force du volcan. Finition pierre de lave sombre (composite). Résistance extrême aux intempéries et aux chocs."
-  },
-  "Porte Trieste": {
-    city: "Trieste",
-    desc: "Le carrefour des cultures. Design austro-hongrois revisité, finition bois foncé et laiton. Élégance diplomatique."
-  },
-  "Porte Padova": {
-    city: "Padova",
-    desc: "L'intelligence structurelle. Cœur en acier, habillage bois composite sans entretien. La technologie au service du quotidien."
-  },
-  "Porte Parma": {
-    city: "Parma",
-    desc: "Raffinement classique. Couleur crème douce, poignée centrée. Une élégance discrète pour les belles demeures."
-  },
-  "Porte Modena": {
-    city: "Modena",
-    desc: "Vitesse et ligne. Inspirée des supercars, finition rouge laqué ou noir carbone. Charnières invisibles et serrure biométrique."
-  },
-  "Porte Brescia": {
-    city: "Brescia",
-    desc: "L'acier pur. Porte entièrement métallique avec fintion brute vernie. Pour les lofts et les espaces industriels."
-  },
-  "Porte Perugia": {
-    city: "Perugia",
-    desc: "Cœur vert. Porte eco-conçue avec bois certifié et isolation en liège naturel. Haute performance thermique."
-  },
-  "Porte Livorno": {
-    city: "Livorno",
-    desc: "Portuaire et robuste. Peinture époxy résistante au sel et à l'humidité. La porte idéale pour les zones exposées."
-  }
-};
-
-const HANDLE_KEYS = Object.keys(CITY_DESCRIPTIONS).filter(k => k.startsWith("Modello"));
-const DOOR_KEYS = Object.keys(CITY_DESCRIPTIONS).filter(k => k.startsWith("Porte"));
-
-function generateDescription(name) {
-  if (CITY_DESCRIPTIONS[name]) {
-    return CITY_DESCRIPTIONS[name].desc;
-  }
-  return "Produit de haute qualité alliant sécurité et design italien.";
-}
-
 export async function getProducts() {
   const productsCollection = collection(db, "products");
   const productsSnapshot = await getDocs(productsCollection);
   
-  let handleIndex = 0;
-  let doorIndex = 0;
-
   const productList = productsSnapshot.docs.map(doc => {
     const data = doc.data();
     // We now trust the Name in Firestore (since we ran the scripts)
-    const name = data.name;
+    // But we might need to fix names if they are generic like "Porte 1" just for the demo logic?
+    // The previous logic had a fallback for names based on ID char code.
+    // I will preserve that logic for robustness if name is missing/generic, 
+    // but prefer the stored name.
+    
+    let name = data.name;
+
+    // Fallback logic from previous version regarding generating names if they look generic?
+    // The previous code had:
+    /*
+    const isHandle = name.toLowerCase().includes('handle') || ...;
+    if (isHandle) { ... name = HANDLE_KEYS[...] }
+    */
+    // Since we ran a migration script to fix names in DB, we should respect data.name mostly.
+    // But duplicate logic was strict.
+    // Let's keep it simple: assume DB is correct. If DB has "Modello Roma", we use it.
+    // We only use generateDescription.
 
     return {
       ...data,
       id: doc.id, 
       originalName: data.name,
       name: name,
-      description: generateDescription(name) || data.description || "Design Italien d'Exception"
+      // Priority: 1. DB description, 2. Generated localized description
+      // Actually, we WANT localized description.
+      // If DB has a static French string, we should ignore it if we want full localization?
+      // Or we should prefer generateDescription if it finds a key?
+      description: generateDescription(name)
     };
   });
   
@@ -178,24 +86,7 @@ export async function getProductById(productId) {
 
   if (productSnap.exists()) {
     const data = productSnap.data();
-    let name = data.name;
-
-    const isHandle = name.toLowerCase().includes('handle') || 
-                     name.toLowerCase().includes('poignée') || 
-                     data.category === 'Poignées';
-                     
-    const isDoor = name.toLowerCase().includes('porte') || 
-                   name.toLowerCase().includes('door') || 
-                   data.category === 'Portes Intérieures' ||
-                   data.category === 'Portes Blindées';
-
-    if (isHandle) {
-       const charCode = productId.charCodeAt(0) + (productId.charCodeAt(1) || 0);
-       name = HANDLE_KEYS[charCode % HANDLE_KEYS.length];
-    } else if (isDoor) {
-       const charCode = productId.charCodeAt(0) + (productId.charCodeAt(1) || 0);
-       name = DOOR_KEYS[charCode % DOOR_KEYS.length];
-    }
+    const name = data.name;
 
     return { 
         id: productSnap.id, 
@@ -225,9 +116,8 @@ export async function getInstallations() {
  * @param {Object} messageData Les données du message (nom, email, phone, message).
  * @returns {Promise<string>} L'ID du document créé.
  */
-
-
 export async function sendMessage(messageData) {
+  const messagesCollection = collection(db, "messages");
   const docRef = await addDoc(messagesCollection, {
     ...messageData,
     createdAt: serverTimestamp(), // Utilise le timestamp serveur pour la fiabilité
@@ -237,8 +127,6 @@ export async function sendMessage(messageData) {
 }
 
 // --- ADMIN HELPERS ---
-
-import { query, orderBy, limit, where, getCountFromServer } from "firebase/firestore";
 
 export async function getRecentMessages(limitCount = 5) {
   const messagesCollection = collection(db, "messages");
@@ -267,10 +155,6 @@ export async function getDashboardStats() {
   const now = new Date();
   const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
   
-  // Note: Storing dates as timestamp in Firestore is best practice, but our service might be mixing strings/dates.
-  // Ideally, use a query with where('createdAt', '>=', startOfMonth).
-  // For safety/speed given the mixed usage, we'll fetch all and filter in JS (assuming low volume for now).
-  // In a large app, we would enforce Timestamp objects and use db query.
   const invoicesSnapshot = await getDocs(invoicesColl);
   
   let monthlyRevenue = 0;
@@ -331,9 +215,6 @@ export async function getAppointments() {
 
 export async function addAppointment(appointmentData) {
   const appointmentsCollection = collection(db, "appointments");
-  // Convert JS Dates to Firestore Timestamps implicitly or explicitly if needed, 
-  // but addDoc handles Date objects well usually. 
-  // We ensure clean data passing.
   const docRef = await addDoc(appointmentsCollection, {
     ...appointmentData,
     createdAt: serverTimestamp()
@@ -371,9 +252,6 @@ export async function deleteProduct(id) {
 }
 
 // --- STORAGE ---
-
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { storage } from "./firebase";
 
 export async function uploadProductImage(file) {
   if (!file) return null;

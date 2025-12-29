@@ -1,15 +1,21 @@
 // src/components/features/InstallationsSlider.jsx
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next'; // Added
 import { getInstallations } from '../../services/db';
 import styles from './InstallationsSlider.module.css';
 
 function InstallationsSlider() {
+  const { t, i18n } = useTranslation(); // Updated
   const [installations, setInstallations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
   const sliderRef = useRef(null);
   const autoPlayRef = useRef(null);
+  
+  const isRTL = i18n.dir() === 'rtl'; // Added
+
+  // ... (keeping implementation mostly same, just updating text)
 
   useEffect(() => {
     async function fetchInstallations() {
@@ -38,7 +44,6 @@ function InstallationsSlider() {
 
   const goToSlide = (index) => {
     setCurrentIndex(index);
-    // Reset auto-play timer when manually navigating
     clearInterval(autoPlayRef.current);
     autoPlayRef.current = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % installations.length);
@@ -74,7 +79,7 @@ function InstallationsSlider() {
       <div className={styles.container}>
         <div className={styles.galleryHeader}>
           <span className={styles.headerLine}></span>
-          <h2 className={styles.sectionTitle}>Nos Réalisations</h2>
+          <h2 className={styles.sectionTitle}>{t('home.installations.title')}</h2>
           <span className={styles.headerLine}></span>
         </div>
 
@@ -92,7 +97,9 @@ function InstallationsSlider() {
           <div className={styles.slider} ref={sliderRef}>
             <div 
               className={styles.slidesTrack}
-              style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+              style={{ 
+                transform: `translateX(${isRTL ? '' : '-'}${currentIndex * 100}%)` 
+              }}
             >
               {installations.map((installation, index) => (
                 <div key={installation.id} className={styles.slide}>
@@ -134,7 +141,7 @@ function InstallationsSlider() {
         </div>
 
         <Link to="/realisations" className={styles.viewAllButton}>
-          <span>Explorer la Galerie</span>
+          <span>{t('home.installations.explorer')}</span>
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <line x1="5" y1="12" x2="19" y2="12"></line>
             <polyline points="12,5 19,12 12,19"></polyline>

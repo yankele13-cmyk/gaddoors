@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { getProducts } from '../../services/db';
 import ProductCard from '../../components/ui/ProductCard';
 import styles from './CatalogPage.module.css';
 
 function CatalogPage() {
+  const { t, i18n } = useTranslation();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -17,7 +19,7 @@ function CatalogPage() {
         setProducts(productList);
         setError(null);
       } catch (err) {
-        setError("Impossible de charger les produits.");
+        setError(t('catalog.error'));
         console.error(err);
       } finally {
         setLoading(false);
@@ -25,7 +27,7 @@ function CatalogPage() {
     }
 
     fetchProducts();
-  }, []);
+  }, [t, i18n.language]);
 
   const filteredProducts = products.filter(product => {
     // Helper to check for handle keywords in name or originalName
@@ -71,7 +73,7 @@ function CatalogPage() {
     return (
       <div className={styles.container}>
         <div style={{color: 'white', textAlign: 'center', marginTop: '100px', fontSize: '1.5rem'}}>
-           Chargement de la collection...
+           {t('catalog.loading')}
         </div>
       </div>
     );
@@ -80,33 +82,33 @@ function CatalogPage() {
   if (error) {
     return (
         <div className={styles.container}>
-            <p style={{ color: '#ef4444', textAlign: 'center' }}>{error}</p>
+            <p style={{ color: '#ef4444', textAlign: 'center' }}>{t('catalog.error')}</p>
         </div>
     );
   }
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>Notre Collection</h1>
+      <h1 className={styles.title}>{t('catalog.title')}</h1>
       
       <div className={styles.filters}>
         <button 
           onClick={() => setFilter('all')} 
           className={`${styles.filterBtn} ${filter === 'all' ? styles.activeFilter : ''}`}
         >
-          Tout Voir
+          {t('catalog.filters.all')}
         </button>
         <button 
           onClick={() => setFilter('doors')} 
           className={`${styles.filterBtn} ${filter === 'doors' ? styles.activeFilter : ''}`}
         >
-          Portes
+          {t('catalog.filters.doors')}
         </button>
         <button 
           onClick={() => setFilter('handles')} 
           className={`${styles.filterBtn} ${filter === 'handles' ? styles.activeFilter : ''}`}
         >
-          Poignées Design
+          {t('catalog.filters.handles')}
         </button>
       </div>
 

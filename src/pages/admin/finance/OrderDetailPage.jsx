@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { FinanceService } from '../../../../services/finance.service';
-import { OpsService } from '../../../../services/ops.service';
+import { FinanceService } from '../../../services/finance.service';
+import { OpsService } from '../../../services/ops.service';
 import { PDFDownloadLink } from '@react-pdf/renderer';
-import { InvoiceDocument } from '../../../../components/documents/InvoiceDocument';
+import { InvoiceDocument } from '../../../components/documents/InvoiceDocument';
 import PaymentModal from './components/PaymentModal';
 import { CheckCircle, Clock, AlertTriangle, FileText, UserCog, Hammer, Download } from 'lucide-react';
 import toast from 'react-hot-toast';

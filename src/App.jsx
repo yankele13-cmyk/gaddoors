@@ -1,7 +1,9 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { useTranslation } from 'react-i18next'; // Added
+import { useEffect, Suspense, lazy } from 'react'; // Added useEffect
 import { Toaster } from 'react-hot-toast';
 import ScrollToTop from './components/layout/ScrollToTop';
-import { Suspense, lazy } from 'react';
+
 
 import MainLayout from './components/layout/MainLayout';
 import HomePage from './pages/public/HomePage';
@@ -37,6 +39,21 @@ const AdminLoading = () => (
 );
 
 function App() {
+  const { i18n } = useTranslation();
+
+  useEffect(() => {
+    const isRtl = i18n.language === 'he';
+    document.dir = isRtl ? 'rtl' : 'ltr';
+    document.documentElement.lang = i18n.language;
+    
+    // Optional: Add a class to body for easier CSS targeting if needed
+    if (isRtl) {
+      document.body.classList.add('rtl');
+    } else {
+      document.body.classList.remove('rtl');
+    }
+  }, [i18n.language]);
+
   return (
     <BrowserRouter>
       <ScrollToTop />

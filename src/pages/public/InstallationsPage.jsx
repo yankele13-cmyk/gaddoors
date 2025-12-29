@@ -1,10 +1,12 @@
 // src/pages/public/InstallationsPage.jsx
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next'; // Added
 import { getInstallations } from '../../services/db';
 import styles from './InstallationsPage.module.css';
 
 
 function InstallationsPage() {
+  const { t } = useTranslation();
   const [installations, setInstallations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -16,14 +18,14 @@ function InstallationsPage() {
         const installationList = await getInstallations();
         setInstallations(installationList);
       } catch (err) {
-        setError("Impossible de charger les réalisations.");
+        setError(t('installations.error'));
         console.error(err);
       } finally {
         setLoading(false);
       }
     }
     fetchInstallations();
-  }, []);
+  }, [t]);
 
   if (loading) {
     return (
@@ -49,7 +51,7 @@ function InstallationsPage() {
     <div className={styles.pageContainer}>
       <div className={styles.header}>
         <span className={styles.headerLine}></span>
-        <h1 className={styles.pageTitle}>NOS RÉALISATIONS</h1>
+        <h1 className={styles.pageTitle}>{t('installations.title')}</h1>
         <span className={styles.headerLine}></span>
       </div>
       

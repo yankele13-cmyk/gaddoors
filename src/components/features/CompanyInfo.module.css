@@ -51,7 +51,7 @@
     border-radius: 4px;
     /* Plus carré, plus pro */
     padding: 2.5rem 2rem;
-    text-align: left;
+    text-align: start;
     transition: all 0.4s ease;
     position: relative;
     overflow: hidden;
@@ -61,7 +61,7 @@
     content: '';
     position: absolute;
     top: 0;
-    left: 0;
+    inset-inline-start: 0;
     width: 2px;
     height: 0%;
     background: #d4af37;
@@ -101,7 +101,7 @@
 
 .list li {
     position: relative;
-    padding-left: 20px;
+    padding-inline-start: 20px;
     margin-bottom: 0.8rem;
     font-size: 0.95rem;
     line-height: 1.6;
@@ -111,7 +111,7 @@
 .list li::before {
     content: '•';
     position: absolute;
-    left: 0;
+    inset-inline-start: 0;
     color: #d4af37;
     font-size: 1.2rem;
     line-height: 1.2rem;

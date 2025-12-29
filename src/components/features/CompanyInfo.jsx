@@ -1,67 +1,70 @@
 // src/components/features/CompanyInfo.jsx
+import { useTranslation, Trans } from 'react-i18next'; // Added
 import styles from './CompanyInfo.module.css';
 
 function CompanyInfo() {
+  const { t } = useTranslation();
+
   return (
     <section className={styles.section}>
       <div className={styles.container}>
-        <h2 className={styles.sectionTitle}>Pourquoi Nous Choisir ?</h2>
+        <h2 className={styles.sectionTitle}>{t('home.company.title')}</h2>
         <p className={styles.sectionSubtitle}>
-          18 ans d'expérience dans l'importation et la pose de portes de qualité
+          {t('home.company.subtitle')}
         </p>
 
         <div className={styles.infoGrid}>
           {/* Garanties */}
           <div className={styles.infoCard}>
             <span className={styles.icon}>🛡️</span>
-            <h3 className={styles.cardTitle}>Garanties Solides</h3>
+            <h3 className={styles.cardTitle}>{t('home.company.guarantee.title')}</h3>
             <ul className={styles.list}>
-              <li>1 an de garantie sur les mécanismes</li>
-              <li>7 ans de garantie contre l'eau et les termites</li>
+              <li>{t('home.company.guarantee.mech')}</li>
+              <li>{t('home.company.guarantee.water')}</li>
             </ul>
           </div>
 
           {/* Processus */}
           <div className={styles.infoCard}>
             <span className={styles.icon}>📋</span>
-            <h3 className={styles.cardTitle}>Notre Processus</h3>
+            <h3 className={styles.cardTitle}>{t('home.company.process.title')}</h3>
             <ul className={styles.list}>
-              <li>Visite d'un professionnel pour prendre les mesures</li>
-              <li>Conseils personnalisés sur les portes et couleurs</li>
-              <li>Devis établi sur place</li>
-              <li>Livraison, démontage et pose inclus</li>
+              <li>{t('home.company.process.visit')}</li>
+              <li>{t('home.company.process.advice')}</li>
+              <li>{t('home.company.process.quote')}</li>
+              <li>{t('home.company.process.delivery')}</li>
             </ul>
-            <p className={styles.note}>* À partir de 3 étages, le prix de livraison augmente</p>
+            <p className={styles.note}>{t('home.company.process.note')}</p>
           </div>
 
           {/* Spécialités */}
           <div className={styles.infoCard}>
             <span className={styles.icon}>🚪</span>
-            <h3 className={styles.cardTitle}>Nos Spécialités</h3>
+            <h3 className={styles.cardTitle}>{t('home.company.specialties.title')}</h3>
             <ul className={styles.list}>
-              <li>Portes de MAMAD (avec ou sans monture)</li>
-              <li>Portes importées de Chine et d'Italie</li>
-              <li>Contrôle qualité rigoureux</li>
+              <li>{t('home.company.specialties.mamad')}</li>
+              <li>{t('home.company.specialties.import')}</li>
+              <li>{t('home.company.specialties.quality')}</li>
             </ul>
           </div>
 
           {/* Serrures */}
           <div className={styles.infoCard}>
             <span className={styles.icon}>🔐</span>
-            <h3 className={styles.cardTitle}>Types de Serrures</h3>
+            <h3 className={styles.cardTitle}>{t('home.company.locks.title')}</h3>
             <ul className={styles.list}>
-              <li>Serrures à clés</li>
-              <li>Serrures papillon</li>
-              <li>Cylindres de sécurité</li>
-              <li>Serrures magnétiques</li>
-              <li>Œilleton pour WC ou salle de bain</li>
+              <li>{t('home.company.locks.key')}</li>
+              <li>{t('home.company.locks.butterfly')}</li>
+              <li>{t('home.company.locks.cyl')}</li>
+              <li>{t('home.company.locks.mag')}</li>
+              <li>{t('home.company.locks.wc')}</li>
             </ul>
           </div>
         </div>
 
         <div className={styles.experience}>
           <p className={styles.experienceText}>
-            <strong>18 ans</strong> d'expertise dans l'importation et la pose de portes de qualité supérieure
+              <strong>{t('home.company.experienceLabel')}</strong> {t('home.company.experienceText')}
           </p>
         </div>
       </div>

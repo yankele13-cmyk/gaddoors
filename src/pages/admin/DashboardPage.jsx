@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { FinanceService } from '../../services/finance.service';
 import { CRMService } from '../../services/crm.service';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
@@ -42,6 +42,36 @@ const StatCard = ({ title, value, subtext, icon: Icon, trend, color = "green" })
         </div>
     </div>
 );
+
+// Robust Chart Container to handle Resize/Visibility
+const ChartContainer = ({ children }) => {
+    const containerRef = useRef(null);
+    const [dims, setDims] = useState({ width: 0, height: 0 });
+
+    const dirRef = (node) => {
+        if (node !== null) {
+            const { width, height } = node.getBoundingClientRect();
+             // Only update if changed significantly to avoid loops
+             if (width > 0 && height > 0 && (Math.abs(width - dims.width) > 1 || Math.abs(height - dims.height) > 1)) {
+                 setDims({ width, height });
+             }
+        }
+    };
+
+    return (
+        <div ref={dirRef} className="w-full h-full">
+            {dims.width > 0 && dims.height > 0 ? (
+                <ResponsiveContainer width="100%" height="100%">
+                    {children}
+                </ResponsiveContainer>
+            ) : (
+                <div className="flex h-full items-center justify-center text-gray-500 text-xs">
+                    Initialisation...
+                </div>
+            )}
+        </div>
+    );
+};
 
 export default function DashboardPage() {
   const [stats, setStats] = useState({
@@ -193,32 +223,26 @@ export default function DashboardPage() {
        {/* Charts & Graphs */}
        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
             <h3 className="text-lg font-bold text-white mb-6">Évolution des Ventes (6 mois)</h3>
-            <div style={{ width: '100%', height: 300, minHeight: 300 }}>
-                {/* Recharts fix: Wait for layout to be ready (width calculated) */}
-                {isReady && chartData.length > 0 ? (
-                    <ResponsiveContainer width="100%" height="100%">
-                        <AreaChart data={chartData}>
-                            <defs>
-                                <linearGradient id="colorSales" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="5%" stopColor="#d4af37" stopOpacity={0.3}/>
-                                    <stop offset="95%" stopColor="#d4af37" stopOpacity={0}/>
-                                </linearGradient>
-                            </defs>
-                            <CartesianGrid strokeDasharray="3 3" stroke="#333" />
-                            <XAxis dataKey="name" stroke="#666" />
-                            <YAxis stroke="#666" />
-                            <Tooltip 
-                                contentStyle={{ backgroundColor: '#18181b', borderColor: '#333' }}
-                                itemStyle={{ color: '#d4af37' }}
-                            />
-                            <Area type="monotone" dataKey="sales" stroke="#d4af37" fillOpacity={1} fill="url(#colorSales)" />
-                        </AreaChart>
-                    </ResponsiveContainer>
-                ) : (
-                    <div className="flex h-full items-center justify-center text-gray-500">
-                        Chargement des données...
-                    </div>
-                )}
+            <div className="w-full h-[300px] relative chart-container">
+                {/* Recharts fix: Use ref to ensure width > 0 */}
+               <ChartContainer>
+                   <AreaChart data={chartData}>
+                        <defs>
+                            <linearGradient id="colorSales" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="5%" stopColor="#d4af37" stopOpacity={0.3}/>
+                                <stop offset="95%" stopColor="#d4af37" stopOpacity={0}/>
+                            </linearGradient>
+                        </defs>
+                        <CartesianGrid strokeDasharray="3 3" stroke="#333" />
+                        <XAxis dataKey="name" stroke="#666" />
+                        <YAxis stroke="#666" />
+                        <Tooltip 
+                            contentStyle={{ backgroundColor: '#18181b', borderColor: '#333' }}
+                            itemStyle={{ color: '#d4af37' }}
+                        />
+                        <Area type="monotone" dataKey="sales" stroke="#d4af37" fillOpacity={1} fill="url(#colorSales)" />
+                    </AreaChart>
+               </ChartContainer>
             </div>
        </div>
 
