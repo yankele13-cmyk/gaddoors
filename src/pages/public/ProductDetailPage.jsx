@@ -7,7 +7,7 @@ import { getProductById } from '../../services/db';
 import styles from './ProductDetailPage.module.css';
 
 export default function ProductDetailPage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { id } = useParams(); // Récupère l'ID depuis l'URL
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);
@@ -33,7 +33,7 @@ export default function ProductDetailPage() {
     }
 
     fetchProduct();
-  }, [id]); // Se redéclenche si l'ID dans l'URL change
+  }, [id, i18n.language]); // Se redéclenche si l'ID ou la langue change
 
   if (loading) {
     return <p>{t('product.loading')}</p>;

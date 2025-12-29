@@ -1,7 +1,7 @@
 {
-  "welcome": "Welcome to GADDOORS",
+  "welcome": "Welcome to Gad Doors",
   "footer": {
-    "about": "Carpentry excellence for your interior. Design, security, and custom-made solutions.",
+    "about": "Excellence in carpentry for your home. Design, security, and custom-made.",
     "contact": {
       "title": "Contact",
       "phone": "Phone",
@@ -14,7 +14,7 @@
       "realisations": "Projects",
       "contact": "Contact"
     },
-    "rights": "© 2025 GADDOORS. All rights reserved."
+    "rights": "© 2025 Gad Doors. All rights reserved."
   },
   "catalog": {
     "title": "Our Collection",
@@ -23,7 +23,7 @@
     "filters": {
       "all": "View All",
       "doors": "Doors",
-      "handles": "Designer Handles"
+      "handles": "Design Handles"
     }
   },
   "installations": {
@@ -42,7 +42,7 @@
   },
   "contact": {
     "title": "Contact Us",
-    "subtitle": "Have a question about our armored doors or exclusive Italian models? Our expert team is at your disposal.",
+    "subtitle": "Questions about our security doors or exclusive Italian models? Our expert team is at your disposal.",
     "form": {
       "title": "Send us a message",
       "success": "Message sent!",
@@ -51,13 +51,13 @@
       "namePlaceholder": "Your Name",
       "email": "Email",
       "phone": "Phone",
-      "message": "Project Details",
-      "messagePlaceholder": "Describe your needs (door type, dimensions, style...)",
+      "message": "Project Message",
+      "messagePlaceholder": "Describe your need (door type, dimensions, style...)",
       "submit": "Send Request",
       "sending": "Sending..."
     },
     "info": {
-      "title": "Contact Info",
+      "title": "Our Details",
       "phone": "Phone",
       "email": "Email",
       "showroom": "Showroom",
@@ -70,38 +70,6 @@
     "catalogue": "Catalog",
     "realisations": "Projects",
     "contact": "Contact"
-  },
-  "productDescriptions": {
-    "Modello Roma": "Timeless design inspired by the Colosseum. Aged brass finish for a noble and historic look. Ideal for classic interiors.",
-    "Modello Venezia": "Flowing lines reminiscent of Venetian canals. Shiny chrome for a touch of brilliance and luxury in a modern space.",
-    "Modello Firenze": "Renaissance art within reach. Sculpted bronze finish, offering perfect ergonomics and an artistic style.",
-    "Modello Verona": "Romantic and robust. Matte black zinc alloy, perfect for contrasting with light doors. Discreet charm.",
-    "Modello Siena": "Sienna earth and warm colors. Brushed copper finish, bringing unique warmth to your decoration.",
-    "Modello Pisa": "Architectural audacity. Slightly inclined design for an original and comfortable grip. Satin nickel finish.",
-    "Modello Lucca": "Protected and solid. Massive and reassuring design, brushed steel finish for fail-safe durability.",
-    "Modello San Gimignano": "The height of style. Long and thin handle, ideal for tall modern doors. Titanium finish.",
-    "Modello Positano": "The softness of the Amalfi coast. Rounded shapes and white ceramic finish for a Mediterranean touch.",
-    "Modello Amalfi": "Coastal luxury. Discreet inlays and pale gold finish. Perfect for a bright and sophisticated entrance.",
-    "Modello Sorrento": "Lemon and sun. Bright golden brass finish, to illuminate a dark door with striking contrast.",
-    "Modello Capri": "Island elegance. Ultra-thin minimalist design, mirror chrome finish. Absolute purity.",
-    "Modello Portofino": "Exclusive chic. Stitched leather on metal finish, for a luxurious feel and incomparable aesthetic.",
-    "Modello Bellagio": " The pearl of the lake. Fluid aquatic lines, polished black nickel finish. A jewel for your door.",
-    "Modello Como": "Serenity and depth. Rigorous square design, textured anthracite gray finish. For contemporary interiors.",
-    "Porte Milano": "The vanguard of design. Armored door with black tempered glass exterior panel and steel inserts. A2P BP3 security.",
-    "Porte Torino": "Industrial and chic. Polished concrete look finish with metallic details. 45dB sound insulation for absolute quiet.",
-    "Porte Bologna": "Learned tradition. Solid stained oak wood, deep moldings. 7-point lock for reinforced traditional security.",
-    "Porte Genova": "Opening to the world. Door with secured porthole and marine wrought iron grille. Ideal for seaside homes.",
-    "Porte Napoli": "Vibrant and solid. Deep red lacquered panel, structure reinforced against violent break-ins. An assertive character.",
-    "Porte Palermo": "Solar and rich. Light wood finish with fine marquetry. An entrance door that tells a story. A+ thermal insulation.",
-    "Porte Bari": "Simplicty of Puglia. Pure matte white, engraved horizontal lines. Perfect for modern minimalist architectures.",
-    "Porte Catania": "The strength of the volcano. Dark lava stone finish (composite). Extreme resistance to weather and impacts.",
-    "Porte Trieste": "Crossroads of cultures. Revisited Austro-Hungarian design, dark wood and brass finish. Diplomatic elegance.",
-    "Porte Padova": "Structural intelligence. Steel core, maintenance-free composite wood cladding. Technology at the service of daily life.",
-    "Porte Parma": "Classic refinement. Soft cream color, centered handle. Discreet elegance for beautiful mansions.",
-    "Porte Modena": "Speed and line. Inspired by supercars, red lacquer or carbon black finish. Concealed hinges and biometric lock.",
-    "Porte Brescia": "Pure steel. Fully metallic door with raw varnished finish. For lofts and industrial spaces.",
-    "Porte Perugia": "Green heart. Eco-designed door with certified wood and natural cork insulation. High thermal performance.",
-    "Porte Livorno": "Port-like and robust. Epoxy paint resistant to salt and humidity. The ideal door for exposed areas."
   },
   "admin": {
     "title": {
@@ -138,37 +106,89 @@
       "subtitle": "18 years of experience in importing and installing quality doors",
       "guarantee": {
         "title": "Solid Warranties",
-        "mech": "1-year warranty on mechanisms",
-        "water": "7-year warranty against water and termites"
+        "mech": "1 year warranty on mechanisms",
+        "water": "7 years warranty against water and termites"
       },
       "process": {
         "title": "Our Process",
         "visit": "Professional visit for measurements",
         "advice": "Personalized advice on doors and colors",
-        "quote": "On-site quotation",
-        "delivery": "Delivery, disassembly, and installation included",
-        "note": "* For 3rd floor and above, delivery price increases"
+        "quote": "On-site quote",
+        "delivery": "Includes delivery, disassembly, and installation",
+        "note": "* From the 3rd floor, delivery cost increases"
       },
       "specialties": {
         "title": "Our Specialties",
-        "mamad": "MAMAD doors (with or without frame)",
-        "import": "Imported doors from China and Italy",
-        "quality": "Rigorous quality control"
+        "mamad": "Mamad Doors (with or without dressing)",
+        "import": "Doors imported from China and Italy",
+        "quality": "Strict quality control"
       },
       "locks": {
-        "title": "Types of Locks",
+        "title": "Lock Types",
         "key": "Key locks",
         "butterfly": "Butterfly locks",
-        "cyl": "Security cylinders",
+        "cyl": "Security cylinder",
         "mag": "Magnetic locks",
-        "wc": "Eyelet for WC or bathroom"
+        "wc": "WC or bathroom indicator"
       },
-      "experienceLabel": "18 years",
-      "experienceText": "of expertise in importing and installing high-standard doors"
+      "experienceLabel": "18 YEARS",
+      "experienceText": "OF EXPERTISE IN IMPORTING AND INSTALLING SUPERIOR QUALITY DOORS"
     }
   },
+  "productDescriptions": {
+    "Modello Roma": "A timeless handle design, inspired by the grandeur of ancient Rome. Robust finish and ergonomic grip.",
+    "Modello Venezia": "Venetian elegance in a handle. Sophisticated curves recalling the canals of the Doge's city.",
+    "Modello Firenze": "A tribute to the Renaissance. Artistic handle combining classic aesthetics with modern functionality.",
+    "Modello Verona": "Romanticism and solidity. A handle designed to last with a style specifically traversing eras.",
+    "Modello Siena": "Inspired by the warm hues of Tuscany. Rustic-chic design for welcoming interiors.",
+    "Modello Pisa": "Bold and unique line, bringing a touch of geometric originality to your door.",
+    "Modello Lucca": "Refined simplicity. A discreet yet present handle, perfect for minimalist interiors.",
+    "Modello San Gimignano": "Structured and imposing design, evoking medieval towers. For a firm and secure grip.",
+    "Modello Positano": "The charm of the Amalfi coast. Glossy finish and fluid lines for a Mediterranean touch.",
+    "Modello Amalfi": "Luxury and prestige. A handle with meticulous details, ideal for entrance or living room doors.",
+    "Modello Sorrento": "Evokes sun and sea. Luminous design that adapts perfectly to bright interiors.",
+    "Modello Capri": "Chic and exclusive. A handle distinguished by its natural elegance and noble materials.",
+    "Modello Portofino": "Italian glamour at your fingertips. Premium finish to sublimate your doors.",
+    "Modello Bellagio": "The pearl of the lake. Subtle reflections, combining tradition and modernity.",
+    "Modello Como": "Sleek and sophisticated design, inspired by the tranquility of Lake Como.",
+    "Porte Milano": "The pinnacle of modern design. Sharp lines, impeccable finish, the spirit of the fashion capital.",
+    "Porte Torino": "Industrial and chic. A robust door with assertive character, ideal for lofts and offices.",
+    "Porte Bologna": "Tradition and conviviality. A warm door inviting entry, with reinforced acoustic insulation.",
+    "Porte Genova": "Maritime elegance. Fluid lines and increased resistance to humidity.",
+    "Porte Napoli": "Vibrant and expressive. A door that doesn't go unnoticed, available in vibrant finishes.",
+    "Porte Palermo": "Southern charm. Mediterranean style with subtle ornamental details.",
+    "Porte Bari": "Coastal modernity. Fresh and airy design, perfect for bringing in light.",
+    "Porte Catania": "Volcanic beauty. Dark and textured finish for a dramatic and elegant look.",
+    "Porte Trieste": "Crossroads of cultures. Eclectic design mixing classic and modern influences.",
+    "Porte Padova": "Intellectual and structured. Precise geometric lines for an ordered aesthetic.",
+    "Porte Parma": "Gastronomic refinement. A door with rich and smooth finishes.",
+    "Porte Modena": "Speed and style. Inspired by Italian automotive design, smooth and aerodynamic finish.",
+    "Porte Brescia": "Northern solidity. Reinforced door guaranteeing maximum security and insulation.",
+    "Porte Perugia": "Heart of Italy. A balanced central design, adapting to all rooms.",
+    "Porte Livorno": "Opening to the world. Robust port design with a touch of naval elegance.",
+    "Modello Bari": "Coastal modernity. Fresh and airy design, perfect for bringing in light.",
+    "Modello Bologna": "Tradition and conviviality. A warm door inviting entry, with reinforced acoustic insulation.",
+    "Modello Brescia": "Northern solidity. Reinforced door guaranteeing maximum security and insulation.",
+    "Modello Catania": "Volcanic beauty. Dark and textured finish for a dramatic and elegant look.",
+    "Modello Milano": "The pinnacle of modern design. Sharp lines, impeccable finish, the spirit of the fashion capital.",
+    "Modello Torino": "Industrial and chic. A robust door with assertive character, ideal for lofts and offices.",
+    "Modello Genova": "Maritime elegance. Fluid lines and increased resistance to humidity.",
+    "Modello Napoli": "Vibrant and expressive. A door that doesn't go unnoticed, available in vibrant finishes.",
+    "Modello Palermo": "Southern charm. Mediterranean style with subtle ornamental details.",
+    "Modello Trieste": "Crossroads of cultures. Eclectic design mixing classic and modern influences.",
+    "Modello Padova": "Intellectual and structured. Precise geometric lines for an ordered aesthetic.",
+    "Modello Parma": "Gastronomic refinement. A door with rich and smooth finishes.",
+    "Modello Modena": "Speed and style. Inspired by Italian automotive design, smooth and aerodynamic finish.",
+    "Modello Perugia": "Heart of Italy. A balanced central design, adapting to all rooms.",
+    "Modello Livorno": "Opening to the world. Robust port design with a touch of naval elegance.",
+    "Maniglia Angelo": "Angelic and pure design. Satin chrome finish for a soft touch.",
+    "Maniglia Antonio": "Classic and timeless. A tribute to Italian tradition, solid and reliable for all doors.",
+    "Maniglia Enzo": "Bold and characteristic. Sporty lines inspired by racing cars, brushed metal finish.",
+    "Maniglia Francesco": "Simplicity and elegance. Soft curves naturally adapting to the hand.",
+    "Maniglia Giorgio": "Sophisticated and fashionable. A handle bringing a touch of haute couture to your interior."
+  },
   "Porte Intérieure": "Interior Door",
-  "Porte Blindée": "Armored Door",
+  "Porte Blindée": "Security Door",
   "Porte Extérieure": "Exterior Door",
   "Poignée": "Handle",
   "Serrure": "Lock",
