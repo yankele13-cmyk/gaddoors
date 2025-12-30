@@ -28,6 +28,8 @@ const localizer = dateFnsLocalizer({
 
 export default function CalendarPage() {
   const [events, setEvents] = useState([]);
+  const [view, setView] = useState('month');
+  const [date, setDate] = useState(new Date());
   const [showModal, setShowModal] = useState(false);
   const [selectedEventId, setSelectedEventId] = useState(null);
   const { register, handleSubmit, reset, setValue } = useForm();
@@ -168,6 +170,11 @@ export default function CalendarPage() {
           culture="fr"
           onSelectEvent={handleSelectEvent}
           eventPropGetter={eventStyleGetter}
+          // Controlled Props
+          view={view}
+          date={date}
+          onView={(newView) => setView(newView)}
+          onNavigate={(newDate) => setDate(newDate)}
           messages={{
             next: "Suivant",
             previous: "Précédent",

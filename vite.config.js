@@ -6,6 +6,8 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineConfig({
   plugins: [
     tailwindcss(),
-    react(),
+    react({
+      jsxRuntime: 'automatic' // Explicitly set to automatic to avoid warnings
+    }),
   ],
 })

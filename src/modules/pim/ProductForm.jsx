@@ -1,17 +1,22 @@
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { productSchema } from '../../schemas/product.schema';
 import { productsService } from '../../services/products.service';
 import { Save, X, Upload, Image as ImageIcon } from 'lucide-react';
+import { useTranslation } from 'react-i18next'; // Added
 import toast from 'react-hot-toast';
 
 export default function ProductForm({ product, onClose, onSuccess }) {
-  const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm({
+  const { t } = useTranslation(); // Hook initialization
+  const { register, handleSubmit, formState: { errors } } = useForm({
+    resolver: zodResolver(productSchema),
     defaultValues: {
       name: '',
-      category: 'Portes Intérieures',
+      category: 'Portes Intérieures', // Internal value remains French for now for DB consistency
       price: 0,
       description: '',
-      ...product // Merge existing product data if editing
+      ...product 
     }
   });
 
@@ -20,6 +25,7 @@ export default function ProductForm({ product, onClose, onSuccess }) {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [saving, setSaving] = useState(false);
 
+  // ... (handleImageChange remains same)
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -108,43 +114,46 @@ export default function ProductForm({ product, onClose, onSuccess }) {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-                <label className="block text-sm font-medium text-gray-400 mb-2">Nom du Produit</label>
+                <label className="block text-sm font-medium text-gray-400 mb-2">{t('admin.form.name')}</label>
                 <input 
-                  {...register("name", { required: true })}
-                  className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-3 text-white focus:border-[#d4af37] outline-none"
-                  placeholder="Porte WPC..."
+                  {...register("name")}
+                  className={`w-full bg-zinc-950 border ${errors.name ? 'border-red-500' : 'border-zinc-800'} rounded-lg p-3 text-white focus:border-[#d4af37] outline-none`}
+                  placeholder={t('admin.form.namePlaceholder')}
                 />
+                {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>}
             </div>
             <div>
-                <label className="block text-sm font-medium text-gray-400 mb-2">Catégorie</label>
+                <label className="block text-sm font-medium text-gray-400 mb-2">{t('admin.form.category')}</label>
                 <select 
                    {...register("category")}
-                   className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-3 text-white focus:border-[#d4af37] outline-none"
+                   className={`w-full bg-zinc-950 border ${errors.category ? 'border-red-500' : 'border-zinc-800'} rounded-lg p-3 text-white focus:border-[#d4af37] outline-none`}
                 >
-                    <option value="Portes Intérieures">Portes Intérieures</option>
-                    <option value="Portes Blindées">Portes Blindées</option>
-                    <option value="Poignées">Poignées</option>
-                    <option value="Accessoires">Accessoires</option>
+                    <option value="Portes Intérieures">{t('categories.Portes Intérieures', 'Portes Intérieures')}</option>
+                    <option value="Portes Blindées">{t('categories.Portes Blindées', 'Portes Blindées')}</option>
+                    <option value="Poignées">{t('categories.Poignées', 'Poignées')}</option>
+                    <option value="Accessoires">{t('categories.Accessoires', 'Accessoires')}</option>
                 </select>
+                {errors.category && <p className="text-red-500 text-xs mt-1">{errors.category.message}</p>}
             </div>
           </div>
 
           <div>
-             <label className="block text-sm font-medium text-gray-400 mb-2">Prix de base (NIS)</label>
+             <label className="block text-sm font-medium text-gray-400 mb-2">{t('admin.form.price')}</label>
              <input 
                 type="number"
-                {...register("price", { required: true, min: 0 })}
-                className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-3 text-white focus:border-[#d4af37] outline-none font-mono"
+                {...register("price", { valueAsNumber: true })}
+                className={`w-full bg-zinc-950 border ${errors.price ? 'border-red-500' : 'border-zinc-800'} rounded-lg p-3 text-white focus:border-[#d4af37] outline-none font-mono`}
              />
+             {errors.price && <p className="text-red-500 text-xs mt-1">{errors.price.message}</p>}
           </div>
 
           <div>
-             <label className="block text-sm font-medium text-gray-400 mb-2">Description</label>
+             <label className="block text-sm font-medium text-gray-400 mb-2">{t('admin.form.description')}</label>
              <textarea 
                 {...register("description")}
                 rows={4}
                 className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-3 text-white focus:border-[#d4af37] outline-none resize-none"
-                placeholder="Détails techniques..."
+                placeholder={t('admin.form.description')}
              />
           </div>
 

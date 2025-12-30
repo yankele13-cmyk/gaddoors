@@ -3,6 +3,10 @@ export const APP_CONFIG = {
   CURRENCY: "ILS",
   LOCALE: "fr-FR", // Admin UI language
   VAT_RATE: 0.17, // 17%
+  LOGISTICS: {
+    BASE_PRICE: 250,
+    FLOOR_SURCHARGE: 50
+  }
 };
 
 export const ROUTES = {
@@ -38,6 +42,8 @@ export const LEAD_STATUS = {
   LOST: "lost",
 };
 
+// DEPRECATED: Only used for migration in userService.js. 
+// New access control is handled via Firestore 'users' collection.
 export const ALLOWED_ADMINS = [
   'yankele13@gmail.com',
   'gad@gaddoors.co.il'

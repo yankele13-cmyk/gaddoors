@@ -4,6 +4,7 @@ import { ordersService } from '../../services/orders.service';
 import DoorConfigurator from './DoorConfigurator';
 import { Plus, Save, Truck, Package, Trash2, Calculator } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { APP_CONFIG } from '../../config/constants';
 import QuoteDocument from '../../components/admin/quotes/QuoteDocument';
 import { Printer } from 'lucide-react';
 
@@ -44,9 +45,9 @@ export default function QuoteBuilder({ onSuccess }) {
   // Calculations
   const itemsTotal = items.reduce((sum, i) => sum + (i.priceSnapshot * i.quantity), 0);
   
-  let deliveryCost = 250; // Base from config CONSTANTS usually
+  let deliveryCost = APP_CONFIG.LOGISTICS.BASE_PRICE; 
   if (logistics.floor > 2 && !logistics.hasElevator) {
-      deliveryCost += (logistics.floor - 2) * 50;
+      deliveryCost += (logistics.floor - 2) * APP_CONFIG.LOGISTICS.FLOOR_SURCHARGE;
   }
   
   const subTotal = itemsTotal + deliveryCost;
@@ -139,6 +140,12 @@ export default function QuoteBuilder({ onSuccess }) {
                             placeholder="Tél" 
                             value={client.phone}
                             onChange={(e) => setClient({...client, phone: e.target.value})}
+                            className="w-full bg-zinc-900 border border-zinc-700 rounded p-2 text-sm text-white"
+                        />
+                        <input 
+                            placeholder="Email" 
+                            value={client.email}
+                            onChange={(e) => setClient({...client, email: e.target.value})}
                             className="w-full bg-zinc-900 border border-zinc-700 rounded p-2 text-sm text-white"
                         />
                         <input 

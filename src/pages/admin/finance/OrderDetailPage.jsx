@@ -5,7 +5,7 @@ import { OpsService } from '../../../services/ops.service';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import { InvoiceDocument } from '../../../components/documents/InvoiceDocument';
 import PaymentModal from './components/PaymentModal';
-import { CheckCircle, Clock, AlertTriangle, FileText, UserCog, Hammer, Download } from 'lucide-react';
+import { CheckCircle, Clock, AlertTriangle, FileText, UserCog, Hammer, Download, Eye } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 const STATUS_OPTIONS = [
@@ -17,21 +17,31 @@ const STATUS_OPTIONS = [
     { value: 'closed', label: 'Clôturé' },
 ];
 
+import PDFConfigModal from './components/PDFConfigModal';
+import PDFPreviewModal from './components/PDFPreviewModal';
+import { Settings } from 'lucide-react';
+
 export default function OrderDetailPage() {
   const { id } = useParams();
   const [order, setOrder] = useState(null);
   const [installers, setInstallers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+  
+  // PDF Customization State
+  const [isPDFConfigOpen, setIsPDFConfigOpen] = useState(false);
+  const [previewDoc, setPreviewDoc] = useState(null);
+  const [pdfCustomTexts, setPdfCustomTexts] = useState(null);
 
   useEffect(() => {
     loadData();
   }, [id]);
 
+  // ... (existing loadData and handlers) ...
   const loadData = async () => {
     setLoading(true);
     const orderRes = await FinanceService.getOrderById(id);
-    const opsRes = await OpsService.getAllInstallers(); // Assuming this exists per ops.service.js checks
+    const opsRes = await OpsService.getAllInstallers(); 
 
     if (orderRes.success) setOrder(orderRes.data);
     else toast.error("Commande introuvable");
@@ -96,16 +106,75 @@ export default function OrderDetailPage() {
                 <p className="text-gray-400 mt-1">Client: <span className="text-white font-medium">{order.clientName}</span> - {order.city}</p>
             </div>
             
-            {/* Work Order PDF Button */}
-            <PDFDownloadLink
-                document={<InvoiceDocument data={order} language="he" isWorkOrder={true} />}
-                fileName={`ordre_travail_${order.id}.pdf`}
-                className="bg-zinc-800 hover:bg-zinc-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition"
-            >
-                <Hammer size={18} />
-                Générer Fiche de Travail
-            </PDFDownloadLink>
+            <div className="flex flex-wrap gap-2">
+                {/* PDF Configuration */}
+                <button
+                    onClick={() => setIsPDFConfigOpen(true)}
+                    className="bg-zinc-800 hover:bg-zinc-700 text-gray-300 hover:text-white px-3 py-2 rounded-lg border border-zinc-700 transition"
+                    title="Personnaliser les textes PDF"
+                >
+                    <Settings size={20} />
+                </button>
+
+                {/* WORK ORDER ACTIONS */}
+                <div className="flex bg-zinc-800 rounded-lg p-1 gap-1 border border-zinc-700">
+                    <button 
+                        onClick={() => setPreviewDoc({
+                            doc: <InvoiceDocument data={order} language="he" isWorkOrder={true} customTexts={pdfCustomTexts} />,
+                            name: `ordre_travail_${order.id}.pdf`
+                        })}
+                        className="text-gray-400 hover:text-white hover:bg-zinc-700 p-2 rounded transition"
+                        title="Aperçu Fiche Travail"
+                    >
+                        <Eye size={18} />
+                    </button>
+                    <PDFDownloadLink
+                        document={<InvoiceDocument data={order} language="he" isWorkOrder={true} customTexts={pdfCustomTexts} />}
+                        fileName={`ordre_travail_${order.id}.pdf`}
+                        className="text-white hover:bg-zinc-700 px-3 py-2 rounded flex items-center gap-2 transition text-sm font-medium"
+                    >
+                        <Hammer size={16} /> Fiche Travail
+                    </PDFDownloadLink>
+                </div>
+
+                {/* QUOTE/INVOICE ACTIONS */}
+                <div className="flex bg-[#d4af37] rounded-lg p-1 gap-1 text-black shadow-lg shadow-[#d4af37]/10">
+                    <button 
+                        onClick={() => setPreviewDoc({
+                            doc: <InvoiceDocument data={order} language="he" isWorkOrder={false} customTexts={pdfCustomTexts} />,
+                            name: `devis_${order.humanId || order.id}.pdf`
+                        })}
+                        className="text-black/70 hover:text-black hover:bg-white/20 p-2 rounded transition"
+                        title="Aperçu Devis/Facture"
+                    >
+                        <Eye size={18} />
+                    </button>
+                    <PDFDownloadLink
+                        document={<InvoiceDocument data={order} language="he" isWorkOrder={false} customTexts={pdfCustomTexts} />}
+                        fileName={`devis_${order.humanId || order.id}.pdf`}
+                        className="text-black font-bold hover:bg-white/20 px-3 py-2 rounded flex items-center gap-2 transition text-sm"
+                    >
+                        <FileText size={16} /> Devis/Facture
+                    </PDFDownloadLink>
+                </div>
+            </div>
        </div>
+
+       {/* PDF PREVIEW MODAL */}
+       <PDFPreviewModal 
+          isOpen={!!previewDoc}
+          onClose={() => setPreviewDoc(null)}
+          document={previewDoc?.doc}
+          fileName={previewDoc?.name}
+       />
+
+       {/* PDF Config Modal */}
+       <PDFConfigModal 
+          isOpen={isPDFConfigOpen}
+          onClose={() => setIsPDFConfigOpen(false)}
+          onSave={setPdfCustomTexts}
+          initialConfig={pdfCustomTexts}
+       />
 
        {/* Control Panel (Status & Installer) */}
        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

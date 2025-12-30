@@ -1,6 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import { FinanceService } from '../../services/finance.service';
-import { CRMService } from '../../services/crm.service';
+import { dashboardService } from '../../services/dashboard.service';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { 
     TrendingUp, 
@@ -15,6 +14,7 @@ import {
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useAuth } from '../../context/AuthContext';
+import { useTranslation } from 'react-i18next'; // Imported
 
 // Helper to format currency
 const formatCurrency = (amount) => new Intl.NumberFormat('he-IL', { style: 'currency', currency: 'ILS', minimumFractionDigits: 0 }).format(amount);
@@ -45,6 +45,7 @@ const StatCard = ({ title, value, subtext, icon: Icon, trend, color = "green" })
 
 // Robust Chart Container to handle Resize/Visibility
 const ChartContainer = ({ children }) => {
+    const { t } = useTranslation();
     const containerRef = useRef(null);
     const [dims, setDims] = useState({ width: 0, height: 0 });
 
@@ -61,12 +62,12 @@ const ChartContainer = ({ children }) => {
     return (
         <div ref={dirRef} className="w-full h-full">
             {dims.width > 0 && dims.height > 0 ? (
-                <ResponsiveContainer width="100%" height="100%">
+                <ResponsiveContainer width={dims.width} height={dims.height}>
                     {children}
                 </ResponsiveContainer>
             ) : (
                 <div className="flex h-full items-center justify-center text-gray-500 text-xs">
-                    Initialisation...
+                    {t('admin.dashboard.initializing')}
                 </div>
             )}
         </div>
@@ -74,6 +75,7 @@ const ChartContainer = ({ children }) => {
 };
 
 export default function DashboardPage() {
+  const { t } = useTranslation(); // Hook
   const [stats, setStats] = useState({
       revenue: 0,
       debt: 0,
@@ -83,11 +85,10 @@ export default function DashboardPage() {
   const [chartData, setChartData] = useState([]);
   const [recentOrders, setRecentOrders] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [isReady, setIsReady] = useState(false); // Fix for Recharts width animation
+  const [isReady, setIsReady] = useState(false); 
 
   
   useEffect(() => {
-    // Wait a tick for the DOM layout to settle before rendering chart
     const timer = setTimeout(() => setIsReady(true), 500);
     return () => clearTimeout(timer);
   }, []);
@@ -99,77 +100,30 @@ export default function DashboardPage() {
   const loadDashboardData = async () => {
     setLoading(true);
     try {
-        // Parallel Fetch
-        const [ordersRes, leadsRes, apptsRes] = await Promise.all([
-            FinanceService.getRecentOrders(50),
-            CRMService.getAllLeads(),
-            CRMService.getUpcomingAppointments(10)
-        ]);
+        const data = await dashboardService.getStats();
 
-        // 1. Calculate Financial KPIs (Revenue & Debt)
-        let revenue = 0;
-        let debt = 0;
-        let monthlySales = {}; // Map: "Jan" -> 12000
+        setStats({
+            revenue: data.revenue,
+            debt: data.debt,
+            activeLeads: data.activeLeads,
+            upcomingInstallations: data.upcomingInstallations
+        });
 
-        // Initialize last 6 months in map
-        const months = [];
+        setRecentOrders(data.recentOrders);
+
+        // Chart Data Formatting
+        // Ensure last 6 months order even if empty
+        const chart = [];
         for (let i = 5; i >= 0; i--) {
             const d = new Date();
             d.setMonth(d.getMonth() - i);
             const key = d.toLocaleString('fr-FR', { month: 'short' });
-            monthlySales[key] = 0;
-            months.push(key);
-        }
-
-        if (ordersRes.success) {
-            setRecentOrders(ordersRes.data.slice(0, 5)); // Take top 5 for widget
-
-            ordersRes.data.forEach(order => {
-                // Revenue (Paid + Partial)
-                if (order.status === 'paid' || order.status === 'partial_payment' || order.status === 'installed') {
-                     revenue += Number(order.amountPaid) || 0;
-                }
-                
-                // Debt (Remaining on active orders)
-                if (order.status !== 'cancelled' && order.status !== 'closed') {
-                    const total = Number(order.total) || 0;
-                    const paid = Number(order.amountPaid) || 0;
-                    debt += Math.max(0, total - paid);
-                }
-
-                // Chart Data (Based on createdAt)
-                if (order.createdAt?.seconds) {
-                    const date = new Date(order.createdAt.seconds * 1000);
-                    const key = date.toLocaleString('fr-FR', { month: 'short' });
-                    if (monthlySales[key] !== undefined) {
-                        monthlySales[key] += Number(order.total) || 0;
-                    }
-                }
+            chart.push({
+                name: key,
+                sales: data.monthlySales[key] || 0
             });
         }
-
-        // 2. Leads KPI
-        let activeLeadsCount = 0;
-        if (leadsRes.success) {
-            activeLeadsCount = leadsRes.data.filter(l => l.status === 'new' || l.status === 'contacted').length;
-        }
-
-        // 3. Upcoming Installations
-        let nextInstallationsCount = 0;
-        if (apptsRes.success) {
-            // Count upcoming 'installations'
-            nextInstallationsCount = apptsRes.data.filter(a => a.type === 'installation').length;
-        }
-
-        setStats({
-            revenue,
-            debt,
-            activeLeads: activeLeadsCount,
-            upcomingInstallations: nextInstallationsCount
-        });
-
-        // Format Chart Data
-        setChartData(months.map(m => ({ name: m, sales: monthlySales[m] })));
+        setChartData(chart);
 
     } catch (error) {
         console.error("Dashboard Error:", error);
@@ -179,42 +133,42 @@ export default function DashboardPage() {
     }
   };
 
-  if (loading) return <div className="p-12 text-center text-[#d4af37]">Chargement du tableau de bord...</div>;
+  if (loading) return <div className="p-12 text-center text-[#d4af37]">{t('admin.dashboard.loading')}</div>;
 
   return (
     <div className="space-y-6">
        <div className="flex justify-between items-center">
-            <h1 className="text-3xl font-bold font-heading text-white">Tableau de Bord</h1>
-            <p className="text-gray-400 text-sm">Vue d'ensemble <span className="text-[#d4af37]">• {new Date().toLocaleDateString()}</span></p>
+            <h1 className="text-3xl font-bold font-heading text-white">{t('admin.dashboard.title')}</h1>
+            <p className="text-gray-400 text-sm">{t('admin.dashboard.subtitle')} <span className="text-[#d4af37]">• {new Date().toLocaleDateString()}</span></p>
        </div>
 
        {/* KPI Cards */}
        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <StatCard 
-                title="Chiffre d'Affaires" 
+                title={t('admin.dashboard.revenue')} 
                 value={formatCurrency(stats.revenue)} 
-                subtext="Encaissements validés (Mois)" 
+                subtext={t('admin.dashboard.revenueSub')} 
                 icon={TrendingUp} 
-                color="green" // Dynamic color prop mapping is simple here
+                color="green" 
             />
             <StatCard 
-                title="Reste à Payer (Dette)" 
+                title={t('admin.dashboard.debt')} 
                 value={formatCurrency(stats.debt)} 
-                subtext="En attente de paiement" 
+                subtext={t('admin.dashboard.debtSub')} 
                 icon={DollarSign} 
                 color="red"
             />
              <StatCard 
-                title="Leads Actifs" 
+                title={t('admin.dashboard.leads')} 
                 value={stats.activeLeads} 
-                subtext="Nouveaux & Contactés" 
+                subtext={t('admin.dashboard.leadsSub')} 
                 icon={Users} 
                 color="blue" 
             />
             <StatCard 
-                title="Installations" 
+                title={t('admin.dashboard.installations')} 
                 value={stats.upcomingInstallations} 
-                subtext="7 prochains jours" 
+                subtext={t('admin.dashboard.installationsSub')} 
                 icon={Calendar} 
                 color="yellow" 
             />
@@ -222,9 +176,8 @@ export default function DashboardPage() {
 
        {/* Charts & Graphs */}
        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
-            <h3 className="text-lg font-bold text-white mb-6">Évolution des Ventes (6 mois)</h3>
+            <h3 className="text-lg font-bold text-white mb-6">{t('admin.dashboard.salesEvolution')}</h3>
             <div className="w-full h-[300px] relative chart-container">
-                {/* Recharts fix: Use ref to ensure width > 0 */}
                <ChartContainer>
                    <AreaChart data={chartData}>
                         <defs>
@@ -252,7 +205,7 @@ export default function DashboardPage() {
            {/* Recent Orders */}
            <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden flex flex-col">
                 <div className="p-6 border-b border-zinc-800 flex justify-between items-center">
-                    <h3 className="font-bold text-white flex items-center gap-2"><Briefcase size={18} className="text-[#d4af37]"/> Dernières Commandes</h3>
+                    <h3 className="font-bold text-white flex items-center gap-2"><Briefcase size={18} className="text-[#d4af37]"/> {t('admin.dashboard.recentOrders')}</h3>
                 </div>
                 <div className="flex-1 overflow-auto">
                     <table className="w-full text-left text-sm text-gray-400">
@@ -273,7 +226,7 @@ export default function DashboardPage() {
                                 </tr>
                             ))}
                             {recentOrders.length === 0 && (
-                                <tr><td colSpan="3" className="p-6 text-center">Aucune commande récente</td></tr>
+                                <tr><td colSpan="3" className="p-6 text-center">{t('admin.dashboard.none')}</td></tr>
                             )}
                         </tbody>
                     </table>
@@ -283,16 +236,16 @@ export default function DashboardPage() {
            {/* Alerts */}
            <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden flex flex-col">
                 <div className="p-6 border-b border-zinc-800 flex justify-between items-center">
-                    <h3 className="font-bold text-white flex items-center gap-2"><Bell size={18} className="text-[#d4af37]"/> Alertes Opérationnelles</h3>
+                    <h3 className="font-bold text-white flex items-center gap-2"><Bell size={18} className="text-[#d4af37]"/> {t('admin.dashboard.alerts')}</h3>
                 </div>
                 <div className="flex-1 p-6 space-y-4">
                      {/* Mock Logic for Alerts - ideally computed from real data */}
-                     {stats.activeLeads > 5 && (
+                     {stats.activeLeads > 0 && (
                          <div className="flex items-start gap-3 p-3 rounded-lg bg-orange-500/10 border border-orange-500/20">
                              <AlertTriangle className="text-orange-500 shrink-0" size={20} />
                              <div>
-                                 <p className="text-orange-500 text-sm font-bold">{stats.activeLeads} Nouveaux Leads</p>
-                                 <p className="text-gray-400 text-xs">Ces prospects attendent d'être contactés.</p>
+                                 <p className="text-orange-500 text-sm font-bold">{t('admin.dashboard.newLeads', { count: stats.activeLeads })}</p>
+                                 <p className="text-gray-400 text-xs">{t('admin.dashboard.leadsWait')}</p>
                              </div>
                          </div>
                      )}
@@ -300,14 +253,14 @@ export default function DashboardPage() {
                      <div className="flex items-start gap-3 p-3 rounded-lg bg-blue-500/10 border border-blue-500/20">
                           <Calendar className="text-blue-500 shrink-0" size={20} />
                           <div>
-                              <p className="text-blue-500 text-sm font-bold">Planning Hebdo</p>
-                              <p className="text-gray-400 text-xs">{stats.upcomingInstallations} installations prévues cette semaine.</p>
+                              <p className="text-blue-500 text-sm font-bold">{t('admin.dashboard.weeklySchedule')}</p>
+                              <p className="text-gray-400 text-xs">{stats.upcomingInstallations} {t('admin.dashboard.installationsPlanned')}</p>
                           </div>
                      </div>
 
                      <div className="flex items-start gap-3 p-3 rounded-lg bg-zinc-800 border border-zinc-700">
                           <div className="h-2 w-2 rounded-full bg-green-500 mt-2"></div>
-                          <p className="text-gray-400 text-sm">Système opérationnel. Aucune alerte critique.</p>
+                          <p className="text-gray-400 text-sm">{t('admin.dashboard.systemOk')}</p>
                      </div>
                 </div>
            </div>

@@ -72,6 +72,29 @@
     "contact": "צור קשר"
   },
   "admin": {
+    "dashboard": {
+      "title": "לוח בקרה",
+      "subtitle": "סקירה כללית",
+      "revenue": "הכנסות",
+      "revenueSub": "תשלומים שאושרו (חודש)",
+      "debt": "יתרת חוב",
+      "debtSub": "ממתין לתשלום",
+      "leads": "לידים פעילים",
+      "leadsSub": "חדשים ונוצרו קשר",
+      "installations": "התקנות",
+      "installationsSub": "7 ימים קרובים",
+      "salesEvolution": "התפתחות מכירות (6 חודשים)",
+      "loading": "טוען לוח בקרה...",
+      "recentOrders": "הזמנות אחרונות",
+      "alerts": "התראות תפעוליות",
+      "weeklySchedule": "לוח זמנים שבועי",
+      "installationsPlanned": "התקנות מתוכננות השבוע",
+      "systemOk": "המערכת תקינה. אין התראות קריטיות.",
+      "none": "אין הזמנות אחרונות",
+      "initializing": "אתחול...",
+      "newLeads": "{{count}} לידים חדשים",
+      "leadsWait": "לידים אלה ממתינים ליצירת קשר."
+    },
     "title": {
       "new": "מוצר חדש",
       "edit": "ערוך מוצר"
@@ -187,10 +210,20 @@
     "Maniglia Francesco": "פשטות ואלגנטיות. עיקולים רכים המתאימים עצמם ליד.",
     "Maniglia Giorgio": "מתוחכם ואופנתי. ידית המביאה נגיעה של הוט קוטור לבית שלך."
   },
-  "Porte Intérieure": "דלת פנים",
-  "Porte Blindée": "דלת ביטחון",
-  "Porte Extérieure": "דלת חוץ",
-  "Poignée": "ידית",
-  "Serrure": "מנעול",
-  "Accessoire": "אביזר"
+  "categories": {
+    "Portes Intérieures": "דלתות פנים",
+    "Portes Blindées": "דלתות כניסה",
+    "Portes Extérieures": "דלתות חוץ",
+    "Poignées": "ידיות",
+    "Serrures": "מנעולים",
+    "Accessoires": "אביזרים"
+  },
+  "status": {
+    "draft": "טיוטה",
+    "validated": "מאושר",
+    "production": "בייצור",
+    "installation_scheduled": "התקנה תוכננה",
+    "completed": "הושלם",
+    "cancelled": "בוטל"
+  }
 }

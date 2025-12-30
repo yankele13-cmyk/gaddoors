@@ -72,6 +72,29 @@
     "contact": "Contact"
   },
   "admin": {
+    "dashboard": {
+      "title": "Dashboard",
+      "subtitle": "Overview",
+      "revenue": "Revenue",
+      "revenueSub": "Validated Payments (Month)",
+      "debt": "Pending Payment (Debt)",
+      "debtSub": "Waiting for payment",
+      "leads": "Active Leads",
+      "leadsSub": "New & Contacted",
+      "installations": "Installations",
+      "installationsSub": "Next 7 days",
+      "salesEvolution": "Sales Evolution (6 months)",
+      "loading": "Loading dashboard...",
+      "recentOrders": "Recent Orders",
+      "alerts": "Operational Alerts",
+      "weeklySchedule": "Weekly Schedule",
+      "installationsPlanned": "installations planned this week",
+      "systemOk": "System operational. No critical alerts.",
+      "none": "No recent orders",
+      "initializing": "Initializing...",
+      "newLeads": "{{count}} New Leads",
+      "leadsWait": "These prospects are waiting to be contacted."
+    },
     "title": {
       "new": "New Product",
       "edit": "Edit Product"

@@ -7,7 +7,9 @@ import toast from 'react-hot-toast';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next'; // Added
 
-const CATEGORIES = [
+import { SettingsService } from '../../../services/settings.service';
+
+const DEFAULT_CATEGORIES = [
     "Porte Intérieure",
     "Porte Blindée", 
     "Porte Extérieure",
@@ -19,37 +21,42 @@ const CATEGORIES = [
 export default function ProductFormPage() {
   const { t } = useTranslation();
   const { id } = useParams();
-  const [docId, setDocId] = useState(id); // State to hold the REAL doc id (in case of whitespace mismatch)
+  const [docId, setDocId] = useState(id); 
   const isEditMode = !!id;
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
+  const [categories, setCategories] = useState(DEFAULT_CATEGORIES);
 
   const { register, handleSubmit, reset, setValue, formState: { errors } } = useForm();
-
+  
   useEffect(() => {
+    loadSettings();
     if (isEditMode) {
       loadProduct();
     }
   }, [id]);
 
+  const loadSettings = async () => {
+    const response = await SettingsService.getGeneralSettings();
+    if (response.success && response.data.productCategories) {
+        setCategories(response.data.productCategories);
+    }
+  };
+
   const loadProduct = async () => {
     setLoading(true);
-    console.log("Loading Product ID:", id); // DEBUG
-
+    // ... existing loadProduct implementation ...
     const response = await ProductService.getProductById(id);
-    console.log("Load Response:", response); // DEBUG
-
     if (response.success) {
       const product = response.data;
-      setDocId(product.id); // Capture the real ID
+      setDocId(product.id);
       reset(product);
       if (product.imageUrl) {
         setImagePreview(product.imageUrl);
       }
     } else {
         toast.error("Erreur: " + response.error);
-        // Delay redirect slightly so user can see the error
         setTimeout(() => navigate('/admin/products'), 2000);
     }
     setLoading(false);
@@ -157,7 +164,7 @@ export default function ProductFormPage() {
                             {...register("category")}
                             className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-3 text-white focus:border-[#d4af37] outline-none"
                         >
-                            {CATEGORIES.map(cat => <option key={cat} value={cat}>{t(cat)}</option>)}
+                            {categories.map(cat => <option key={cat} value={cat}>{t(cat)}</option>)}
                         </select>
                     </div>
 

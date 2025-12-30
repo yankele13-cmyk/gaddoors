@@ -30,6 +30,8 @@ const ProductFormPage = lazy(() => import('./pages/admin/products/ProductFormPag
 const QuoteBuilder = lazy(() => import('./pages/admin/finance/QuoteBuilder'));
 const OrderListPage = lazy(() => import('./pages/admin/finance/OrderListPage'));
 const OrderDetailPage = lazy(() => import('./pages/admin/finance/OrderDetailPage'));
+const OrdersPage = lazy(() => import('./pages/admin/OrdersPage')); // Switch to main OrdersPage
+const TranslationManagerPage = lazy(() => import('./pages/admin/settings/TranslationManagerPage'));
 
 // Loading Fallback
 const AdminLoading = () => (
@@ -91,8 +93,13 @@ function App() {
 
              <Route path="finance" element={<FinancePage />} />
              <Route path="quotes/new" element={<QuoteBuilder />} />
-             <Route path="orders" element={<OrderListPage />} />
+             <Route path="orders" element={<OrdersPage />} />
              <Route path="orders/:id" element={<OrderDetailPage />} /> {/* Order Detail Route */}
+             
+             {/* Settings Routes */}
+             <Route path="settings">
+                <Route path="translations" element={<TranslationManagerPage />} />
+             </Route>
           </Route>
 
           {/* Login Separation: Needs to be outside the guarded layout but lazy loaded */}

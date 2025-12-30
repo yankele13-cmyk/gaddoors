@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
-import InvoiceDocument from '../../components/admin/finance/InvoiceDocument';
+import { InvoiceDocument } from '../../components/documents/InvoiceDocument';
 import { createInvoice, getInvoices, updateInvoiceStatus } from '../../services/invoiceService';
 import { Plus, Trash2, FileText, Download, RefreshCw, Save, CheckCircle, Clock } from 'lucide-react';
 import { useForm, useFieldArray } from 'react-hook-form';

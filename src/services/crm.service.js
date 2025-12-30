@@ -83,9 +83,17 @@ export const CRMService = {
       // 1. Create Appointment Reference
       // We use doc() with no ID to generate one, then set() instead of add() for batch
       const apptRef = doc(collection(db, COLLECTION_APPOINTMENTS));
+      
+      const start = appointmentData.date ? new Date(appointmentData.date) : new Date();
+      const end = new Date(start.getTime() + 60 * 60 * 1000);
+      const title = appointmentData.title || `${appointmentData.clientName || 'Client'} - ${appointmentData.type || 'Rendez-vous'}`;
+
       batch.set(apptRef, {
         ...appointmentData,
         relatedLeadId: leadId,
+        start,
+        end,
+        title,
         status: 'scheduled',
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp()
@@ -140,8 +148,16 @@ export const CRMService = {
 
   async createAppointment(appointmentData) {
     try {
+        // Prepare Calendar-compatible fields
+        const start = appointmentData.date ? new Date(appointmentData.date) : new Date();
+        const end = new Date(start.getTime() + 60 * 60 * 1000); // 1 hour duration default
+        const title = appointmentData.title || `${appointmentData.clientName || 'Client'} - ${appointmentData.type || 'Rendez-vous'}`;
+
         const docRef = await addDoc(collection(db, COLLECTION_APPOINTMENTS), {
             ...appointmentData,
+            start, // Timestamp/Date for Calendar
+            end,   // Timestamp/Date for Calendar
+            title, // Title for Calendar
             status: 'scheduled',
             createdAt: serverTimestamp(),
             updatedAt: serverTimestamp()

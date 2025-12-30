@@ -7,7 +7,9 @@ import {
   doc, 
   serverTimestamp, 
   query, 
-  orderBy 
+  orderBy,
+  limit, 
+  startAfter 
 } from 'firebase/firestore';
 import { 
   ref, 
@@ -19,8 +21,37 @@ import { db, storage } from '../config/firebase';
 const COLLECTION_NAME = 'products';
 
 export const productsService = {
-  // GET ALL (with sorting)
+  // GET PAGE (Pagination)
+  getPage: async (lastVisible = null, pageSize = 20) => {
+    let qConstraints = [
+      collection(db, COLLECTION_NAME),
+      orderBy('createdAt', 'desc'),
+      limit(pageSize)
+    ];
+
+    if (lastVisible) {
+      qConstraints.push(startAfter(lastVisible));
+    }
+
+    // Reconstruction of query because startAfter needs to be applied to the base reference
+    // Actually, in modular SDK:
+    // query(ref, ...constraints)
+    
+    let q = query(collection(db, COLLECTION_NAME), orderBy('createdAt', 'desc'), limit(pageSize));
+    if (lastVisible) {
+        q = query(collection(db, COLLECTION_NAME), orderBy('createdAt', 'desc'), startAfter(lastVisible), limit(pageSize));
+    }
+
+    const snapshot = await getDocs(q);
+    const items = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    const lastDoc = snapshot.docs[snapshot.docs.length - 1];
+    
+    return { items, lastDoc };
+  },
+
+  // DEPRECATED: Keep for backward compatibility if needed, but warn
   getAll: async () => {
+    console.warn("Using deprecated getAll() - Switch to getPage()");
     const q = query(collection(db, COLLECTION_NAME), orderBy('createdAt', 'desc'));
     const snapshot = await getDocs(q);
     return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));

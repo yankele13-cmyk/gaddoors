@@ -72,6 +72,29 @@
     "contact": "Contact"
   },
   "admin": {
+    "dashboard": {
+      "title": "Tableau de Bord",
+      "subtitle": "Vue d'ensemble",
+      "revenue": "Chiffre d'Affaires",
+      "revenueSub": "Encaissements validés (Mois)",
+      "debt": "Reste à Payer (Dette)",
+      "debtSub": "En attente de paiement",
+      "leads": "Leads Actifs",
+      "leadsSub": "Nouveaux & Contactés",
+      "installations": "Installations",
+      "installationsSub": "7 prochains jours",
+      "salesEvolution": "Évolution des Ventes (6 mois)",
+      "loading": "Chargement du tableau de bord...",
+      "recentOrders": "Dernières Commandes",
+      "alerts": "Alertes Opérationnelles",
+      "weeklySchedule": "Planning Hebdo",
+      "installationsPlanned": "installations prévues cette semaine",
+      "systemOk": "Système opérationnel. Aucune alerte critique.",
+      "none": "Aucune commande récente",
+      "initializing": "Initialisation...",
+      "newLeads": "{{count}} Nouveaux Leads",
+      "leadsWait": "Ces prospects attendent d'être contactés."
+    },
     "title": {
       "new": "Nouveau Produit",
       "edit": "Modifier le Produit"
@@ -187,10 +210,20 @@
     "Maniglia Francesco": "Simplicité et élégance. Des courbes douces qui s'adaptent naturellement à la main.",
     "Maniglia Giorgio": "Sophistiqué et mode. Une poignée qui apporte une touche de haute couture à votre intérieur."
   },
-  "Porte Intérieure": "Porte Intérieure",
-  "Porte Blindée": "Porte Blindée",
-  "Porte Extérieure": "Porte Extérieure",
-  "Poignée": "Poignée",
-  "Serrure": "Serrure",
-  "Accessoire": "Accessoire"
+  "categories": {
+    "Portes Intérieures": "Portes Intérieures",
+    "Portes Blindées": "Portes Blindées",
+    "Portes Extérieures": "Portes Extérieures",
+    "Poignées": "Poignées",
+    "Serrures": "Serrures",
+    "Accessoires": "Accessoires"
+  },
+  "status": {
+    "draft": "Brouillon",
+    "validated": "Validé",
+    "production": "En Production",
+    "installation_scheduled": "Installation Prévue",
+    "completed": "Terminé",
+    "cancelled": "Annulé"
+  }
 }

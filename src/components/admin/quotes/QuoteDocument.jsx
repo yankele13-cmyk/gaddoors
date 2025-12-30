@@ -21,7 +21,7 @@ export default function QuoteDocument({ data }) {
            <div className="text-sm space-y-1">
               <p>Aaron Eshkoli 115, Jerusalem</p>
               <p>Tel: +972 55 278 3693</p>
-              <p>Email: contact@gaddoors.com</p>
+              <p>Email: yankele13@gmail.com</p>
            </div>
         </div>
         <div className="text-right">

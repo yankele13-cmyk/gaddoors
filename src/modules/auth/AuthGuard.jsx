@@ -1,46 +1,34 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { subscribeToAuthChanges } from '../../services/authService';
-import { ROUTES, ALLOWED_ADMINS } from '../../config/constants';
+import { useAuth } from '../../context/AuthContext';
+import { ROUTES } from '../../config/constants';
 import toast from 'react-hot-toast';
 
 export default function AuthGuard({ children }) {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const { currentUser, isAdmin } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    const unsubscribe = subscribeToAuthChanges((currentUser) => {
-      setLoading(false);
-      
-      // 1. Not Logged In
-      if (!currentUser) {
-        setUser(null);
-        navigate(ROUTES.ADMIN.LOGIN);
-        return;
-      }
+    // If we have a user but they are NOT an admin (after role sync)
+    if (currentUser && isAdmin === false) {
+      toast.error("Accès Refusé : Vous n'êtes pas administrateur.");
+      navigate(ROUTES.PUBLIC.HOME); 
+    }
+  }, [currentUser, isAdmin, navigate]);
 
-      // 2. Logged In but Unauthorized (RBAC)
-      if (!ALLOWED_ADMINS.includes(currentUser.email)) {
-        setUser(null);
-        toast.error("Accès Refusé : Vous n'êtes pas administrateur.");
-        navigate(ROUTES.PUBLIC.HOME); // Or Login
-        return;
-      }
-
-      // 3. Authorized
-      setUser(currentUser);
-    });
-
-    return () => unsubscribe();
-  }, [navigate]);
-
-  if (loading) {
-    return <div className="h-screen w-full flex items-center justify-center bg-zinc-950 text-[#d4af37]">Chargement...</div>;
+  // If no user, the layout/router usually handles redirect to login, 
+  // but we can enforce it here if needed. 
+  // However, AuthContext initial loading state usually handles the "wait".
+  
+  if (!currentUser) {
+     // If loading is done and no user, we should be redirected. 
+     // We'll assume the parent component or App.jsx handles the initial "Is Logged In" check via the LoginPage redirection logic
+     // But for safety:
+     return null; // Don't render admin content
   }
 
-  if (!user) {
-    return null; // Will redirect via effect
+  if (!isAdmin) {
+    return null; // Don't render while redirecting
   }
 
   return children;

@@ -86,16 +86,8 @@ export default function AppointmentModal({ isOpen, onClose, leadToConvert = null
       if (leadToConvert) {
           res = await CRMService.convertLeadToAppointment(leadToConvert.id, data);
       } else {
-           // Fallback or explicit create
-           // For now, alert that standalone creation needs service update if strictly missing
-           // But actually I can just add `createAppointment` to the service file right now via `replace_file`?
-           // No, I should deliver the requested files first.
-           // I will use `CRMService.convertLeadToAppointment` for leads.
-           // For simple appointments, I'll log or try to call `createAppointment`.
-           // Let's assume I'll call `CRMService.createAppointment(data)`.
-           res = { success: false, error: "Feature 'Create Standalone' requires service update." }; 
-           // Wait, I am the one who wrote the service. I missed `createAppointment`.
-           // I will QUICKLY PATCH the service in this turn before writing the Modal.
+           // Standalone Create Logic
+           res = await CRMService.createAppointment(data);
       }
       
       if (res.success) {

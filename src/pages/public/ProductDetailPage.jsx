@@ -48,6 +48,9 @@ export default function ProductDetailPage() {
     return <p>{t('product.notFound')}</p>;
   }
 
+  
+  const displayCategory = product.category ? t(`categories.${product.category}`, product.category) : '';
+
   return (
     <div className={styles.container}>
       <div className={styles.imageContainer}>
@@ -59,7 +62,7 @@ export default function ProductDetailPage() {
       </div>
       <div className={styles.details}>
         <Link to="/catalogue" className={styles.backLink}>{t('product.back')}</Link>
-        <span className={styles.category}>{product.category}</span>
+        <span className={styles.category}>{displayCategory}</span>
         <h1 className={styles.title}>{product.name}</h1>
         <p className={styles.description}>{product.description || t('product.defaultDescription')}</p>
         

@@ -6,7 +6,9 @@ import {
   doc, 
   serverTimestamp, 
   query, 
-  orderBy 
+  orderBy,
+  limit,
+  startAfter 
 } from 'firebase/firestore';
 import { db } from '../config/firebase';
 import { ORDER_STATUS, APP_CONFIG } from '../config/constants';
@@ -14,8 +16,33 @@ import { ORDER_STATUS, APP_CONFIG } from '../config/constants';
 const COLLECTION_NAME = 'orders';
 
 export const ordersService = {
-  // GET ALL ORDERS
+  // GET PAGE (Pagination)
+  getPage: async (lastVisible = null, pageSize = 20) => {
+    let qConstraints = [
+      collection(db, COLLECTION_NAME),
+      orderBy('createdAt', 'desc'),
+      limit(pageSize)
+    ];
+
+    if (lastVisible) {
+        // qConstraints.push(startAfter(lastVisible));
+        // Note: For query reconstruction pattern:
+    }
+    
+    let q = query(collection(db, COLLECTION_NAME), orderBy('createdAt', 'desc'), limit(pageSize));
+    if (lastVisible) {
+        q = query(collection(db, COLLECTION_NAME), orderBy('createdAt', 'desc'), startAfter(lastVisible), limit(pageSize));
+    }
+
+    const snapshot = await getDocs(q);
+    const items = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    const lastDoc = snapshot.docs[snapshot.docs.length - 1];
+    
+    return { items, lastDoc };
+  },
+
   getAll: async () => {
+    console.warn("Using deprecated getAll() for orders - Switch to getPage()");
     const q = query(collection(db, COLLECTION_NAME), orderBy('createdAt', 'desc'));
     const snapshot = await getDocs(q);
     return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
