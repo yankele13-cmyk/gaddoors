@@ -71,6 +71,16 @@
     "realisations": "פרויקטים",
     "contact": "צור קשר"
   },
+  "status": {
+    "draft": "טיוטה",
+    "validated": "מאושר",
+    "production": "בייצור",
+    "installation_scheduled": "התקנה תוכננה",
+    "completed": "הושלם",
+    "cancelled": "בוטל",
+    "paid": "שולם",
+    "partial_payment": "תשלום חלקי"
+  },
   "admin": {
     "dashboard": {
       "title": "לוח בקרה",
@@ -95,6 +105,13 @@
       "newLeads": "{{count}} לידים חדשים",
       "leadsWait": "לידים אלה ממתינים ליצירת קשר."
     },
+    "orders": {
+      "reference": "אסמכתא",
+      "client": "לקוח",
+      "date": "תאריך",
+      "amount": "סכום כולל",
+      "status": "סטטוס"
+    },
     "title": {
       "new": "מוצר חדש",
       "edit": "ערוך מוצר"
@@ -113,6 +130,12 @@
       "saving": "שומר..."
     }
   },
+  "Porte Intérieure": "דלת פנים",
+  "Porte Blindée": "דלת כניסה",
+  "Porte Extérieure": "דלת חוץ",
+  "Poignée": "ידית",
+  "Serrure": "מנעול",
+  "Accessoire": "אביזר",
   "home": {
     "hero": {
       "title": "אלגנטיות של איכות",
@@ -217,13 +240,5 @@
     "Poignées": "ידיות",
     "Serrures": "מנעולים",
     "Accessoires": "אביזרים"
-  },
-  "status": {
-    "draft": "טיוטה",
-    "validated": "מאושר",
-    "production": "בייצור",
-    "installation_scheduled": "התקנה תוכננה",
-    "completed": "הושלם",
-    "cancelled": "בוטל"
   }
 }

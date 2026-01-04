@@ -12,22 +12,26 @@ export default function DoorConfigurator({ product, onClose, onConfirm }) {
   
   const [quantity, setQuantity] = useState(1);
   const [roomLabel, setRoomLabel] = useState('');
+  const [manualPrice, setManualPrice] = useState(null); // Allow override
 
-  // Cost Modifiers Logic (Mock for now, could come from product variants)
   const getExtraCost = () => {
     let extra = 0;
     if (specs.lock === 'magnetique') extra += 150;
-    if (specs.frame === 'mamad') extra += 200;
+    // if (specs.frame === 'mamad') extra += 200; // Example
     return extra;
   };
 
-  const currentPrice = (Number(product.price) || 0) + getExtraCost();
+  // Base calculation
+  const calculatedBase = (Number(product.price) || 0) + getExtraCost();
+  
+  // Final price is manual override OR calculated base
+  const finalUnitPrice = manualPrice !== null ? Number(manualPrice) : calculatedBase;
 
   const handleConfirm = () => {
     onConfirm({
       productId: product.id,
       name: product.name,
-      priceSnapshot: currentPrice,
+      priceSnapshot: finalUnitPrice,
       quantity: Number(quantity),
       roomLabel,
       specs // Full technical object
@@ -40,7 +44,8 @@ export default function DoorConfigurator({ product, onClose, onConfirm }) {
         <div className="p-4 border-b border-zinc-800 flex justify-between items-center bg-zinc-950 rounded-t-xl">
            <h3 className="font-bold text-white flex flex-col">
              <span>{product.name}</span>
-             <span className="text-xs text-[#d4af37] font-mono">{currentPrice} ₪ / unité</span>
+             <span>{product.name}</span>
+             <span className="text-xs text-[#d4af37] font-mono">{finalUnitPrice.toLocaleString()} ₪ / unité</span>
            </h3>
            <button onClick={onClose}><X className="text-gray-400 hover:text-white" /></button>
         </div>
@@ -118,9 +123,19 @@ export default function DoorConfigurator({ product, onClose, onConfirm }) {
                         onChange={(e) => setQuantity(e.target.value)}
                         className="w-16 bg-zinc-800 border border-zinc-700 rounded p-2 text-white text-center"
                     />
+                    <div className="flex flex-col">
+                        <span className="text-xs text-gray-500">Prix Unitaire (HT)</span>
+                        <input 
+                            type="number" 
+                            min="0"
+                            value={manualPrice !== null ? manualPrice : calculatedBase}
+                            onChange={(e) => setManualPrice(e.target.value)}
+                            className="w-24 bg-zinc-800 border border-zinc-700 rounded p-2 text-white text-center focus:border-[#d4af37] outline-none"
+                        />
+                    </div>
                 </div>
                 <div className="flex-1 text-right">
-                    <div className="text-2xl font-mono font-bold text-[#d4af37]">{(currentPrice * quantity).toLocaleString()} ₪</div>
+                    <div className="text-2xl font-mono font-bold text-[#d4af37]">{(finalUnitPrice * quantity).toLocaleString()} ₪</div>
                     <div className="text-xs text-gray-500">Total Ligne HT</div>
                 </div>
             </div>

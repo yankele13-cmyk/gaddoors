@@ -9,22 +9,27 @@ import MainLayout from './components/layout/MainLayout';
 import HomePage from './pages/public/HomePage';
 import CatalogPage from './pages/public/CatalogPage';
 import ProductDetailPage from './pages/public/ProductDetailPage';
-import InstallationsPage from './pages/public/InstallationsPage';
+// import ProductListPage from './pages/admin/products/ProductListPage'; // DEPRECATED
+import ProductManagerPage from './pages/admin/products/ProductManagerPage'; // NEW V2
+import LeadsPage from './pages/admin/crm/LeadsPage';
 import ContactPage from './pages/public/ContactPage';
+import InstallationsPage from './pages/public/InstallationsPage';
 
 // Admin Imports (Lazy Loaded)
 import { AuthProvider } from './context/AuthContext';
-const LoginPage = lazy(() => import('./pages/admin/LoginPage'));
-const AdminLayout = lazy(() => import('./layouts/AdminLayout'));
-const AuthGuard = lazy(() => import('./modules/auth/AuthGuard'));
+import LoginPage from './pages/admin/LoginPage';
+import AdminLayout from './layouts/AdminLayout';
+import AuthGuard from './modules/auth/AuthGuard';
+import MessagesPage from './pages/admin/crm/MessagesPage';
 const DashboardPage = lazy(() => import('./pages/admin/DashboardPage'));
-const LeadsPage = lazy(() => import('./pages/admin/crm/LeadsPage'));
+// const LeadsPage = lazy(() => import('./pages/admin/crm/LeadsPage')); // Moved up
 const CalendarPage = lazy(() => import('./pages/admin/CalendarPage'));
 const FinancePage = lazy(() => import('./pages/admin/FinancePage'));
+const TeamPage = lazy(() => import('./pages/admin/TeamPage')); // Team Management
 
 // Product Pages
-const ProductListPage = lazy(() => import('./pages/admin/products/ProductListPage'));
-const ProductFormPage = lazy(() => import('./pages/admin/products/ProductFormPage'));
+// const ProductListPage = lazy(() => import('./pages/admin/products/ProductListPage')); // Replaced by ProductManagerPage
+const ProductFormPage = lazy(() => import('./pages/admin/products/ProductFormPage')); // Still needed for lazy loading if ProductManagerPage uses it internally
 
 // Finance Pages
 const QuoteBuilder = lazy(() => import('./pages/admin/finance/QuoteBuilder'));
@@ -81,25 +86,30 @@ function App() {
           }>
              <Route index element={<DashboardPage />} /> 
              <Route path="dashboard" element={<DashboardPage />} />
-             <Route path="leads" element={<LeadsPage />} />
+            <Route path="products" element={<ProductManagerPage />} />
+            <Route path="leads" element={<LeadsPage />} />
              <Route path="calendar" element={<CalendarPage />} />
              
              {/* Product Management Routes */}
-             <Route path="products">
+             {/* Replaced by <Route path="products" element={<ProductManagerPage />} /> */}
+             {/* <Route path="products">
                 <Route index element={<ProductListPage />} />
                 <Route path="new" element={<ProductFormPage />} />
                 <Route path="edit/:id" element={<ProductFormPage />} />
-             </Route>
+             </Route> */}
 
              <Route path="finance" element={<FinancePage />} />
              <Route path="quotes/new" element={<QuoteBuilder />} />
              <Route path="orders" element={<OrdersPage />} />
-             <Route path="orders/:id" element={<OrderDetailPage />} /> {/* Order Detail Route */}
+             <Route path="orders/:id" element={<OrderDetailPage />} />
              
              {/* Settings Routes */}
              <Route path="settings">
                 <Route path="translations" element={<TranslationManagerPage />} />
              </Route>
+             
+             <Route path="users" element={<TeamPage />} />
+             <Route path="messages" element={<MessagesPage />} />
           </Route>
 
           {/* Login Separation: Needs to be outside the guarded layout but lazy loaded */}

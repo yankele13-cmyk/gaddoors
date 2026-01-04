@@ -10,11 +10,15 @@ import {
   Calendar, 
   LogOut,
   Menu,
-  X 
+  X,
+  Shield, // Added
+  Mail // Added for Messages
 } from 'lucide-react';
 import { useState } from 'react';
 
 import { auth } from '../config/firebase';
+
+import AdminNavItem from '../components/layout/AdminNavItem';
 
 export default function AdminLayout() {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -27,23 +31,6 @@ export default function AdminLayout() {
     }
   };
 
-  const NavItem = ({ to, icon: Icon, label }) => {
-    const isActive = location.pathname.startsWith(to);
-    return (
-      <Link 
-        to={to} 
-        onClick={() => setSidebarOpen(false)}
-        className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-          isActive 
-            ? 'bg-[#d4af37]/10 text-[#d4af37] font-bold border border-[#d4af37]/20' 
-            : 'text-gray-400 hover:bg-zinc-800 hover:text-white'
-        }`}
-      >
-        <Icon size={20} />
-        <span>{label}</span>
-      </Link>
-    );
-  };
 
   return (
     <div className="min-h-screen w-full bg-zinc-950 text-white flex">
@@ -76,12 +63,14 @@ export default function AdminLayout() {
         </div>
 
         <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
-          <NavItem to={ROUTES.ADMIN.DASHBOARD} icon={LayoutDashboard} label="Tableau de Bord" />
-          <NavItem to={ROUTES.ADMIN.PRODUCTS} icon={Package} label="Produits (PIM)" />
-          <NavItem to={ROUTES.ADMIN.LEADS} icon={Users} label="Prospects (CRM)" />
-          <NavItem to={ROUTES.ADMIN.ORDERS} icon={ShoppingCart} label="Commandes (CPQ)" />
-          <NavItem to={ROUTES.ADMIN.CALENDAR} icon={Calendar} label="Planning (OPS)" />
-          <NavItem to={ROUTES.ADMIN.FINANCE} icon={CreditCard} label="Finance" />
+          <AdminNavItem to={ROUTES.ADMIN.DASHBOARD} icon={LayoutDashboard} label="Tableau de Bord" onClick={() => setSidebarOpen(false)} />
+          <AdminNavItem to={ROUTES.ADMIN.PRODUCTS} icon={Package} label="Produits (PIM)" onClick={() => setSidebarOpen(false)} />
+          <AdminNavItem to={ROUTES.ADMIN.LEADS} icon={Users} label="Prospects (CRM)" onClick={() => setSidebarOpen(false)} />
+          <AdminNavItem to={ROUTES.ADMIN.ORDERS} icon={ShoppingCart} label="Commandes (CPQ)" onClick={() => setSidebarOpen(false)} />
+          {/* <AdminNavItem to={ROUTES.ADMIN.CALENDAR} icon={Calendar} label="Planning (OPS)" onClick={() => setSidebarOpen(false)} />  -- REMOVED as merged into CRM */}
+          <AdminNavItem to={ROUTES.ADMIN.FINANCE} icon={CreditCard} label="Finance" onClick={() => setSidebarOpen(false)} />
+          <AdminNavItem to={ROUTES.ADMIN.MESSAGES} icon={Mail} label="Messages" onClick={() => setSidebarOpen(false)} />
+          <AdminNavItem to={ROUTES.ADMIN.TEAM} icon={Shield} label="Équipe" onClick={() => setSidebarOpen(false)} />
         </nav>
 
         <div className="p-4 border-t border-zinc-800">

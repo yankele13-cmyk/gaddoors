@@ -13,11 +13,15 @@ import {
   query,
   where,
   serverTimestamp, 
-  writeBatch
+  writeBatch,
+  orderBy,
+  limit,
+  startAfter
 } from 'firebase/firestore';
 import { 
   ref, 
   uploadBytes, 
+  uploadBytesResumable,
   getDownloadURL 
 } from 'firebase/storage';
 import { db, storage } from '../config/firebase';
@@ -26,6 +30,31 @@ const COLLECTION_NAME = 'products';
 
 export const ProductService = {
   
+  // --- UTILS ---
+
+  // Upload Image with Progress
+  uploadImage(file, onProgress) {
+    return new Promise((resolve, reject) => {
+      const storageRef = ref(storage, `products/${Date.now()}_${file.name}`);
+      const uploadTask = uploadBytesResumable(storageRef, file); // Note: Requires uploadBytesResumable import
+
+      uploadTask.on(
+        'state_changed',
+        (snapshot) => {
+          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          if (onProgress) onProgress(progress);
+        },
+        (error) => {
+          reject(error);
+        },
+        async () => {
+          const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+          resolve(downloadURL);
+        }
+      );
+    });
+  },
+
   // --- CRUD ---
 
   async getAllProducts() {
@@ -36,6 +65,25 @@ export const ProductService = {
     } catch (error) {
       console.error("Error fetching products:", error);
       return { success: false, error: error.message };
+    }
+  },
+
+  // Pagination (Moved from legacy service)
+  async getPage(lastVisible = null, pageSize = 20) {
+    try {
+        let q = query(collection(db, COLLECTION_NAME), orderBy('createdAt', 'desc'), limit(pageSize));
+        if (lastVisible) {
+            q = query(collection(db, COLLECTION_NAME), orderBy('createdAt', 'desc'), startAfter(lastVisible), limit(pageSize));
+        }
+
+        const snapshot = await getDocs(q);
+        const items = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        const lastDoc = snapshot.docs[snapshot.docs.length - 1];
+        
+        return { items, lastDoc };
+    } catch (error) {
+        console.error("Error fetching page:", error);
+        return { items: [], lastDoc: null, error: error.message };
     }
   },
 
@@ -106,18 +154,16 @@ export const ProductService = {
       const snapshot = await getDocs(q);
       
       if (!snapshot.empty) {
-          // If excluding (Update mode), check if the found doc is NOT the current one (Safe comparison with trim)
+          // If excluding (Update mode), check if the found doc is NOT the current one
           const conflict = snapshot.docs.find(d => {
               const dId = d.id;
               const exId = excludeId || '';
               
-              // DEBUG LOGS
-              console.log(`[checkNameUnique] Checking: Name="${name}"`);
-              console.log(`[checkNameUnique] Found Doc ID: "${dId}"`);
-              console.log(`[checkNameUnique] Exclude ID: "${exId}"`);
-              console.log(`[checkNameUnique] Match? ${dId.trim() === exId.trim()}`);
+              // DEBUG LOGS (Reduced noise)
+              // console.log(`[checkNameUnique] Match? ${dId} vs ${exId}`);
               
-              return dId.trim() !== exId.trim();
+              // Strict equality check on trimmed IDs is safer
+              return String(dId).trim() !== String(exId).trim();
           });
           
           if (conflict) {
@@ -280,7 +326,8 @@ export const ProductService = {
 
       // Create Doc
       // Ensure we don't accidentally write id or other system fields if passed
-      const { id: _, ...safeData } = productData;
+      // CRITICAL FIX: Ensure 'image' (FileList) is NOT in safeData
+      const { id: _, image, ...safeData } = productData;
 
       const docRef = await addDoc(collection(db, COLLECTION_NAME), {
         ...safeData,
@@ -305,6 +352,8 @@ export const ProductService = {
       }
 
       let finalUpdates = { ...updates };
+      // CRITICAL FIX: Ensure 'image' (FileList) is removed
+      delete finalUpdates.image;
       
       // Security: Strip system fields that should not be manually updated here
       delete finalUpdates.id;
@@ -328,7 +377,11 @@ export const ProductService = {
       return { success: true };
     } catch (error) {
       console.error("Error updating product:", error);
-      return { success: false, error: error.message };
+      let message = error.message;
+      if (message.includes("No document to update")) {
+        message = "Ce produit semble avoir été supprimé. Veuillez rafraîchir la page.";
+      }
+      return { success: false, error: message };
     }
   }
 };

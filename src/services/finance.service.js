@@ -15,9 +15,11 @@ import {
   serverTimestamp,
   arrayUnion,
   getDoc,
-  runTransaction 
+  runTransaction,
+  startAfter 
 } from 'firebase/firestore';
 import { db } from '../config/firebase';
+import { APP_CONFIG, ORDER_STATUS } from '../config/constants';
 
 const COLLECTION_QUOTES = 'quotes';
 const COLLECTION_INVOICES = 'invoices';
@@ -101,6 +103,103 @@ export const FinanceService = {
 
   // --- ORDERS & PAYMENTS ---
 
+  // --- ORDERS & PAYMENTS ---
+  
+  // PAGINATION for Orders
+  async getOrdersPage(lastVisible = null, pageSize = 20) {
+    try {
+        let q = query(collection(db, COLLECTION_ORDERS), orderBy('createdAt', 'desc'), limit(pageSize));
+        if (lastVisible) {
+            q = query(collection(db, COLLECTION_ORDERS), orderBy('createdAt', 'desc'), startAfter(lastVisible), limit(pageSize));
+        }
+
+        const snapshot = await getDocs(q);
+        const items = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        const lastDoc = snapshot.docs[snapshot.docs.length - 1];
+        
+        return { items, lastDoc };
+    } catch (error) {
+        console.error("Error fetching orders page:", error);
+        return { items: [], lastDoc: null, error: error.message };
+    }
+  },
+
+  /**
+   * createOrderFromQuote (Unified Logic)
+   * Calculates Financials, Logistics, and Creates Order Snapshot
+   */
+  async createOrderFromQuote(quoteData) {
+    try {
+        const { client, items, logistics } = quoteData;
+
+        // 1. Calculate Financials (Server-side validation logic)
+        // Ensure priceSnapshot is used if available, else fallback to current price
+        const itemsTotal = items.reduce((sum, item) => sum + ((item.priceSnapshot || item.price || 0) * item.quantity), 0);
+        
+        // Logistics Logic
+        let deliveryCost = APP_CONFIG.LOGISTICS?.BASE_PRICE || 250;
+        if (logistics && logistics.floor > 2 && !logistics.hasElevator) {
+            deliveryCost += (logistics.floor - 2) * (APP_CONFIG.LOGISTICS?.FLOOR_SURCHARGE || 50);
+        }
+
+        const subTotal = itemsTotal + deliveryCost;
+        const vatAmount = subTotal * (APP_CONFIG.VAT_RATE || 0.17);
+        const totalGt = subTotal + vatAmount;
+
+        // 2. Construct The Document
+        const orderDoc = {
+          humanId: `CMD-${Date.now().toString().slice(-6)}`,
+          status: ORDER_STATUS.DRAFT || 'draft',
+          
+          clientSnapshot: {
+            name: client.name || '',
+            phone: client.phone || '',
+            email: client.email || '',
+            address: client.address || ''
+          },
+
+          logistics: {
+            zone: logistics?.zone || '',
+            floor: Number(logistics?.floor) || 0,
+            hasElevator: Boolean(logistics?.hasElevator),
+            calculatedDeliveryCost: deliveryCost
+          },
+
+          items: items.map(item => ({
+            productId: item.productId || item.id,
+            name: item.name, 
+            quantity: Number(item.quantity),
+            unitPriceSnapshot: Number(item.priceSnapshot || item.price), 
+            totalPrice: Number(item.priceSnapshot || item.price) * Number(item.quantity),
+            specs: item.specs || {}, 
+            roomLabel: item.roomLabel || ''
+          })),
+
+          financials: {
+            subTotal,
+            logisticsCost: deliveryCost,
+            vatRate: APP_CONFIG.VAT_RATE || 0.17,
+            vatAmount,
+            totalGt,
+            balanceDue: totalGt, // Initially full amount
+            amountPaid: 0 // Explicitly init
+          },
+
+          payments: [],
+          installerId: null,
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp()
+        };
+
+        const docRef = await addDoc(collection(db, COLLECTION_ORDERS), orderDoc);
+        return { success: true, data: { id: docRef.id } };
+
+    } catch (error) {
+        console.error("Error creating order:", error);
+        return { success: false, error: error.message };
+    }
+  },
+
   async convertQuoteToOrder(quoteId) {
     try {
         const quoteRef = doc(db, COLLECTION_QUOTES, quoteId);
@@ -141,6 +240,15 @@ export const FinanceService = {
       }
   },
 
+  async deleteOrder(orderId) {
+    try {
+        await deleteDoc(doc(db, COLLECTION_ORDERS, orderId));
+        return { success: true };
+    } catch (error) {
+        return { success: false, error: error.message };
+    }
+  },
+
   async updateOrder(orderId, updates) {
       try {
           const docRef = doc(db, COLLECTION_ORDERS, orderId);
@@ -149,6 +257,16 @@ export const FinanceService = {
       } catch (error) {
           return { success: false, error: error.message };
       }
+  },
+
+  async updateOrderStatus(id, status) {
+    try {
+        const docRef = doc(db, COLLECTION_ORDERS, id);
+        await updateDoc(docRef, { status, updatedAt: serverTimestamp() });
+        return { success: true };
+    } catch (error) {
+        return { success: false, error: error.message };
+    }
   },
 
   /**

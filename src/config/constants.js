@@ -21,6 +21,10 @@ export const ROUTES = {
     ORDERS: "/admin/orders",
     FINANCE: "/admin/finance",
     CALENDAR: "/admin/calendar",
+    FINANCE: "/admin/finance",
+    CALENDAR: "/admin/calendar",
+    TEAM: "/admin/team", // Team Management
+    MESSAGES: "/admin/messages", // New
   },
 };
 
@@ -40,6 +44,13 @@ export const LEAD_STATUS = {
   QUOTED: "quoted",
   WON: "won",
   LOST: "lost",
+};
+
+export const USER_ROLES = {
+  ADMIN: 'admin',
+  COMMERCIAL: 'commercial', // Sales
+  INSTALLER: 'installer', // Tech
+  VIEWER: 'viewer'
 };
 
 // DEPRECATED: Only used for migration in userService.js. 

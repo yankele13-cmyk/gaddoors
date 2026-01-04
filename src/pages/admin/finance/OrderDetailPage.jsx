@@ -3,9 +3,10 @@ import { useParams } from 'react-router-dom';
 import { FinanceService } from '../../../services/finance.service';
 import { OpsService } from '../../../services/ops.service';
 import { PDFDownloadLink } from '@react-pdf/renderer';
-import { InvoiceDocument } from '../../../components/documents/InvoiceDocument';
+import { InvoiceDocument } from '../../../modules/finance/components/InvoiceDocument';
 import PaymentModal from './components/PaymentModal';
-import { CheckCircle, Clock, AlertTriangle, FileText, UserCog, Hammer, Download, Eye } from 'lucide-react';
+
+import { CheckCircle, Clock, AlertTriangle, FileText, UserCog, Hammer, Download, Eye, Globe } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 const STATUS_OPTIONS = [
@@ -21,6 +22,8 @@ import PDFConfigModal from './components/PDFConfigModal';
 import PDFPreviewModal from './components/PDFPreviewModal';
 import { Settings } from 'lucide-react';
 
+import { Trash2 } from 'lucide-react'; // Ensure Trash2 is imported! (It was imported but just to be safe I check line 9)
+
 export default function OrderDetailPage() {
   const { id } = useParams();
   const [order, setOrder] = useState(null);
@@ -31,7 +34,9 @@ export default function OrderDetailPage() {
   // PDF Customization State
   const [isPDFConfigOpen, setIsPDFConfigOpen] = useState(false);
   const [previewDoc, setPreviewDoc] = useState(null);
+
   const [pdfCustomTexts, setPdfCustomTexts] = useState(null);
+  const [pdfLanguage, setPdfLanguage] = useState('he'); // Default to Hebrew as per previous hardcoded value
 
   useEffect(() => {
     loadData();
@@ -108,6 +113,12 @@ export default function OrderDetailPage() {
             
             <div className="flex flex-wrap gap-2">
                 {/* PDF Configuration */}
+                <div className="flex items-center gap-1 bg-zinc-800 rounded-lg p-1 border border-zinc-700">
+                    <button onClick={() => setPdfLanguage('fr')} className={`px-2 py-1 text-xs font-bold rounded ${pdfLanguage === 'fr' ? 'bg-[#d4af37] text-black' : 'text-gray-400 hover:text-white'}`}>FR</button>
+                    <button onClick={() => setPdfLanguage('en')} className={`px-2 py-1 text-xs font-bold rounded ${pdfLanguage === 'en' ? 'bg-[#d4af37] text-black' : 'text-gray-400 hover:text-white'}`}>EN</button>
+                    <button onClick={() => setPdfLanguage('he')} className={`px-2 py-1 text-xs font-bold rounded ${pdfLanguage === 'he' ? 'bg-[#d4af37] text-black' : 'text-gray-400 hover:text-white'}`}>HE</button>
+                </div>
+
                 <button
                     onClick={() => setIsPDFConfigOpen(true)}
                     className="bg-zinc-800 hover:bg-zinc-700 text-gray-300 hover:text-white px-3 py-2 rounded-lg border border-zinc-700 transition"
@@ -118,9 +129,9 @@ export default function OrderDetailPage() {
 
                 {/* WORK ORDER ACTIONS */}
                 <div className="flex bg-zinc-800 rounded-lg p-1 gap-1 border border-zinc-700">
-                    <button 
+                     <button 
                         onClick={() => setPreviewDoc({
-                            doc: <InvoiceDocument data={order} language="he" isWorkOrder={true} customTexts={pdfCustomTexts} />,
+                            doc: <InvoiceDocument data={order} language={pdfLanguage} isWorkOrder={true} customTexts={pdfCustomTexts} />,
                             name: `ordre_travail_${order.id}.pdf`
                         })}
                         className="text-gray-400 hover:text-white hover:bg-zinc-700 p-2 rounded transition"
@@ -129,7 +140,7 @@ export default function OrderDetailPage() {
                         <Eye size={18} />
                     </button>
                     <PDFDownloadLink
-                        document={<InvoiceDocument data={order} language="he" isWorkOrder={true} customTexts={pdfCustomTexts} />}
+                        document={<InvoiceDocument data={order} language={pdfLanguage} isWorkOrder={true} customTexts={pdfCustomTexts} />}
                         fileName={`ordre_travail_${order.id}.pdf`}
                         className="text-white hover:bg-zinc-700 px-3 py-2 rounded flex items-center gap-2 transition text-sm font-medium"
                     >
@@ -141,7 +152,7 @@ export default function OrderDetailPage() {
                 <div className="flex bg-[#d4af37] rounded-lg p-1 gap-1 text-black shadow-lg shadow-[#d4af37]/10">
                     <button 
                         onClick={() => setPreviewDoc({
-                            doc: <InvoiceDocument data={order} language="he" isWorkOrder={false} customTexts={pdfCustomTexts} />,
+                            doc: <InvoiceDocument data={order} language={pdfLanguage} isWorkOrder={false} docType="invoice" customTexts={pdfCustomTexts} />,
                             name: `devis_${order.humanId || order.id}.pdf`
                         })}
                         className="text-black/70 hover:text-black hover:bg-white/20 p-2 rounded transition"
@@ -150,13 +161,32 @@ export default function OrderDetailPage() {
                         <Eye size={18} />
                     </button>
                     <PDFDownloadLink
-                        document={<InvoiceDocument data={order} language="he" isWorkOrder={false} customTexts={pdfCustomTexts} />}
+                        document={<InvoiceDocument data={order} language={pdfLanguage} isWorkOrder={false} docType="invoice" customTexts={pdfCustomTexts} />}
                         fileName={`devis_${order.humanId || order.id}.pdf`}
                         className="text-black font-bold hover:bg-white/20 px-3 py-2 rounded flex items-center gap-2 transition text-sm"
                     >
-                        <FileText size={16} /> Devis/Facture
+                        <FileText size={16} /> Facture
                     </PDFDownloadLink>
                 </div>
+
+                 {/* DELETE ORDER BUTTON */}
+                 <button 
+                    onClick={async () => {
+                        if(window.confirm("Êtes-vous sûr de vouloir supprimer cette commande DÉFINITIVEMENT ?")) {
+                            const res = await FinanceService.deleteOrder(order.id); // Check if this method exists or needs creation
+                            if(res.success) {
+                                toast.success("Commande supprimée");
+                                window.location.href = '/admin/orders';
+                            } else {
+                                toast.error("Erreur: " + res.error);
+                            }
+                        }
+                    }}
+                    className="bg-red-900/20 hover:bg-red-900/40 text-red-500 border border-red-900/50 p-2 rounded-lg transition"
+                    title="Supprimer la commande"
+                >
+                    <Trash2 size={20} />
+                </button>
             </div>
        </div>
 

@@ -9,8 +9,14 @@ export default function AuthGuard({ children }) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // If we have a user but they are NOT an admin (after role sync)
-    if (currentUser && isAdmin === false) {
+    // 1. Not Logged In -> Redirect to Login
+    if (!currentUser) {
+       navigate(ROUTES.ADMIN.LOGIN || '/admin/login');
+       return;
+    }
+
+    // 2. Logged In but Not Admin -> Redirect Home
+    if (isAdmin === false) {
       toast.error("Accès Refusé : Vous n'êtes pas administrateur.");
       navigate(ROUTES.PUBLIC.HOME); 
     }

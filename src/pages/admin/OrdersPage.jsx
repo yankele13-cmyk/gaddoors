@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ordersService } from '../../services/orders.service';
+import { FinanceService } from '../../services/finance.service';
 import QuoteBuilder from '../../modules/cpq/QuoteBuilder';
 import { Plus, List, FileText } from 'lucide-react';
-import { useTranslation } from 'react-i18next'; // Added
+import { useTranslation } from 'react-i18next';
 
 export default function OrdersPage() {
-  const { t } = useTranslation(); // Hook
-  const [viewMode, setViewMode] = useState('list'); // list | builder
+  const { t } = useTranslation();
+  const [viewMode, setViewMode] = useState('list'); 
   const [orders, setOrders] = useState([]);
   const [lastDoc, setLastDoc] = useState(null);
   const [hasMore, setHasMore] = useState(true);
@@ -16,8 +16,6 @@ export default function OrdersPage() {
 
   useEffect(() => {
     if (viewMode === 'list') {
-      // If we switch back to list, maybe reload or keep state. 
-      // For now, reload fresh if empty or just basic init.
        if(orders.length === 0) loadOrders();
     }
   }, [viewMode]);
@@ -26,7 +24,7 @@ export default function OrdersPage() {
     try {
       setLoading(true);
       const cursor = isLoadMore ? lastDoc : null;
-      const { items, lastDoc: newLastDoc } = await ordersService.getPage(cursor);
+      const { items, lastDoc: newLastDoc } = await FinanceService.getOrdersPage(cursor);
 
       if (isLoadMore) {
         setOrders(prev => [...prev, ...items]);

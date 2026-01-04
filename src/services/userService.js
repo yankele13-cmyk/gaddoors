@@ -1,4 +1,4 @@
-import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
+import { doc, getDoc, setDoc, updateDoc, collection, getDocs, orderBy, query, serverTimestamp } from 'firebase/firestore';
 import { db } from '../config/firebase';
 import { ALLOWED_ADMINS } from '../config/constants';
 
@@ -49,5 +49,38 @@ export const userService = {
     const userRef = doc(db, COLLECTION_NAME, uid);
     const userSnap = await getDoc(userRef);
     return userSnap.exists() ? { uid, ...userSnap.data() } : null;
+  },
+
+  /**
+   * Get All Users (Admin view)
+   */
+  getAllUsers: async () => {
+    try {
+        const q = query(collection(db, COLLECTION_NAME), orderBy('createdAt', 'desc'));
+        const snapshot = await getDocs(q);
+        return { 
+            success: true, 
+            data: snapshot.docs.map(doc => ({ uid: doc.id, ...doc.data() })) 
+        };
+    } catch (error) {
+        return { success: false, error: error.message };
+    }
+  },
+
+  /**
+   * Update User Role
+   */
+  updateUserRole: async (uid, newRole) => {
+    try {
+        const userRef = doc(db, COLLECTION_NAME, uid);
+        await updateDoc(userRef, { 
+            role: newRole,
+            updatedAt: serverTimestamp() 
+        });
+        return { success: true };
+    } catch (error) {
+        console.error("Error updating role:", error);
+        return { success: false, error: error.message };
+    }
   }
 };

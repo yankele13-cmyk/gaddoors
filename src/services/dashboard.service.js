@@ -5,7 +5,10 @@ import {
   where, 
   orderBy, 
   limit,
-  Timestamp 
+  Timestamp,
+  getAggregateFromServer, 
+  sum,
+  count 
 } from 'firebase/firestore';
 import { db } from '../config/firebase';
 import { ORDER_STATUS } from '../config/constants';
@@ -20,59 +23,69 @@ export const dashboardService = {
    * For this scale, client-side aggregation of recent/active items is acceptable.
    */
   getStats: async () => {
-    // 1. Fetch Orders to calculate Revenue & Debt
-    // We fetch all non-cancelled orders to aggregate revenue. 
-    // Optimization: In real app, date filter (e.g., this year).
-    const ordersQ = query(collection(db, ORDERS_COLLECTION), orderBy('createdAt', 'desc'), limit(100));
-    const ordersSnap = await getDocs(ordersQ);
-    const orders = ordersSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+    try {
+        const ordersColl = collection(db, ORDERS_COLLECTION);
 
-    let revenue = 0;
-    let debt = 0;
-    const monthlySales = {};
-
-    orders.forEach(order => {
-        // Revenue: Total of verified or paid orders (Assumed 'VALIDATED' or 'PRODUCTION' implies authorized payment)
-        // Simplification: We sum 'totalGt' of validated/production/completed/installed.
-        // Debt: We check financials.balanceDue if available, or assume full price if not paid.
+        // 1. AGGREGATION (Cost-Effective for Totals)
+        // Calculates totals without downloading documents (Optimization)
+        const snapshot = await getAggregateFromServer(ordersColl, {
+            totalRevenue: sum('financials.totalGt'),
+            totalDebt: sum('financials.balanceDue'), // Assuming this field exists and is maintained
+            totalCount: count()
+        });
         
-        const isValidSale = [
-            ORDER_STATUS.VALIDATED, 
-            ORDER_STATUS.PRODUCTION, 
-            ORDER_STATUS.INSTALLATION_SCHEDULED,
-            ORDER_STATUS.COMPLETED
-        ].includes(order.status);
+        const { totalRevenue, totalDebt, totalCount } = snapshot.data();
 
-        if (isValidSale) {
-            revenue += (order.financials?.totalGt || 0);
-            debt += (order.financials?.balanceDue || 0); // Assuming balanceDue is tracked
-        }
+        // 2. Fetch RECENT Orders for Charts & Table (Limit 50 to save reads)
+        // We use this sample for the "Monthly Trend" chart. 
+        // Note: For 100% accurate charts over years, we'd need a separate 'stats/monthly' doc.
+        // For now, charts show "Recent Trend".
+        const recentQ = query(ordersColl, orderBy('createdAt', 'desc'), limit(50));
+        const recentSnap = await getDocs(recentQ);
+        const recentOrders = recentSnap.docs.map(d => ({ id: d.id, ...d.data() }));
 
-        // Monthly Sales Chart
-        if (order.createdAt?.seconds) {
-            const date = new Date(order.createdAt.seconds * 1000);
-            const monthKey = date.toLocaleString('fr-FR', { month: 'short' });
-            monthlySales[monthKey] = (monthlySales[monthKey] || 0) + (order.financials?.totalGt || 0);
-        }
-    });
+        // 3. Calc Sub-stats from Recent (Active Leads, Installations)
+        // Ideally these should be specific Queries using count() but we save reads by reusing the recent list if they are active.
+        // Better approach: Separate cheap Count queries.
+        
+        // Count Active Leads (Drafts)
+        const leadsQ = query(ordersColl, where('status', '==', ORDER_STATUS.DRAFT));
+        const leadsSnap = await getAggregateFromServer(leadsQ, { count: count() });
+        
+        // Count Installations Scheduled
+        const installQ = query(ordersColl, where('status', '==', ORDER_STATUS.INSTALLATION_SCHEDULED));
+        const installSnap = await getAggregateFromServer(installQ, { count: count() });
 
-    // 2. Count Active Leads
-    // Leads are essentially Draft orders or specifically marked leads?
-    // Based on CRMService usage, likely 'draft' orders or a separate leads collection.
-    // We'll count 'DRAFT' orders as Leads for now.
-    const leadsCount = orders.filter(o => o.status === ORDER_STATUS.DRAFT).length;
+        // Chart Data (from recent 50)
+        const monthlySales = {};
+        recentOrders.forEach(order => {
+             if (order.createdAt?.seconds && order.financials?.totalGt) {
+                const date = new Date(order.createdAt.seconds * 1000);
+                const monthKey = date.toLocaleString('fr-FR', { month: 'short' });
+                monthlySales[monthKey] = (monthlySales[monthKey] || 0) + order.financials.totalGt;
+            }
+        });
 
-    // 3. Upcoming Installations
-    // Count orders in 'INSTALLATION_SCHEDULED'
-    const installationsCount = orders.filter(o => o.status === ORDER_STATUS.INSTALLATION_SCHEDULED).length;
+        return {
+            revenue: totalRevenue || 0,
+            debt: totalDebt || 0,
+            activeLeads: leadsSnap.data().count || 0,
+            upcomingInstallations: installSnap.data().count || 0,
+            monthlySales,
+            recentOrders: recentOrders.slice(0, 5) // Top 5
+        };
 
-    return {
-        revenue,
-        debt,
-        activeLeads: leadsCount,
-        upcomingInstallations: installationsCount,
-        monthlySales,
-        recentOrders: orders.slice(0, 5)
-    };
+    } catch (error) {
+        console.error("Dashboard Stats Error:", error);
+        // Fallback to zero if aggregation fails (e.g. missing index)
+        return {
+            revenue: 0,
+            debt: 0,
+            activeLeads: 0,
+            upcomingInstallations: 0,
+            monthlySales: {},
+            recentOrders: []
+        };
+    }
   }
 };

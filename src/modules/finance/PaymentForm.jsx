@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { financeService } from '../../services/finance.service';
-import { ordersService } from '../../services/orders.service';
+import { FinanceService } from '../../services/finance.service';
 import { X, CreditCard, Banknote, Landmark } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -32,9 +31,9 @@ export default function PaymentForm({ onClose, fixedOrderId, onSuccess }) {
   }, []);
 
   const loadOrders = async () => {
-    const data = await ordersService.getAll();
+    const { data } = await FinanceService.getRecentOrders(100);
     // Filter only unpaid orders ideally, but list all for now
-    setOrders(data);
+    setOrders(data || []);
   };
 
   const onSubmit = async (data) => {
@@ -44,7 +43,7 @@ export default function PaymentForm({ onClose, fixedOrderId, onSuccess }) {
             ...data,
             status: data.type === 'check' ? 'deferred' : 'cleared'
         };
-        await financeService.addPayment(payload);
+        await FinanceService.addPayment(data.orderId, payload);
         toast.success("Paiement enregistré");
         if(onSuccess) onSuccess();
         onClose();

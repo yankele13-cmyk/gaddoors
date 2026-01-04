@@ -13,8 +13,8 @@ function Footer() {
         </div>
         <div className={styles.column}>
           <h3>{t('footer.contact.title')}</h3>
-          <p>{t('footer.contact.phone')} : +972 55-278-3693</p>
-          <p>{t('footer.contact.email')} : yankele13@gmail.com</p>
+          <p>{t('footer.contact.phone')} : <span dir="ltr">+972 55-278-3693</span></p>
+          <p>{t('footer.contact.email')} : <span dir="ltr">yankele13@gmail.com</span></p>
           <p>{t('footer.contact.address')} : Aaron Eshkoli 115, Jerusalem</p>
         </div>
         <div className={styles.column}>

@@ -2,8 +2,8 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next'; // Added
 import styles from './HomePage.module.css';
-import InstallationsSlider from '../../components/features/InstallationsSlider';
-import CompanyInfo from '../../components/features/CompanyInfo';
+import InstallationsSlider from '../../modules/marketing/components/InstallationsSlider';
+import CompanyInfo from '../../modules/marketing/components/CompanyInfo';
 
 function HomePage() {
   const { t } = useTranslation();

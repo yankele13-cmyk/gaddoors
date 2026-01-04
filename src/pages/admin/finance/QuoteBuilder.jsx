@@ -5,7 +5,7 @@ import { CRMService } from '../../../services/crm.service';
 import { ProductService } from '../../../services/product.service';
 import { FinanceService } from '../../../services/finance.service';
 import { PDFDownloadLink } from '@react-pdf/renderer';
-import InvoiceDocument from '../../../components/documents/InvoiceDocument';
+import InvoiceDocument from '../../../modules/finance/components/InvoiceDocument';
 import { Plus, Trash2, Save, FileText, Calculator } from 'lucide-react';
 import toast from 'react-hot-toast';
 

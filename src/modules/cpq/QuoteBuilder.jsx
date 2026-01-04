@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
-import { productsService } from '../../services/products.service';
-import { ordersService } from '../../services/orders.service';
+import { ProductService } from '../../services/product.service';
+import { FinanceService } from '../../services/finance.service';
 import DoorConfigurator from './DoorConfigurator';
 import { Plus, Save, Truck, Package, Trash2, Calculator } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { APP_CONFIG } from '../../config/constants';
-import QuoteDocument from '../../components/admin/quotes/QuoteDocument';
-import { Printer } from 'lucide-react';
+
+import { InvoiceDocument } from '../../modules/finance/components/InvoiceDocument'; // Fixed path
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import { FileText, Printer } from 'lucide-react';
 
 export default function QuoteBuilder({ onSuccess }) {
   const [products, setProducts] = useState([]);
@@ -18,16 +20,21 @@ export default function QuoteBuilder({ onSuccess }) {
   const [logistics, setLogistics] = useState({ zone: 'Jerusalem', floor: 0, hasElevator: false });
   
   // UI State
+
+
+  // UI State
   const [selectedProduct, setSelectedProduct] = useState(null);
+
   const [saving, setSaving] = useState(false);
+  const [pdfLanguage, setPdfLanguage] = useState('he'); // Default to Hebrew
 
   useEffect(() => {
     loadCatalog();
   }, []);
 
   const loadCatalog = async () => {
-    const data = await productsService.getAll();
-    setProducts(data);
+    const { data } = await ProductService.getAllProducts();
+    setProducts(data || []);
   };
 
   const addItem = (item) => {
@@ -60,7 +67,7 @@ export default function QuoteBuilder({ onSuccess }) {
     }
     setSaving(true);
     try {
-        await ordersService.create({
+        await FinanceService.createOrderFromQuote({
             client,
             items,
             logistics
@@ -69,16 +76,15 @@ export default function QuoteBuilder({ onSuccess }) {
         if(onSuccess) onSuccess();
     } catch (e) {
         console.error(e);
-        toast.error("Erreur Sauvegarde");
+        toast.error("Erreur création");
     } finally {
         setSaving(false);
     }
   };
 
 
-  const handlePrint = () => {
-    window.print();
-  };
+
+
 
   const filteredProducts = products.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase()));
 
@@ -222,14 +228,22 @@ export default function QuoteBuilder({ onSuccess }) {
 
             </div>
 
-            <div className="p-4 bg-zinc-950 border-t border-zinc-800 flex gap-2">
-                <button 
-                  onClick={handlePrint}
-                  className="bg-zinc-800 hover:bg-zinc-700 text-white p-3 rounded-lg"
-                  title="Imprimer Devis"
+            <div className="p-4 bg-zinc-950 border-t border-zinc-800 flex gap-2 items-center">
+                {/* Language Switcher */}
+                <div className="flex bg-zinc-900 rounded border border-zinc-800 p-1 mr-2">
+                    <button onClick={() => setPdfLanguage('fr')} className={`px-2 text-xs font-bold rounded ${pdfLanguage === 'fr' ? 'bg-[#d4af37] text-black' : 'text-gray-400'}`}>FR</button>
+                    <button onClick={() => setPdfLanguage('en')} className={`px-2 text-xs font-bold rounded ${pdfLanguage === 'en' ? 'bg-[#d4af37] text-black' : 'text-gray-400'}`}>EN</button>
+                    <button onClick={() => setPdfLanguage('he')} className={`px-2 text-xs font-bold rounded ${pdfLanguage === 'he' ? 'bg-[#d4af37] text-black' : 'text-gray-400'}`}>HE</button>
+                </div>
+
+                <PDFDownloadLink
+                    document={<InvoiceDocument data={printData} language={pdfLanguage} docType="quote" />}
+                    fileName={`devis_brouillon.pdf`}
+                    className="bg-zinc-800 hover:bg-zinc-700 text-white p-3 rounded-lg"
+                    title="Télécharger PDF"
                 >
-                    <Printer size={18} />
-                </button>
+                    {({ loading }) => (loading ? '...' : <Printer size={18} />)}
+                </PDFDownloadLink>
                 <button 
                   onClick={handleSave}
                   disabled={saving}
@@ -250,8 +264,7 @@ export default function QuoteBuilder({ onSuccess }) {
         )}
     </div>
 
-    {/* PRINTABLE HIDDEN SECTION */}
-    <QuoteDocument data={printData} />
+
     </>
   );
 }

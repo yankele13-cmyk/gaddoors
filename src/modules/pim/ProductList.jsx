@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { productsService } from '../../services/products.service';
+import { ProductService } from '../../services/product.service'; // NEW
 import { Plus, Search, Edit, Trash2, Package } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -14,8 +14,8 @@ export default function ProductList({ onEdit }) {
 
   const loadProducts = async () => {
     try {
-      const data = await productsService.getAll();
-      setProducts(data);
+      const { data } = await ProductService.getAllProducts();
+      setProducts(data || []);
     } catch (error) {
       console.error(error);
       toast.error("Erreur chargement produits");
@@ -27,7 +27,7 @@ export default function ProductList({ onEdit }) {
   const handleDelete = async (id) => {
     if(window.confirm("Supprimer ce produit ?")) {
       try {
-        await productsService.delete(id);
+        await ProductService.deleteProduct(id);
         setProducts(products.filter(p => p.id !== id));
         toast.success("Produit supprimé");
       } catch (error) {
