@@ -14,8 +14,8 @@ function Footer() {
         <div className={styles.column}>
           <h3>{t('footer.contact.title')}</h3>
           <p>{t('footer.contact.phone')} : <span dir="ltr">+972 55-278-3693</span></p>
-          <p>{t('footer.contact.email')} : <span dir="ltr">yankele13@gmail.com</span></p>
-          <p>{t('footer.contact.address')} : Aaron Eshkoli 115, Jerusalem</p>
+          <p>{t('footer.contact.email')} : <a href="mailto:contact@gaddoors.com" dir="ltr" className="hover:text-[#d4af37] transition-colors">contact@gaddoors.com</a></p>
+          <p>{t('footer.contact.address')} : <a href="https://www.google.com/maps/search/?api=1&query=Aaron+Eshkoli+115+Jerusalem" target="_blank" rel="noopener noreferrer" className="hover:text-[#d4af37] transition-colors">Aaron Eshkoli 115, Jerusalem</a></p>
         </div>
         <div className={styles.column}>
           <h3>{t('footer.links.title')}</h3>

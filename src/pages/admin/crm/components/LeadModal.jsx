@@ -3,8 +3,19 @@ import { X, Save, User, MapPin, Phone, Mail } from 'lucide-react';
 import { CRMService } from '../../../../services/crm.service';
 import toast from 'react-hot-toast';
 
-export default function LeadModal({ isOpen, onClose, onSuccess }) {
+import { useEffect } from 'react'; // Added useEffect
+
+export default function LeadModal({ isOpen, onClose, onSuccess, initialData }) { // Added initialData
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
+
+  // Reset form when modal opens or initialData changes
+  useEffect(() => {
+    if (isOpen && initialData) {
+      reset(initialData);
+    } else if (isOpen) {
+      reset({}); // Reset to empty if no data
+    }
+  }, [isOpen, initialData, reset]);
 
   const onSubmit = async (data) => {
     const res = await CRMService.createLead(data);

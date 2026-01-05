@@ -17,17 +17,30 @@
     "rights": "© 2025 Gad Doors. Tous droits réservés."
   },
   "catalog": {
-    "title": "Notre Collection",
+    "title": "Catalogue de Portes Design & Poignées Italiennes",
+    "seo_intro": {
+      "title": "Votre Expert en Portes Intérieures et Menuiserie Haut de Gamme",
+      "text": "Explorez la collection Gad Doors 2026. Nous avons sélectionné pour vous des portes qui transcendent la simple fonctionnalité pour devenir de véritables éléments de décoration. Portes invisibles (filomuro), portes coulissantes à galandage, finitions bois texturé ou laque brillante : chaque modèle est personnalisable. Nos poignées italiennes, véritables bijoux de quincaillerie, apportent la touche finale de raffinement à votre intérieur."
+    },
+    "seo_outro": {
+      "title": "Qualité Supérieure et Durabilité Garantie",
+      "text": "Investir dans une porte Gad Doors, c'est choisir l'élégance pour des décennies. Nos portes sont traitées hydrofuges (résistance à l'eau) et offrent une stabilité dimensionnelle exceptionnelle. Isolation acoustique jusqu'à 40dB disponible sur demande pour un confort absolu dans les chambres et bureaux."
+    },
     "loading": "Chargement de la collection...",
     "error": "Impossible de charger les produits.",
     "filters": {
-      "all": "Tout Voir",
-      "doors": "Portes",
+      "all": "Tout le Catalogue",
+      "doors": "Portes d'Intérieur",
       "handles": "Poignées Design"
     }
   },
   "installations": {
-    "title": "NOS RÉALISATIONS",
+    "title": "Nos Réalisations & Projets Clients",
+    "seo_content": {
+      "title": "L'Art de la Pose : Précision et Finitions Impeccables",
+      "text1": "La qualité d'une porte d'intérieur dépend à 50% de sa fabrication et à 50% de son installation. Chez Gad Doors, nos installateurs sont des artisans menuisiers formés aux techniques de pose les plus exigeantes. Nous assurons un ajustement parfait, un respect des sols existants et des finitions soignées (champlats, joints).",
+      "text2": "Découvrez ci-dessous une sélection de nos chantiers récents : rénovations d'appartements design à Tel Aviv, installation de portes filomuro pour villas modernes, et aménagement de bureaux à Jérusalem."
+    },
     "loading": "Chargement des réalisations...",
     "error": "Impossible de charger les réalisations."
   },
@@ -38,17 +51,37 @@
     "back": "← Retour au catalogue",
     "defaultDescription": "Une porte d'exception alliant sécurité maximale et design contemporain. Finitions personnalisables sur demande.",
     "quote": "Demander un Devis",
-    "reference": "Référence Modèle :"
+    "reference": "Référence Modèle :",
+    "technical": {
+      "title": "Caractéristiques Techniques & Performance",
+      "features": [
+        "Isolation Acoustique : Réduction sonore certifiée jusqu'à 32dB (option 40dB disponible).",
+        "Structure : Âme pleine renforcée tubulaire pour une résistance maximale aux chocs.",
+        "Résistance : Traitement Hydrofuge garantissant une tenue parfaite face à l'humidité (idéal salles de bain).",
+        "Finitions : Revêtement anti-rayures haute densité, facile d'entretien.",
+        "Charnières : Système invisible 3D réglable pour un alignement parfait.",
+        "Serrure : Magnétique silencieuse de série pour un confort d'utilisation quotidien."
+      ]
+    },
+    "warranty": {
+      "title": "Garantie et Service",
+      "text": "En choisissant ce modèle, vous bénéficiez de notre garantie complète sur la structure et les mécanismes. Notre service après-vente est à votre disposition pour toute question concernant l'entretien de vos portes."
+    }
   },
   "contact": {
-    "title": "Contactez-nous",
-    "subtitle": "Une question sur nos portes blindées ou nos modèles italiens exclusifs ? Notre équipe d'experts est à votre disposition.",
+    "title": "Contactez nos Experts Gad Doors",
+    "subtitle": "Un projet de rénovation ou de construction ? Demandez votre devis gratuit et personnalisé. Réponse sous 24h.",
+    "seo_content": {
+      "title": "Showroom et Zone d'Intervention",
+      "text": "Basés au cœur de Jérusalem (Aaron Eshkoli 115), nous intervenons dans tout le pays. Notre showroom est pensé pour vous permettre de toucher les matériaux, tester les mécanismes et choisir les finitions exactes de vos futures portes. Prenez rendez-vous pour un accompagnement VIP par l'un de nos architectes d'intérieur."
+    },
     "form": {
       "title": "Envoyez-nous un message",
       "success": "Message envoyé !",
       "retry": "Envoyer un autre message",
       "name": "Nom complet",
       "namePlaceholder": "Votre Nom",
+      "emailPlaceholder": "votre@email.com",
       "email": "Email",
       "phone": "Téléphone",
       "message": "Message de votre projet",
@@ -114,18 +147,37 @@
     }
   },
   "home": {
+    "seo": {
+      "title": "Portes Intérieures Design & Sur Mesure | Gad Doors",
+      "description": "Découvrez nos collections exclusives de portes d'intérieur, portes filomuro et poignées design. Installation experte à Jérusalem et partout en Israël."
+    },
     "hero": {
-      "title": "L'Élégance de la Qualité",
-      "subtitle": "Découvrez notre collection exclusive de portes d'intérieur. Conçues pour durer, dessinées pour impressionner.",
-      "cta": "Voir le Catalogue"
+      "title": "Portes Intérieures Design et Sur Mesure à Jérusalem et en Israël",
+      "subtitle": "L'élégance à l'italienne pour votre intérieur. Découvrez nos collections exclusives de portes filomuro, laquées et bois, installées par des experts certifiés.",
+      "cta": "Voir le Catalogue 2026"
+    },
+    "seo_section": {
+      "expertise_title": "Expertise & Design : Pourquoi choisir Gad Doors ?",
+      "expertise_text": "Depuis plus de 18 ans, Gad Doors est la référence en menuiserie intérieure haut de gamme en Israël. Spécialistes de la porte d'intérieur design, nous allions la finesse du style italien à une exigence de finition absolue. Chaque projet est une signature : nous ne posons pas simplement des portes, nous créons des espaces de vie harmonieux avec des solutions acoustiques et esthétiques sur mesure.",
+      "services_title": "Un Accompagnement Premium de A à Z",
+      "services_text": "Notre engagement va bien au-delà de la vente. Nous offrons une expérience clé en main (Full Service) : conseil déco à domicile, prise de mesures au laser, livraison soignée et installation par nos propres menuisiers certifiés. Votre satisfaction est notre priorité."
+    },
+    "faq": {
+      "title": "Questions Fréquentes - Portes d'Intérieur",
+      "q1": "Quels types de portes d'intérieur proposez-vous ?",
+      "a1": "Nous proposons une gamme complète de portes d'intérieur : portes battantes classiques, portes invisibles (filomuro), portes coulissantes à galandage, et portes pivotantes. Nos finitions incluent le laqué (mat/brillant), le bois texturé, et le stratifié haute résistance.",
+      "q2": "Intervenez-vous partout en Israël ?",
+      "a2": "Oui, notre équipe logistique couvre tout le territoire, avec une présence forte à Jérusalem, Tel Aviv, Netanya et Ashdod. Nous assurons la livraison et la pose partout dans le pays.",
+      "q3": "Proposez-vous des portes avec isolation acoustique ?",
+      "a3": "Absolument. Le confort sonore est primordial. Nous proposons des portes avec âme pleine et joints isophoniques permettant une réduction de bruit jusqu'à 32dB (et 40dB sur demande), idéal pour les chambres et bureaux."
     },
     "installations": {
-      "title": "Nos Réalisations",
+      "title": "Nos Réalisations Récentes",
       "explorer": "Explorer la Galerie",
       "error": "Impossible de charger les réalisations."
     },
     "company": {
-      "title": "Pourquoi Nous Choisir ?",
+      "title": "L'Excellence à Votre Service",
       "subtitle": "18 ans d'expérience dans l'importation et la pose de portes de qualité",
       "guarantee": {
         "title": "Garanties Solides",
@@ -212,10 +264,10 @@
   },
   "categories": {
     "Portes Intérieures": "Portes Intérieures",
-    "Portes Blindées": "Portes Blindées",
-    "Portes Extérieures": "Portes Extérieures",
+    "Portes Design": "Portes Design",
+    "Portes Filomuro": "Portes Filomuro",
     "Poignées": "Poignées",
-    "Serrures": "Serrures",
+    "Serrures": "Serrures Magnétiques",
     "Accessoires": "Accessoires"
   },
   "status": {

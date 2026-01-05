@@ -24,15 +24,19 @@ export const userService = {
     }
 
     // New User Logic
-    // MIGRATION: Check if email is in the legacy hardcoded list
-    const isLegacyAdmin = ALLOWED_ADMINS.includes(authUser.email);
-    const role = isLegacyAdmin ? 'admin' : 'viewer'; // Default role is viewer
-
+    // SECURITY UPDATE: We no longer assign role here. The Cloud Function 'onUserCreate' handles it.
+    // We just send the basic profile.
+    
     const newUserData = {
       email: authUser.email,
       displayName: authUser.displayName || '',
       photoURL: authUser.photoURL || '',
-      role: role,
+      // role: 'viewer', // Don't even send it, let server default it.
+      role: 'viewer', // Sent as default, but server overwrites if needed. 
+                      // Actually, if we send it, we need to make sure rules allow CREATE with role.
+                      // Ideally we send nothing and let trigger set it. 
+                      // But our UI checks role immediately. 
+                      // Let's send 'viewer' always.
       createdAt: serverTimestamp(),
       lastLogin: serverTimestamp()
     };

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import SEO from '../../components/SEO';
 import { getProducts } from '../../services/db';
 import ProductCard from '../../components/ui/ProductCard';
 import styles from './CatalogPage.module.css';
@@ -72,6 +73,7 @@ function CatalogPage() {
   if (loading) {
     return (
       <div className={styles.container}>
+        <SEO title={t('catalog.title', 'Catalogue')} />
         <div style={{color: 'white', textAlign: 'center', marginTop: '100px', fontSize: '1.5rem'}}>
            {t('catalog.loading')}
         </div>
@@ -82,6 +84,7 @@ function CatalogPage() {
   if (error) {
     return (
         <div className={styles.container}>
+            <SEO title={t('catalog.title', 'Catalogue')} />
             <p style={{ color: '#ef4444', textAlign: 'center' }}>{t('catalog.error')}</p>
         </div>
     );
@@ -89,8 +92,18 @@ function CatalogPage() {
 
   return (
     <div className={styles.container}>
+      <SEO 
+        title={t('catalog.seo.title', 'Notre Catalogue')} 
+        description={t('catalog.seo.description', 'Parcourez notre collection de portes intérieures et poignées design.')}
+      />
       <h1 className={styles.title}>{t('catalog.title')}</h1>
       
+      {/* Introduction SEO */}
+      <section className="max-w-4xl mx-auto text-center mb-12 px-4">
+        <h2 className="text-2xl font-semibold text-[#d4af37] mb-4">{t('catalog.seo_intro.title')}</h2>
+        <p className="text-gray-300 leading-relaxed">{t('catalog.seo_intro.text')}</p>
+      </section>
+
       <div className={styles.filters}>
         <button 
           onClick={() => setFilter('all')} 
@@ -117,6 +130,17 @@ function CatalogPage() {
           <ProductCard key={product.id} product={product} />
         ))}
       </div>
+
+      {/* Outro SEO */}
+      <section className="max-w-4xl mx-auto mt-16 px-4 bg-zinc-900/50 p-8 rounded-2xl">
+        <h2 className="text-2xl font-semibold text-white mb-4">{t('catalog.seo_outro.title')}</h2>
+        <p className="text-gray-400 mb-6">{t('catalog.seo_outro.text')}</p>
+        <div className="flex gap-4">
+            <a href="/contact" className="text-[#d4af37] underline hover:text-white">Demander conseil</a>
+            <a href="/realisations" className="text-[#d4af37] underline hover:text-white">Voir les réalisations</a>
+        </div>
+      </section>
+
     </div>
   );
 }

@@ -307,36 +307,47 @@ export const ProductService = {
 
   /**
    * uploadAndCreate
-   * 1. Uploads image file to specific path
-   * 2. Gets URL
-   * 3. Creates Firestore Doc
+   * Supports multiple images.
+   * @param {Object} productData 
+   * @param {File[]} imageFiles - Array of File objects
    */
-  async uploadAndCreate(productData, imageFile) {
+  async uploadAndCreate(productData, imageFiles = []) { // Changed signature
     try {
-      await this.checkNameUnique(productData.name); // Check Uniqueness
+      await this.checkNameUnique(productData.name); 
 
-      let imageUrl = null;
+      const imageUrls = [];
 
-      if (imageFile) {
-        // Upload Logic
-        const storageRef = ref(storage, `products/${Date.now()}_${imageFile.name}`);
-        const snapshot = await uploadBytes(storageRef, imageFile);
-        imageUrl = await getDownloadURL(snapshot.ref);
+      // Upload All Images
+      if (imageFiles && imageFiles.length > 0) {
+          // If passed as single file by mistake, wrap it
+          const files = Array.isArray(imageFiles) ? imageFiles : [imageFiles];
+          
+          for (const file of files) {
+              const url = await this.uploadImage(file);
+              imageUrls.push(url);
+          }
       }
 
       // Create Doc
-      // Ensure we don't accidentally write id or other system fields if passed
-      // CRITICAL FIX: Ensure 'image' (FileList) is NOT in safeData
       const { id: _, image, ...safeData } = productData;
 
-      const docRef = await addDoc(collection(db, COLLECTION_NAME), {
+      // Determine Main Image (first one)
+      const mainImage = imageUrls.length > 0 ? imageUrls[0].url : (productData.imageUrl || null);
+      // Combine with existing images if any (rare for create but possible)
+      // Actually for create, imageUrls is fully new. 
+      // Struct: images: [url1, url2]
+      
+      const payload = {
         ...safeData,
         price: Number(productData.price) || 0,
         stock: Number(productData.stock) || 0,
-        imageUrl: imageUrl || productData.imageUrl || null, // Fallback if url provided as string
+        imageUrl: mainImage, // Main image for compatibility
+        images: imageUrls.map(i => i.url), // Array of strings
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp()
-      });
+      };
+
+      const docRef = await addDoc(collection(db, COLLECTION_NAME), payload);
 
       return { success: true, data: { id: docRef.id } };
     } catch (error) {
@@ -345,31 +356,57 @@ export const ProductService = {
     }
   },
 
-  async updateProduct(id, updates, newImageFile = null) {
+  /**
+   * updateProduct
+   * @param {string} id 
+   * @param {Object} updates 
+   * @param {File[]} newImageFiles - Array of NEW files to add
+   */
+  async updateProduct(id, updates, newImageFiles = []) {
     try {
       if (updates.name) {
-          await this.checkNameUnique(updates.name, id); // Check Uniqueness (Excluding self)
+          // Check Uniqueness logic (omitted for brevity, keep existing if needed)
+          await this.checkNameUnique(updates.name, id);
+      }
+
+      const imageUrls = [];
+      if (newImageFiles && newImageFiles.length > 0) {
+           const files = Array.isArray(newImageFiles) ? newImageFiles : [newImageFiles];
+           for (const file of files) {
+               const url = await this.uploadImage(file);
+               imageUrls.push(url);
+           }
       }
 
       let finalUpdates = { ...updates };
-      // CRITICAL FIX: Ensure 'image' (FileList) is removed
-      delete finalUpdates.image;
-      
-      // Security: Strip system fields that should not be manually updated here
+      delete finalUpdates.image; // Remove file input data
       delete finalUpdates.id;
       delete finalUpdates.createdAt;
-      delete finalUpdates.updatedAt; // We set it manually below
+      
+      // Handle Images Merge
+      // Expected: updates.images contains the FINAL array of OLD urls (reordered or deleted)
+      // We append NEW urls to it, or if updates.images is missing, we just append to existing?
+      // Better: The UI sends the `images` array as it should look (minus new files).
+      // Actually, if we want to add new files, we typically push them to the end of the list.
+      
+      // If UI sent 'images' (array of strings), use it as base.
+      // If not, we might overwrite? Let's assume UI sends the current list of retained URLs.
+      
+      let currentImages = finalUpdates.images || []; 
+      
+      // If we are strictly adding new files, they go to the end
+      const newUrls = imageUrls.map(i => i.url);
+      const finalImagesList = [...currentImages, ...newUrls];
+      
+      if (finalImagesList.length > 0) {
+          finalUpdates.images = finalImagesList;
+          finalUpdates.imageUrl = finalImagesList[0]; // First one is main
+      }
 
       finalUpdates.updatedAt = serverTimestamp();
       
       if (finalUpdates.price !== undefined) finalUpdates.price = Number(finalUpdates.price) || 0;
       if (finalUpdates.stock !== undefined) finalUpdates.stock = Number(finalUpdates.stock) || 0;
-
-      if (newImageFile) {
-        const storageRef = ref(storage, `products/${Date.now()}_${newImageFile.name}`);
-        const snapshot = await uploadBytes(storageRef, newImageFile);
-        finalUpdates.imageUrl = await getDownloadURL(snapshot.ref);
-      }
 
       const docRef = doc(db, COLLECTION_NAME, id);
       await updateDoc(docRef, finalUpdates);
@@ -377,11 +414,7 @@ export const ProductService = {
       return { success: true };
     } catch (error) {
       console.error("Error updating product:", error);
-      let message = error.message;
-      if (message.includes("No document to update")) {
-        message = "Ce produit semble avoir été supprimé. Veuillez rafraîchir la page.";
-      }
-      return { success: false, error: message };
+      return { success: false, error: error.message };
     }
   }
 };

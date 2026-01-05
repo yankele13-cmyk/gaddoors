@@ -17,7 +17,15 @@
     "rights": "© 2025 Gad Doors. All rights reserved."
   },
   "catalog": {
-    "title": "Our Collection",
+    "title": "Designer Doors & Italian Handles Collection",
+    "seo_intro": {
+      "title": "Your Expert in High-End Interior Doors",
+      "text": "Explore the 2026 Gad Doors collection. We have selected doors that transcend simple functionality to become true decorative elements. Invisible doors (filomuro), pocket sliding doors, textured wood or gloss lacquer finishes: every model is customizable. Our Italian handles, true jewelry for your home, add the final touch of refinement to your interior."
+    },
+    "seo_outro": {
+      "title": "Superior Quality and Guaranteed Durability",
+      "text": "Investing in a Gad Doors door means choosing elegance for decades. Our doors are water-resistant treated and offer exceptional dimensional stability. Acoustic insulation up to 40dB is available on request for absolute comfort in bedrooms and offices."
+    },
     "loading": "Loading collection...",
     "error": "Unable to load products.",
     "filters": {
@@ -27,11 +35,31 @@
     }
   },
   "installations": {
+    "seo_content": {
+      "title": "The Art of Installation: Precision & Impeccable Finishes",
+      "text1": "The quality of an interior door depends 50% on its manufacturing and 50% on its installation. At Gad Doors, our installers are carpenters trained in the most demanding installation techniques. We ensure a perfect fit, respect for existing floors, and neat finishes (architraves, joints).",
+      "text2": "Discover below a selection of our recent projects: renovations of designer apartments in Tel Aviv, installation of filomuro doors for modern villas, and office layouts in Jerusalem."
+    },
     "title": "OUR PROJECTS",
     "loading": "Loading projects...",
     "error": "Unable to load projects."
   },
   "product": {
+    "technical": {
+      "title": "Technical Specifications & Performance",
+      "features": [
+        "Acoustic Insulation: Certified noise reduction up to 32dB (40dB option available).",
+        "Structure: Reinforced tubular solid core for maximum impact resistance.",
+        "Resistance: Water-resistant treatment guaranteeing perfect durability against humidity (ideal for bathrooms).",
+        "Finishes: High-density anti-scratch coating, easy to maintain.",
+        "Hinges: Invisible 3D adjustable system for perfect alignment.",
+        "Lock: Silent magnetic lock as standard for daily comfort."
+      ]
+    },
+    "warranty": {
+      "title": "Warranty & Service",
+      "text": "By choosing this model, you benefit from our full warranty on structure and mechanisms. Our after-sales service is at your disposal for any questions regarding the maintenance of your doors."
+    },
     "loading": "Loading product...",
     "error": "Error loading product.",
     "notFound": "Product not found.",
@@ -41,14 +69,19 @@
     "reference": "Model Reference:"
   },
   "contact": {
+    "seo_content": {
+      "title": "Showroom & Service Area",
+      "text": "Based in the heart of Jerusalem (Aaron Eshkoli 115), we operate throughout the country. Our showroom is designed to allow you to touch materials, test mechanisms, and choose the exact finishes for your future doors. Make an appointment for VIP guidance by one of our interior architects."
+    },
     "title": "Contact Us",
-    "subtitle": "Questions about our security doors or exclusive Italian models? Our expert team is at your disposal.",
+    "subtitle": "Questions about our interior doors or exclusive Italian models? Our expert team is at your disposal.",
     "form": {
       "title": "Send us a message",
       "success": "Message sent!",
       "retry": "Send another message",
       "name": "Full Name",
       "namePlaceholder": "Your Name",
+      "emailPlaceholder": "your@email.com",
       "email": "Email",
       "phone": "Phone",
       "message": "Project Message",
@@ -114,6 +147,25 @@
     }
   },
   "home": {
+    "seo": {
+      "title": "Custom Designer Interior Doors | Gad Doors",
+      "description": "Discover our exclusive collections of interior doors, filomuro doors, and designer handles. Expert installation in Jerusalem and throughout Israel."
+    },
+    "seo_section": {
+      "expertise_title": "Expertise & Design: Why Choose Gad Doors?",
+      "expertise_text": "For over 18 years, Gad Doors has been the reference for high-end interior joinery in Israel. Specialists in designer interior doors, we combine Italian style finesse with absolute finishing standards. Each project is a signature: we don't just install doors, we create harmonious living spaces with custom acoustic and aesthetic solutions.",
+      "services_title": "Premium Support from A to Z",
+      "services_text": "Our commitment goes far beyond sales. We offer a turnkey experience (Full Service): home decor consultation, laser measurements, careful delivery, and installation by our own certified carpenters. Your satisfaction is our priority."
+    },
+    "faq": {
+      "title": "Frequently Asked Questions - Interior Doors",
+      "q1": "What types of interior doors do you offer?",
+      "a1": "We offer a complete range of interior doors: classic swing doors, invisible (filomuro) doors, pocket sliding doors, and pivot doors. Our finishes include lacquer (matte/gloss), textured wood, and high-resistance laminate.",
+      "q2": "Do you operate everywhere in Israel?",
+      "a2": "Yes, our logistics team covers the entire territory, with a strong presence in Jerusalem, Tel Aviv, Netanya, and Ashdod. We ensure delivery and installation throughout the country.",
+      "q3": "Do you offer doors with acoustic insulation?",
+      "a3": "Absolutely. Sound comfort is paramount. We offer doors with solid cores and soundproofing seals allowing noise reduction up to 32dB (and 40dB on request), ideal for bedrooms and offices."
+    },
     "hero": {
       "title": "The Elegance of Quality",
       "subtitle": "Discover our exclusive collection of interior doors. Designed to last, styled to impress.",

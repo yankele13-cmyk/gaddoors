@@ -214,7 +214,7 @@ export const InvoiceDocument = ({ data, language = 'fr', docType = 'invoice', is
                   <Text>{texts.companyAddress}</Text>
               </Link>
               <Text>Tel: +972 55 278 3693</Text>
-              <Text>yankele13@gmail.com</Text>
+              <Text>contact@gaddoors.com</Text>
            </View>
            <View>
               <Text style={styles.title}>

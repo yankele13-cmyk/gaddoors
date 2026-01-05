@@ -19,9 +19,9 @@ export default function QuoteDocument({ data }) {
         <div>
            <h1 className="text-4xl font-bold font-heading uppercase tracking-widest mb-2">{APP_CONFIG.COMPANY_NAME}</h1>
            <div className="text-sm space-y-1">
-              <p>Aaron Eshkoli 115, Jerusalem</p>
+              <p><a href="https://www.google.com/maps/search/?api=1&query=Aaron+Eshkoli+115+Jerusalem" target="_blank" rel="noopener noreferrer" style={{color: 'inherit', textDecoration: 'none'}}>Aaron Eshkoli 115, Jerusalem</a></p>
               <p>Tel: +972 55 278 3693</p>
-              <p>Email: yankele13@gmail.com</p>
+              <p>Email: contact@gaddoors.com</p>
            </div>
         </div>
         <div className="text-right">

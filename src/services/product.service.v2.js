@@ -21,7 +21,8 @@ import { db, storage } from '../config/firebase';
 import { productSchema } from '../schemas/product.schema';
 
 const COLLECTION = 'products';
-const AUDIT_COLLECTION = 'audit_logs';
+// const AUDIT_COLLECTION = 'audit_logs'; // Removed
+
 
 export const ProductServiceV2 = {
 
@@ -133,8 +134,7 @@ export const ProductServiceV2 = {
 
         const docRef = await addDoc(collection(db, COLLECTION), payload);
 
-        // 4. Audit Log
-        await this._logAudit(docRef.id, 'create', null, payload, user);
+        // 4. Audit Log -> MOVED TO SERVER TRIGGER
 
         return { success: true, id: docRef.id };
 
@@ -170,8 +170,7 @@ export const ProductServiceV2 = {
 
           await updateDoc(doc(db, COLLECTION, id), payload);
 
-          // 4. Audit Log
-          await this._logAudit(id, 'update', currentData, payload, user);
+          // 4. Audit Log -> MOVED TO SERVER TRIGGER
 
           return { success: true };
 
@@ -221,8 +220,7 @@ export const ProductServiceV2 = {
              // await deleteObject(fileRef).catch(e => console.warn("Image delete failed", e));
          }
 
-         // 3. Audit (Logged globally or in deleted_products collection)
-         await this._logAudit(id, 'hard_delete', currentData, null, user);
+         // 3. Audit -> MOVED TO SERVER TRIGGER
 
          return { success: true };
      } catch(error) {
@@ -247,28 +245,7 @@ export const ProductServiceV2 = {
       }
   },
 
-  // --- INTERNAL: AUDIT LOG ---
-  async _logAudit(entityId, action, previousState, newState, user) {
-      try {
-        await addDoc(collection(db, AUDIT_COLLECTION), {
-            entityCollection: COLLECTION,
-            entityId,
-            action,
-            // Store diffs only to save space? Or full snapshots?
-            // For critical systems, full previous/new state is safer.
-            // For now, simple diff.
-            user: user?.email || 'system',
-            timestamp: serverTimestamp(),
-            details: {
-                prev: previousState ? JSON.stringify(previousState) : null,
-                new: newState ? JSON.stringify(newState) : null
-            }
-        });
-      } catch (e) {
-          console.error("Audit Log Failed:", e);
-          // Don't fail the main transaction if audit fails, but warn.
-      }
-  },
+
 
   // --- MIGRATION UTILS ---
 

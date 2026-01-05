@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Mail, Phone, MapPin, Send } from 'lucide-react';
+import SEO from '../../components/SEO';
 import { db } from '../../services/firebase'; 
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
@@ -40,6 +41,10 @@ export default function ContactPage() {
 
   return (
     <div className="bg-black min-h-screen pt-24 pb-20 px-4 sm:px-8">
+      <SEO 
+        title={t('contact.seo.title', 'Contactez-nous')} 
+        description={t('contact.seo.description', 'Contactez Gaddoors pour vos projets de portes de garage et intérieures. Devis gratuit et personnalisé.')} 
+      />
       <div className="max-w-7xl mx-auto">
         <h1 className="text-4xl md:text-6xl font-heading text-[#d4af37] mb-8 text-center">
           {t('contact.title')}
@@ -90,7 +95,7 @@ export default function ContactPage() {
                       value={formData.email}
                       onChange={handleChange}
                       className="w-full bg-zinc-800 border border-zinc-700 rounded-lg p-3 text-white focus:border-[#d4af37] focus:ring-1 focus:ring-[#d4af37] outline-none transition"
-                      placeholder="votre@email.com"
+                      placeholder={t('contact.form.emailPlaceholder')}
                     />
                   </div>
                   <div>
@@ -159,7 +164,7 @@ export default function ContactPage() {
               </div>
               <div>
                 <h3 className="font-bold text-lg">{t('contact.info.email')}</h3>
-                <p className="text-gray-400 mt-1 cursor-pointer hover:text-white transition">yankele13@gmail.com</p>
+                <a href="mailto:contact@gaddoors.com" className="text-gray-400 mt-1 cursor-pointer hover:text-white transition block">contact@gaddoors.com</a>
               </div>
             </div>
 
@@ -169,13 +174,24 @@ export default function ContactPage() {
               </div>
               <div>
                 <h3 className="font-bold text-lg">{t('contact.info.showroom')}</h3>
-                <p className="text-gray-400 mt-1">
+                <a href="https://www.google.com/maps/search/?api=1&query=Aaron+Eshkoli+115+Jerusalem" target="_blank" rel="noopener noreferrer" className="text-gray-400 mt-1 hover:text-white transition block">
                   Aaron Eshkoli 115<br/>
                   Jerusalem
-                </p>
+                </a>
                 <p className="text-sm text-gray-500 mt-1">{t('contact.info.appointment')}</p>
               </div>
             </div>
+
+            {/* SEO Section inside Info Card */}
+            <div className="pt-8 border-t border-zinc-700 mt-8">
+                <h2 className="text-lg font-bold text-white mb-2">{t('contact.seo_content.title')}</h2>
+                <p className="text-sm text-gray-400 leading-relaxed mb-4">{t('contact.seo_content.text')}</p>
+                <div className="flex gap-4 text-sm">
+                   <a href="/" className="text-[#d4af37] hover:underline">Accueil</a>
+                   <a href="/catalogue" className="text-[#d4af37] hover:underline">Catalogue</a>
+                </div>
+            </div>
+
           </div>
         </div>
       </div>

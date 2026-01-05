@@ -18,7 +18,7 @@ export default function FinancePage() {
         address: 'Aaron Eshkoli 115',
         city: 'Jerusalem',
         phone: '+972 55 278 3693',
-        email: 'yankele13@gmail.com',
+        email: 'contact@gaddoors.com',
         footer: 'GAD DOORS - Jerusalem'
     },
     client: { name: '', address: '', email: '' },

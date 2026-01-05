@@ -1,7 +1,7 @@
-
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams, useNavigate, Link } from 'react-router-dom';
+import SEO from '../../components/SEO';
 import { getProductById } from '../../services/db';
 // Nous créerons ce fichier de style juste après
 import styles from './ProductDetailPage.module.css';
@@ -36,23 +36,45 @@ export default function ProductDetailPage() {
   }, [id, i18n.language]); // Se redéclenche si l'ID ou la langue change
 
   if (loading) {
-    return <p>{t('product.loading')}</p>;
+    return (
+        <>
+            <SEO title={t('product.loading', 'Chargement...')} />
+            <p>{t('product.loading')}</p>
+        </>
+    );
   }
 
   if (error) {
-    return <p style={{ color: 'red' }}>{t('product.error')}</p>;
+    return (
+        <>
+            <SEO title={t('product.error', 'Erreur')} />
+            <p style={{ color: 'red' }}>{t('product.error')}</p>
+        </>
+    );
   }
   
   if (!product) {
     // Ce cas est techniquement couvert par l'erreur, mais c'est une bonne pratique
-    return <p>{t('product.notFound')}</p>;
+    return (
+        <>
+            <SEO title={t('product.notFound', 'Produit non trouvé')} />
+            <p>{t('product.notFound')}</p>
+        </>
+    );
   }
 
   
   const displayCategory = product.category ? t(`categories.${product.category}`, product.category) : '';
+  const metaDescription = product.description 
+    ? product.description.substring(0, 150) + (product.description.length > 150 ? '...' : '') 
+    : t('product.defaultDescription');
 
   return (
     <div className={styles.container}>
+      <SEO 
+        title={product.name} 
+        description={metaDescription}
+      />
       <div className={styles.imageContainer}>
         <img 
           src={product.imageUrl} 
@@ -78,8 +100,26 @@ export default function ProductDetailPage() {
         <div className={styles.meta}>
           <p>{t('product.reference')} {product.id}</p>
         </div>
+
+        {/* SEO Static Info */}
+        <div className="mt-8 pt-8 border-t border-zinc-800">
+             <h2 className="text-xl font-bold text-white mb-4">{t('product.technical.title')}</h2>
+             <ul className="text-gray-400 space-y-2 mb-6">
+                {(t('product.technical.features', { returnObjects: true }) || []).map((feature, idx) => (
+                    <li key={idx}>• {feature}</li>
+                ))}
+             </ul>
+             
+             <h2 className="text-xl font-bold text-white mb-4">{t('product.warranty.title')}</h2>
+             <p className="text-gray-400 mb-6">{t('product.warranty.text')}</p>
+
+             <div className="flex gap-4 text-sm mt-4">
+                 <a href="/catalogue" className="text-[#d4af37] border-b border-[#d4af37] hover:text-white pb-1">Voir d'autres modèles</a>
+             </div>
+        </div>
+
       </div>
     </div>
   );
-}
 
+}

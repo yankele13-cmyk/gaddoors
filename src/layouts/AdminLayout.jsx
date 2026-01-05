@@ -11,10 +11,10 @@ import {
   LogOut,
   Menu,
   X,
-  Shield, // Added
-  Mail // Added for Messages
+  Shield, 
+  Mail 
 } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react'; // Added hooks
 
 import { auth } from '../config/firebase';
 
@@ -24,6 +24,14 @@ export default function AdminLayout() {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const user = auth.currentUser;
   const location = useLocation();
+  const scrollRef = useRef(null); // Ref for the scrollable container
+
+  // Scroll to top on route change
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = 0;
+    }
+  }, [location.pathname]);
 
   const handleLogout = async () => {
     if(window.confirm("Déconnexion ?")) {
@@ -95,7 +103,7 @@ export default function AdminLayout() {
         </header>
 
         {/* Page Content */}
-        <div className="flex-1 overflow-auto p-4 lg:p-8">
+        <div ref={scrollRef} className="flex-1 overflow-auto p-4 lg:p-8">
            <Outlet />
         </div>
       </main>

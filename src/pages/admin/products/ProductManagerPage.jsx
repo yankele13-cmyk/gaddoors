@@ -1,12 +1,12 @@
-
 import React, { useState, useEffect } from 'react';
 import { ProductServiceV2 } from '../../../services/product.service.v2';
 import { 
     Search, Plus, Filter, MoreVertical, 
-    Edit, Archive, Trash, Eye, EyeOff, RotateCcw, AlertTriangle
+    Edit, Archive, Trash, Eye, EyeOff, RotateCcw, AlertTriangle, CheckSquare, Square, Save, X
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import ProductEditorForm from '../../../modules/pim/ProductEditorForm';
+import ProductActionsBar from '../../../modules/pim/ProductActionsBar';
 
 // Status Badge Component
 const StatusBadge = ({ status }) => {
@@ -29,6 +29,48 @@ const StatusBadge = ({ status }) => {
     );
 };
 
+// Inline Editable Cell
+const EditableCell = ({ value, type = "text", onSave, disabled = false }) => {
+    const [isEditing, setIsEditing] = useState(false);
+    const [tempValue, setTempValue] = useState(value);
+
+    useEffect(() => { setTempValue(value); }, [value]);
+
+    const handleSave = () => {
+        if (tempValue != value) {
+            onSave(tempValue);
+        }
+        setIsEditing(false);
+    };
+
+    if (disabled) return <span className="text-gray-500/50 cursor-not-allowed">{value}</span>;
+
+    if (isEditing) {
+        return (
+            <div className="flex items-center gap-1">
+                <input 
+                    type={type}
+                    value={tempValue} 
+                    onChange={e => setTempValue(e.target.value)}
+                    className="w-20 bg-black border border-[#d4af37] px-1 py-0.5 rounded text-sm focus:outline-none"
+                    autoFocus
+                    onBlur={handleSave}
+                    onKeyDown={(e) => e.key === 'Enter' && handleSave()}
+                />
+            </div>
+        );
+    }
+
+    return (
+        <div 
+            onClick={() => setIsEditing(true)} 
+            className="cursor-pointer hover:text-[#d4af37] hover:bg-white/5 py-1 px-2 rounded -mx-2 transition border border-transparent hover:border-zinc-700"
+        >
+            {value}
+        </div>
+    );
+};
+
 export default function ProductManagerPage() {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -41,7 +83,10 @@ export default function ProductManagerPage() {
         category: 'all'
     });
 
-    // Editor (Placeholder for now)
+    // Selection
+    const [selectedIds, setSelectedIds] = useState([]);
+
+    // Editor
     const [editingProduct, setEditingProduct] = useState(null);
     const [isEditorOpen, setIsEditorOpen] = useState(false);
 
@@ -50,7 +95,8 @@ export default function ProductManagerPage() {
 
     useEffect(() => {
         loadData(true);
-    }, [filters.status, filters.category, filters.search]); // Reload when filters change
+        setSelectedIds([]); // Reset selection on filter change
+    }, [filters.status, filters.category, filters.search]); 
 
     const loadData = async (reset = false) => {
         setLoading(true);
@@ -64,7 +110,7 @@ export default function ProductManagerPage() {
                 setProducts(prev => [...prev, ...res.data]);
             }
             setLastDoc(res.lastDoc);
-            setHasMore(!res.empty && res.data.length === 20); // Basic heuristic
+            setHasMore(!res.empty && res.data.length === 20); 
             setError(null);
         } else {
             setError(res.error);
@@ -77,16 +123,17 @@ export default function ProductManagerPage() {
         loadData(false);
     };
 
-    // Actions
+    // --- Actions ---
+
     const handleToggleVisibility = async (product) => {
-        // Optimistic UI
         const newVis = !product.visibility;
+        // Optimistic UI
         setProducts(prev => prev.map(p => p.id === product.id ? { ...p, visibility: newVis } : p));
         
         const res = await ProductServiceV2.toggleVisibility(product.id, newVis);
         if (!res.success) {
             toast.error("Erreur mise à jour visibilité");
-            loadData(); // Revert
+            loadData(true); // Revert
         } else {
             toast.success(newVis ? "Produit visible" : "Produit caché");
         }
@@ -101,7 +148,8 @@ export default function ProductManagerPage() {
 
         if (res.success) {
             toast.success("Produit supprimé");
-            loadData();
+            setProducts(prev => prev.filter(p => p.id !== id));
+            setSelectedIds(prev => prev.filter(pid => pid !== id));
         } else {
             toast.error(res.error);
         }
@@ -111,17 +159,93 @@ export default function ProductManagerPage() {
         const res = await ProductServiceV2.restoreProduct(id);
         if (res.success) {
             toast.success("Produit restauré");
-            loadData();
+            loadData(true);
         } else {
              toast.error(res.error);
         }
     };
 
-    // List to display (already filtered by Service)
+    // --- Inline Editing ---
+
+    const handleInlineUpdate = async (id, field, value) => {
+        // Optimistic Update
+        const oldProducts = [...products];
+        setProducts(prev => prev.map(p => p.id === id ? { ...p, [field]: Number(value) } : p));
+
+        const res = await ProductServiceV2.updateProduct(id, { [field]: Number(value) });
+        
+        if (!res.success) {
+            toast.error("Échec de la mise à jour");
+            setProducts(oldProducts); // Revert
+        } else {
+            toast.success(`${field === 'price' ? 'Prix' : 'Stock'} mis à jour`);
+        }
+    };
+
+    // --- Bulk Actions ---
+
+    const toggleSelection = (id) => {
+        setSelectedIds(prev => 
+            prev.includes(id) ? prev.filter(p => p !== id) : [...prev, id]
+        );
+    };
+
+    const toggleAll = () => {
+        if (selectedIds.length === products.length) {
+            setSelectedIds([]);
+        } else {
+            setSelectedIds(products.map(p => p.id));
+        }
+    };
+
+    const handleBulkAction = async (actionType, ids) => {
+        if (!window.confirm(`Appliquer l'action "${actionType}" sur ${ids.length} produits ?`)) return;
+
+        const toastId = toast.loading("Traitement en cours...");
+        let successCount = 0;
+        let errors = 0;
+
+        // Note: Ideally move this loop to Service for batching, 
+        // but for Firestore 500 items limit, loop is acceptable for MVP.
+        for (const id of ids) {
+            let res;
+            switch(actionType) {
+                case 'soft_delete':
+                    res = await ProductServiceV2.softDeleteProduct(id);
+                    break;
+                case 'archive':
+                    res = await ProductServiceV2.updateProduct(id, { status: 'archived', visibility: false });
+                    break;
+                case 'visible':
+                    res = await ProductServiceV2.toggleVisibility(id, true);
+                    break;
+                case 'hidden':
+                    res = await ProductServiceV2.toggleVisibility(id, false);
+                    break;
+            }
+            if (res.success) successCount++;
+            else errors++;
+        }
+
+        toast.dismiss(toastId);
+        if (errors > 0) toast.warning(`${successCount} réussis, ${errors} échecs.`);
+        else toast.success("Action groupée terminée !");
+
+        setSelectedIds([]);
+        loadData(true);
+    };
+
     const displayProducts = products;
 
     return (
-        <div className="h-full flex flex-col bg-zinc-950 text-white">
+        <div className="h-full flex flex-col bg-zinc-950 text-white relative">
+            
+            <ProductActionsBar 
+                selectedIds={selectedIds} 
+                onClearSelection={() => setSelectedIds([])} 
+                onAction={handleBulkAction}
+            />
+
             {/* Toolbar */}
             <div className="p-6 border-b border-zinc-800 bg-black flex flex-col md:flex-row gap-4 justify-between items-center">
                 <div>
@@ -165,7 +289,7 @@ export default function ProductManagerPage() {
             </div>
 
             {/* Table */}
-            <div className="flex-1 overflow-auto p-6">
+            <div className="flex-1 overflow-auto p-6 pb-24"> 
                 {error && (
                     <div className="bg-red-900/20 border border-red-900 text-red-500 p-4 rounded-lg mb-4 flex items-center gap-2">
                         <AlertTriangle /> {error}
@@ -176,52 +300,55 @@ export default function ProductManagerPage() {
                     <table className="w-full text-left border-collapse">
                         <thead>
                             <tr className="bg-zinc-900 text-gray-400 text-xs uppercase tracking-wider border-b border-zinc-800">
+                                <th className="p-4 w-10">
+                                    <button onClick={toggleAll} className="hover:text-white transition">
+                                        {selectedIds.length === products.length && products.length > 0 ? (
+                                            <CheckSquare size={18} className="text-[#d4af37]" />
+                                        ) : (
+                                            <Square size={18} />
+                                        )}
+                                    </button>
+                                </th>
                                 <th className="p-4">Produit</th>
                                 <th className="p-4">Catégorie</th>
-                                <th className="p-4 text-right">Prix</th>
+                                <th className="p-4 text-right cursor-help" title="Cliquez sur le prix pour modifier">Prix</th>
+                                <th className="p-4 text-right cursor-help" title="Cliquez sur le stock pour modifier">Stock</th>
                                 <th className="p-4 text-center">Statut</th>
                                 <th className="p-4 text-center">Visibilité</th>
                                 <th className="p-4 text-right">Actions</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-zinc-800">
-                            {loading ? (
-                                <tr><td colSpan="6" className="p-8 text-center text-gray-500">Chargement...</td></tr>
+                            {loading && products.length === 0 ? (
+                                <tr><td colSpan="8" className="p-8 text-center text-gray-500">Chargement...</td></tr>
                             ) : displayProducts.length === 0 ? (
                                 <tr>
-                                    <td colSpan="6" className="p-8 text-center text-gray-500">
-                                        <div className="flex flex-col items-center gap-2">
-                                            <p>Aucun produit trouvé.</p>
-                                            <p className="text-xs text-gray-600">Vos produits ne s'affichent pas ? Ils ont peut-être besoin d'une mise à jour.</p>
-                                            <button 
-                                                onClick={async () => {
-                                                    if(!window.confirm("Ceci va mettre à jour le format de vos anciens produits. Continuer ?")) return;
-                                                    const toastId = toast.loading("Migration en cours...");
-                                                    const res = await ProductServiceV2.migrateLegacyProducts();
-                                                    if(res.success) {
-                                                        toast.success(`${res.count} produits mis à jour !`, { id: toastId });
-                                                        loadData();
-                                                    } else {
-                                                        toast.error("Erreur: " + res.error, { id: toastId });
-                                                    }
-                                                }}
-                                                className="mt-2 text-[#d4af37] underline hover:text-yellow-400 text-sm"
-                                            >
-                                                Mettre à jour les anciennes données
-                                            </button>
-                                        </div>
+                                    <td colSpan="8" className="p-8 text-center text-gray-500">
+                                        Aucun produit trouvé.
                                     </td>
                                 </tr>
                             ) : (
                                 displayProducts.map(product => (
-                                    <tr key={product.id} className="hover:bg-zinc-800/50 transition group">
+                                    <tr key={product.id} className={`hover:bg-zinc-800/50 transition group ${selectedIds.includes(product.id) ? 'bg-[#d4af37]/5' : ''}`}>
+                                        <td className="p-4">
+                                            <button onClick={() => toggleSelection(product.id)} className="text-gray-500 hover:text-white transition">
+                                                {selectedIds.includes(product.id) ? (
+                                                    <CheckSquare size={18} className="text-[#d4af37]" />
+                                                ) : (
+                                                    <Square size={18} />
+                                                )}
+                                            </button>
+                                        </td>
                                         <td className="p-4">
                                             <div className="flex items-center gap-3">
-                                                <div className="w-10 h-10 rounded bg-zinc-800 overflow-hidden flex-shrink-0 border border-zinc-700">
+                                                <div className="w-10 h-10 rounded bg-zinc-800 overflow-hidden flex-shrink-0 border border-zinc-700 relative">
                                                     {product.imageUrl ? (
                                                         <img src={product.imageUrl} className="w-full h-full object-cover" alt="" />
                                                     ) : (
                                                         <div className="w-full h-full flex items-center justify-center text-zinc-600 text-xs">IMG</div>
+                                                    )}
+                                                    {product.hasVariants && (
+                                                        <div className="absolute bottom-0 right-0 bg-blue-500 text-[8px] px-1 font-bold text-white">VAR</div>
                                                     )}
                                                 </div>
                                                 <div>
@@ -231,9 +358,26 @@ export default function ProductManagerPage() {
                                             </div>
                                         </td>
                                         <td className="p-4 text-gray-400">{product.category}</td>
+                                        
+                                        {/* Editable Price */}
                                         <td className="p-4 text-right font-mono text-[#d4af37]">
-                                            {product.price} ₪
+                                            <EditableCell 
+                                                value={product.price} 
+                                                type="number" 
+                                                onSave={(val) => handleInlineUpdate(product.id, 'price', val)} 
+                                            />
                                         </td>
+
+                                        {/* Editable Stock */}
+                                        <td className="p-4 text-right font-mono text-gray-300">
+                                            <EditableCell 
+                                                value={product.stock} 
+                                                type="number" 
+                                                disabled={product.hasVariants} // Disable global stock edit if variants
+                                                onSave={(val) => handleInlineUpdate(product.id, 'stock', val)} 
+                                            />
+                                        </td>
+
                                         <td className="p-4 text-center">
                                             <StatusBadge status={product.status} />
                                         </td>
@@ -241,7 +385,6 @@ export default function ProductManagerPage() {
                                             <button 
                                                 onClick={() => handleToggleVisibility(product)}
                                                 className={`p-1.5 rounded hover:bg-white/10 transition ${product.visibility ? 'text-green-500' : 'text-gray-600'}`}
-                                                title={product.visibility ? "Visible sur le site" : "Caché du site"}
                                             >
                                                 {product.visibility ? <Eye size={18} /> : <EyeOff size={18} />}
                                             </button>
@@ -250,31 +393,19 @@ export default function ProductManagerPage() {
                                             <div className="flex justify-end gap-2 opacity-100 sm:opacity-0 group-hover:opacity-100 transition">
                                                 {product.status === 'deleted' ? (
                                                      <>
-                                                        <button 
-                                                            onClick={() => handleRestore(product.id)}
-                                                            className="p-2 text-green-500 hover:bg-green-500/10 rounded" title="Restaurer"
-                                                        >
+                                                        <button onClick={() => handleRestore(product.id)} className="p-2 text-green-500 hover:bg-green-500/10 rounded">
                                                             <RotateCcw size={16} />
                                                         </button>
-                                                        <button 
-                                                            onClick={() => handleDelete(product.id, false)}
-                                                            className="p-2 text-red-500 hover:bg-red-500/10 rounded" title="Supprimer définitivement"
-                                                        >
+                                                        <button onClick={() => handleDelete(product.id, false)} className="p-2 text-red-500 hover:bg-red-500/10 rounded">
                                                             <Trash size={16} />
                                                         </button>
                                                      </>
                                                 ) : (
                                                     <>
-                                                        <button 
-                                                            onClick={() => { setEditingProduct(product); setIsEditorOpen(true); }}
-                                                            className="p-2 text-blue-400 hover:bg-blue-400/10 rounded" title="Modifier"
-                                                        >
+                                                        <button onClick={() => { setEditingProduct(product); setIsEditorOpen(true); }} className="p-2 text-blue-400 hover:bg-blue-400/10 rounded">
                                                             <Edit size={16} />
                                                         </button>
-                                                        <button 
-                                                            onClick={() => handleDelete(product.id, true)}
-                                                            className="p-2 text-red-400 hover:bg-red-400/10 rounded" title="Supprimer"
-                                                        >
+                                                        <button onClick={() => handleDelete(product.id, true)} className="p-2 text-red-400 hover:bg-red-400/10 rounded">
                                                             <Trash size={16} />
                                                         </button>
                                                     </>
@@ -291,17 +422,10 @@ export default function ProductManagerPage() {
                 {/* Load More */}
                 {hasMore && !loading && (
                     <div className="flex justify-center mt-6 mb-8">
-                        <button 
-                            onClick={handleLoadMore}
-                            className="bg-zinc-800 text-gray-300 hover:text-white px-6 py-2 rounded-full border border-zinc-700 hover:border-zinc-500 transition text-sm font-medium"
-                        >
+                        <button onClick={handleLoadMore} className="bg-zinc-800 text-gray-300 hover:text-white px-6 py-2 rounded-full border border-zinc-700 hover:border-zinc-500 transition text-sm font-medium">
                             Charger plus de produits
                         </button>
                     </div>
-                )}
-                
-                {loading && products.length > 0 && (
-                     <div className="text-center py-4 text-gray-500 text-sm">Chargement de la suite...</div>
                 )}
             </div>
 
@@ -312,7 +436,7 @@ export default function ProductManagerPage() {
                     onClose={() => setIsEditorOpen(false)}
                     onSuccess={() => {
                         setIsEditorOpen(false);
-                        loadData();
+                        loadData(true);
                     }}
                 />
             )}

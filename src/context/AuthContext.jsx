@@ -33,8 +33,10 @@ export function AuthProvider({ children }) {
           setUserRole(userProfile?.role || 'viewer');
         } catch (error) {
           console.error("Error syncing user profile:", error);
-          setCurrentUser(null);
-          setUserRole(null);
+          // Graceful degradation: Keep user logged in, but with limited role.
+          // This prevents the "Double Login" issue where a sync fail forces a logout/redirect.
+          setCurrentUser(firebaseUser);
+          setUserRole('viewer');
         }
       } else {
         setCurrentUser(null);

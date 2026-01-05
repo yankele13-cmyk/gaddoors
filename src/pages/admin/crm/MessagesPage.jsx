@@ -1,9 +1,10 @@
 
 import { useState, useEffect } from 'react';
 import { MessagesService } from '../../../services/messages.service'; // Adjust path if needed
-import { Mail, Search, CheckCircle, Trash2, Reply, Clock, Send, X } from 'lucide-react';
+import { Mail, Search, CheckCircle, Trash2, Reply, Clock, Send, X, UserPlus } from 'lucide-react';
 import { format } from 'date-fns';
 import toast from 'react-hot-toast';
+import LeadModal from './components/LeadModal'; // Import LeadModal
 
 export default function MessagesPage() {
   const [messages, setMessages] = useState([]);
@@ -15,6 +16,10 @@ export default function MessagesPage() {
   const [expandedReplyId, setExpandedReplyId] = useState(null);
   const [replyText, setReplyText] = useState('');
   const [sending, setSending] = useState(false);
+
+  // Conversion State
+  const [isLeadModalOpen, setIsLeadModalOpen] = useState(false);
+  const [leadToConvert, setLeadToConvert] = useState(null);
 
   useEffect(() => {
     loadMessages();
@@ -68,6 +73,17 @@ export default function MessagesPage() {
       } else {
           toast.error("Erreur d'envoi: " + (res.error || "Inconnue"));
       }
+  };
+
+  const handleConvertToLead = (msg) => {
+    setLeadToConvert({
+      name: msg.name || '',
+      email: msg.email || '',
+      phone: msg.phone || '',
+      source: 'web', // Default source from web message
+      notes: `Message du ${new Date(msg.createdAt).toLocaleDateString()}:\n${msg.message}`
+    });
+    setIsLeadModalOpen(true);
   };
 
   const filteredMessages = messages.filter(m => {
@@ -147,6 +163,16 @@ export default function MessagesPage() {
                              </div>
                          </div>
                          
+                         {/* Action Bar */}
+                         <div className="flex gap-2 mb-3">
+                             <button 
+                                onClick={() => handleConvertToLead(msg)}
+                                className="text-xs bg-zinc-800 hover:bg-[#d4af37] hover:text-black text-gray-300 px-3 py-1.5 rounded flex items-center gap-2 transition border border-zinc-700"
+                             >
+                                <UserPlus size={14} /> Créer Prospect
+                             </button>
+                         </div>
+                         
                          <div className="grid md:grid-cols-2 gap-4 mb-3 text-sm text-gray-400">
                              <div>Email: <span className="text-white">{msg.email}</span></div>
                              <div>Tél: <span className="text-white">{msg.phone}</span></div>
@@ -197,6 +223,12 @@ export default function MessagesPage() {
           )}
       </div>
 
+      <LeadModal
+        isOpen={isLeadModalOpen}
+        onClose={() => setIsLeadModalOpen(false)}
+        initialData={leadToConvert}
+        onSuccess={() => toast.success("Prospect converti avec succès !")}
+      />
     </div>
   );
 }

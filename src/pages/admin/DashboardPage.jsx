@@ -13,7 +13,7 @@ import {
     Bell
 } from 'lucide-react';
 import toast from 'react-hot-toast';
-import { useAuth } from '../../context/AuthContext';
+// import { useAuth } from '../../context/AuthContext';
 import { useTranslation } from 'react-i18next'; // Imported
 
 // Helper to format currency

@@ -2,10 +2,12 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ProductService } from '../../../services/product.service';
-import { Save, ArrowLeft, Image as ImageIcon, Loader2 } from 'lucide-react';
+import { Save, ArrowLeft, Image as ImageIcon, Loader2, Layers, Box } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next'; // Added
+import { v4 as uuidv4 } from 'uuid'; // Import uuid
+import VariantManager from '../../../modules/pim/VariantManager'; // Import VariantManager
+import ImageGallery from '../../../modules/pim/ImageGallery'; // Import ImageGallery
 
 import { SettingsService } from '../../../services/settings.service';
 
@@ -25,10 +27,21 @@ export default function ProductFormPage() {
   const isEditMode = !!id;
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [imagePreview, setImagePreview] = useState(null);
   const [categories, setCategories] = useState(DEFAULT_CATEGORIES);
+  
+  // Media State
+  const [images, setImages] = useState([]); // Array of URLs (existing)
+  const [filesToUpload, setFilesToUpload] = useState([]); // Array of Files (new)
+  
+  // Variants State
+  const [hasVariants, setHasVariants] = useState(false);
+  const [variantData, setVariantData] = useState({ variantOptions: [], variants: [] });
 
-  const { register, handleSubmit, reset, setValue, formState: { errors } } = useForm();
+  const { register, handleSubmit, reset, watch, formState: { errors } } = useForm();
+  
+  // Watch for base Price/Stock to pass to VariantManager defaults
+  const basePrice = watch('price');
+  const baseStock = watch('stock');
   
   useEffect(() => {
     loadSettings();
@@ -46,14 +59,24 @@ export default function ProductFormPage() {
 
   const loadProduct = async () => {
     setLoading(true);
-    // ... existing loadProduct implementation ...
     const response = await ProductService.getProductById(id);
     if (response.success) {
       const product = response.data;
       setDocId(product.id);
       reset(product);
-      if (product.imageUrl) {
-        setImagePreview(product.imageUrl);
+
+      // Load Images
+      // Compatibility: use 'images' array if exists, else 'imageUrl' wrapped, else empty
+      const loadedImages = product.images || (product.imageUrl ? [product.imageUrl] : []);
+      setImages(loadedImages);
+      
+      // Load Variants Data
+      if (product.hasVariants) {
+          setHasVariants(true);
+          setVariantData({
+              variantOptions: product.variantOptions || [],
+              variants: product.variants || []
+          });
       }
     } else {
         toast.error("Erreur: " + response.error);
@@ -77,20 +100,26 @@ export default function ProductFormPage() {
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-      const imageFile = (data.image && data.image[0]) ? data.image[0] : null;
+      // Merge Variant Data
+      const finalData = {
+          ...data,
+          images: images, // Persist current order of existing images
+          hasVariants,
+          variantOptions: hasVariants ? variantData.variantOptions : [],
+          variants: hasVariants ? variantData.variants : []
+      };
+
+      // Auto-calculate global stock if variants exist ?
+      if (hasVariants) {
+          finalData.stock = variantData.variants.reduce((acc, v) => acc + (v.stock || 0), 0);
+      }
       
       let response;
       if (isEditMode) {
-        // Update
-        // Note: data.image might be FileList or empty if not changed. 
-        // We handle the file in Service. If no new file, imageFile is undefined/null.
-        const { image, ...updates } = data; // separate file from text data
-        
-        // Use docId (the real ID) instead of id (param)
-        response = await ProductService.updateProduct(docId || id, updates, imageFile);
+        const { image, ...updates } = finalData; // 'image' field from hook-form is ignored
+        response = await ProductService.updateProduct(docId || id, updates, filesToUpload);
       } else {
-        // Create
-        response = await ProductService.uploadAndCreate(data, imageFile);
+        response = await ProductService.uploadAndCreate(finalData, filesToUpload);
       }
 
       if (response.success) {
@@ -127,23 +156,12 @@ export default function ProductFormPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Image Upload Area */}
                 <div className="space-y-2">
-                    <label className="block text-sm font-medium text-gray-400">{t('admin.form.image')}</label>
-                    <div className="flex flex-col items-center justify-center border-2 border-dashed border-zinc-700 rounded-xl p-6 hover:border-[#d4af37] transition-colors relative group">
-                        {imagePreview ? (
-                            <img src={imagePreview} alt="Preview" className="h-48 w-full object-contain rounded-lg" />
-                        ) : (
-                            <div className="text-center text-gray-500">
-                                <ImageIcon size={48} className="mx-auto mb-2 opacity-50" />
-                                <p>{t('admin.form.upload')}</p>
-                            </div>
-                        )}
-                        <input 
-                            type="file" 
-                            accept="image/*"
-                            className="absolute inset-0 opacity-0 cursor-pointer"
-                            {...register("image", { onChange: onImageChange })} 
-                        />
-                    </div>
+                    <label className="block text-sm font-medium text-gray-400">Galerie Photos</label>
+                    <ImageGallery 
+                        images={images}
+                        onChange={setImages}
+                        onFilesAdded={(files) => setFilesToUpload(prev => [...prev, ...files])}
+                    />
                 </div>
 
                 {/* Main Fields */}
@@ -184,11 +202,48 @@ export default function ProductFormPage() {
                                 type="number"
                                 {...register("stock", { min: 0 })}
                                 defaultValue={0}
-                                className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-3 text-white focus:border-[#d4af37] outline-none"
+                                disabled={hasVariants} // Disable global stock if variants are active
+                                className={`w-full bg-zinc-950 border border-zinc-800 rounded-lg p-3 text-white focus:border-[#d4af37] outline-none ${hasVariants ? 'opacity-50' : ''}`}
                             />
                         </div>
                     </div>
                 </div>
+            </div>
+
+            {/* VARIANT SECTION */}
+            <div className="border-t border-zinc-800 pt-6">
+                <div className="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                            <Layers size={20} className={hasVariants ? "text-[#d4af37]" : "text-gray-500"} />
+                            Gestion des Variantes
+                        </h3>
+                        <p className="text-gray-400 text-sm">Activez pour gérer tailles, couleurs, ouvertures...</p>
+                    </div>
+                    <label className="relative inline-flex items-center cursor-pointer">
+                        <input 
+                            type="checkbox" 
+                            className="sr-only peer" 
+                            checked={hasVariants}
+                            onChange={(e) => setHasVariants(e.target.checked)}
+                        />
+                        <div className="w-11 h-6 bg-zinc-700 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#d4af37]"></div>
+                    </label>
+                </div>
+
+                {hasVariants ? (
+                    <VariantManager 
+                        value={variantData}
+                        onChange={setVariantData}
+                        basePrice={basePrice || 0}
+                        baseStock={baseStock || 0}
+                    />
+                ) : (
+                   <div className="bg-zinc-900/50 p-8 rounded-xl border border-zinc-800 border-dashed text-center text-gray-500">
+                       <Box size={40} className="mx-auto mb-2 opacity-30" />
+                       <p>Ce produit est simple (pas de déclinaisons).</p>
+                   </div>
+                )}
             </div>
 
             {/* Description */}
