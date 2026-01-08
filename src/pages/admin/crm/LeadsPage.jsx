@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { CRMService } from '../../../services/crm.service';
+import CalendarComponent from '../../../components/admin/calendar/CalendarComponent';
 import { Phone, Calendar as CalendarIcon, Ruler, MessageCircle, ArrowRight, UserPlus, FileText } from 'lucide-react';
 import AppointmentModal from './components/AppointmentModal';
 import LeadModal from './components/LeadModal';
@@ -21,10 +22,16 @@ const Tabs = ({ activeTab, setActiveTab }) => (
       Prospects
     </button>
     <button 
+      onClick={() => setActiveTab('calendar')}
+      className={`pb-2 px-2 text-sm font-medium transition ${activeTab === 'calendar' ? 'text-[#d4af37] border-b-2 border-[#d4af37]' : 'text-gray-400 hover:text-white'}`}
+    >
+      Agenda Global
+    </button>
+    <button 
       onClick={() => setActiveTab('measurements')}
       className={`pb-2 px-2 text-sm font-medium transition ${activeTab === 'measurements' ? 'text-[#d4af37] border-b-2 border-[#d4af37]' : 'text-gray-400 hover:text-white'}`}
     >
-      Prises de Mesures
+       Prises de Mesures (Liste)
     </button>
   </div>
 );
@@ -65,6 +72,8 @@ export default function LeadsPage() {
   const [isLeadModalOpen, setIsLeadModalOpen] = useState(false); // Lead Modal
   
   const [selectedLead, setSelectedLead] = useState(null);
+  const [selectedAppointment, setSelectedAppointment] = useState(null); // Helper for Edit
+
 
 
 
@@ -215,7 +224,20 @@ export default function LeadsPage() {
             </>
         )}
 
-        {/* AGENDA VIEW REMOVED - Use CalendarPage */}
+        {/* CALENDAR VIEW */}
+        {activeTab === 'calendar' && (
+             <div className="h-[600px] bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden p-1">
+                 <CalendarComponent 
+                    events={appointments}
+                    onSelectEvent={(event) => {
+                        setSelectedAppointment(event);
+                        setSelectedLead(null); // Clear Lead context
+                        setIsModalOpen(true);
+                    }}
+                    defaultView='month'
+                 />
+             </div>
+        )}
 
         {/* MEASUREMENTS LIST */}
         {activeTab === 'measurements' && (
@@ -246,8 +268,9 @@ export default function LeadsPage() {
 
       <AppointmentModal 
         isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)} 
+        onClose={() => { setIsModalOpen(false); setSelectedAppointment(null); }} 
         leadToConvert={selectedLead}
+        appointmentToEdit={selectedAppointment}
         onSuccess={() => loadData()}
       />
 

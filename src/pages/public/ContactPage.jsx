@@ -187,8 +187,8 @@ export default function ContactPage() {
                 <h2 className="text-lg font-bold text-white mb-2">{t('contact.seo_content.title')}</h2>
                 <p className="text-sm text-gray-400 leading-relaxed mb-4">{t('contact.seo_content.text')}</p>
                 <div className="flex gap-4 text-sm">
-                   <a href="/" className="text-[#d4af37] hover:underline">Accueil</a>
-                   <a href="/catalogue" className="text-[#d4af37] hover:underline">Catalogue</a>
+                   <a href="/" className="text-[#d4af37] hover:underline">{t('nav.home')}</a>
+                   <a href="/catalogue" className="text-[#d4af37] hover:underline">{t('nav.catalogue')}</a>
                 </div>
             </div>
 

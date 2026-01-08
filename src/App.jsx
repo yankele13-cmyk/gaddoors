@@ -9,7 +9,7 @@ import MainLayout from './components/layout/MainLayout';
 import HomePage from './pages/public/HomePage';
 import CatalogPage from './pages/public/CatalogPage';
 import ProductDetailPage from './pages/public/ProductDetailPage';
-// import ProductListPage from './pages/admin/products/ProductListPage'; // DEPRECATED
+// Product Pages removed
 import ProductManagerPage from './pages/admin/products/ProductManagerPage'; // NEW V2
 import LeadsPage from './pages/admin/crm/LeadsPage';
 import ContactPage from './pages/public/ContactPage';
@@ -28,8 +28,8 @@ const FinancePage = lazy(() => import('./pages/admin/FinancePage'));
 const TeamPage = lazy(() => import('./pages/admin/TeamPage')); // Team Management
 
 // Product Pages
-// const ProductListPage = lazy(() => import('./pages/admin/products/ProductListPage')); // Replaced by ProductManagerPage
-const ProductFormPage = lazy(() => import('./pages/admin/products/ProductFormPage')); // Still needed for lazy loading if ProductManagerPage uses it internally
+// Product Pages removed
+
 
 // Finance Pages
 const QuoteBuilder = lazy(() => import('./pages/admin/finance/QuoteBuilder'));
@@ -108,7 +108,7 @@ function App() {
                 <Route path="translations" element={<TranslationManagerPage />} />
              </Route>
              
-             <Route path="users" element={<TeamPage />} />
+             <Route path="team" element={<TeamPage />} />
              <Route path="messages" element={<MessagesPage />} />
           </Route>
 

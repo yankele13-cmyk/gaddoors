@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
 import { InvoiceDocument } from '../../modules/finance/components/InvoiceDocument';
-import { createInvoice, getInvoices, updateInvoiceStatus } from '../../services/invoiceService';
+import { FinanceService } from '../../services/finance.service';
 import { ProductService } from '../../services/product.service'; // Added for Picker
 import { Plus, Trash2, FileText, Download, RefreshCw, Save, CheckCircle, Clock, ShoppingBag } from 'lucide-react';
 import { useForm, useFieldArray } from 'react-hook-form';
@@ -94,8 +94,8 @@ export default function FinancePage() {
 
   async function fetchHistory() {
     try {
-      const data = await getInvoices();
-      setInvoicesHistory(data);
+      const data = await FinanceService.getInvoices();
+      if (data.success) setInvoicesHistory(data.data);
     } catch (error) {
       console.error("Failed to load history", error);
     } finally {
@@ -120,7 +120,7 @@ export default function FinancePage() {
         }
       };
 
-      await createInvoice(completeData);
+      await FinanceService.createInvoice(completeData);
       
       // Refresh history
       await fetchHistory();
@@ -140,7 +140,7 @@ export default function FinancePage() {
 
   const handleStatusUpdate = async (id, newStatus) => {
       try {
-          await updateInvoiceStatus(id, newStatus);
+          await FinanceService.updateInvoiceStatus(id, newStatus);
           setInvoicesHistory(prev => prev.map(inv => inv.id === id ? { ...inv, status: newStatus } : inv));
       } catch (error) {
           console.error("Update failed", error);
@@ -155,7 +155,7 @@ export default function FinancePage() {
              <h1 className="text-2xl font-bold font-heading text-[#d4af37]">Nouvelle Facture</h1>
         </div>
         
-        <div className="flex-1 overflow-y-auto p-6 scrollbar-thin">
+        <div className="flex-1 min-h-0 overflow-y-auto p-6 scrollbar-thin">
             <form className="space-y-6" onSubmit={handleSubmit(handleSaveInvoice)}>
             {/* Section Info Émetteur (Hidden by default or minimized to save space?) - Kept for now */}
             <div className="space-y-4 border-b border-zinc-800 pb-6">
@@ -279,9 +279,9 @@ export default function FinancePage() {
                 {loadingProducts ? <div className="text-center p-4">Chargement...</div> : (
                     availableProducts.map(p => (
                         <div key={p.id} onClick={() => handleAddProduct(p)} className="p-3 bg-zinc-800 hover:bg-zinc-700 rounded cursor-pointer flex gap-3 items-center transition border border-zinc-700 hover:border-[#d4af37]">
-                            {p.imageUrl || p.image ? (
-                                <img src={p.imageUrl || p.image} className="w-12 h-12 object-cover rounded bg-black" />
-                            ) : <div className="w-12 h-12 bg-black rounded flex items-center justify-center text-xs">No Img</div>}
+                            {(p.imageUrl || (p.images && p.images.length > 0) || p.image) ? (
+                                <img src={p.imageUrl || p.images[0] || p.image} className="w-12 h-12 object-cover rounded bg-black" />
+                            ) : <div className="w-12 h-12 bg-zinc-800 rounded flex items-center justify-center text-[10px] text-gray-500">No Img</div>}
                             <div>
                                 <div className="font-bold text-white">{p.name}</div>
                                 <div className="text-xs text-gray-400">{p.category}</div>
@@ -301,22 +301,14 @@ export default function FinancePage() {
         
         {/* Top: PDF Preview Area */}
         <div className="flex-1 p-8 relative min-h-[400px] border-b border-zinc-800">
-            <div className="absolute top-4 right-4 z-10 flex gap-2">
-                 {/* Language Switcher */}
-                <div className="flex bg-zinc-900 rounded border border-zinc-800 p-1">
-                    <button onClick={() => setPdfLanguage('fr')} className={`px-3 py-1 text-xs font-bold rounded ${pdfLanguage === 'fr' ? 'bg-[#d4af37] text-black' : 'text-gray-400'}`}>FR</button>
-                    <button onClick={() => setPdfLanguage('en')} className={`px-3 py-1 text-xs font-bold rounded ${pdfLanguage === 'en' ? 'bg-[#d4af37] text-black' : 'text-gray-400'}`}>EN</button>
-                    <button onClick={() => setPdfLanguage('he')} className={`px-3 py-1 text-xs font-bold rounded ${pdfLanguage === 'he' ? 'bg-[#d4af37] text-black' : 'text-gray-400'}`}>HE</button>
+            {/* Top Toolbar for Preview */}
+            <div className="flex justify-end mb-4">
+                 <div className="flex items-center gap-2 bg-zinc-950 rounded-lg p-1 border border-zinc-800">
+                    <span className="text-xs text-gray-500 px-2 font-medium">Langue :</span>
+                    <button onClick={() => setPdfLanguage('fr')} className={`px-3 py-1 text-xs font-bold rounded transition ${pdfLanguage === 'fr' ? 'bg-[#d4af37] text-black' : 'text-gray-400 hover:text-white'}`}>FR</button>
+                    <button onClick={() => setPdfLanguage('en')} className={`px-3 py-1 text-xs font-bold rounded transition ${pdfLanguage === 'en' ? 'bg-[#d4af37] text-black' : 'text-gray-400 hover:text-white'}`}>EN</button>
+                    <button onClick={() => setPdfLanguage('he')} className={`px-3 py-1 text-xs font-bold rounded transition ${pdfLanguage === 'he' ? 'bg-[#d4af37] text-black' : 'text-gray-400 hover:text-white'}`}>HE</button>
                 </div>
-
-                <PDFDownloadLink document={<InvoiceDocument data={pdfData} language={pdfLanguage} docType="invoice" />} fileName={`facture-${pdfData.invoiceNumber}.pdf`}>
-                    {({ loading }) => (
-                        <button className="bg-zinc-800 hover:bg-zinc-700 text-white font-bold py-2 px-6 rounded-lg shadow-lg flex items-center gap-2 transition border border-zinc-700">
-                            <Download size={20} />
-                            {loading ? '...' : 'Télécharger le PDF'}
-                        </button>
-                    )}
-                </PDFDownloadLink>
             </div>
             <div className="w-full h-full shadow-2xl rounded-xl overflow-hidden border border-zinc-700 bg-zinc-800">
                 <PDFViewer width="100%" height="100%" className="w-full h-full" showToolbar={true}>

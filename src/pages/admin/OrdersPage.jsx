@@ -44,7 +44,7 @@ export default function OrdersPage() {
   };
 
   return (
-    <div className="h-full flex flex-col space-y-4">
+    <div className="min-h-full flex flex-col space-y-4">
       {/* Header */}
       <div className="flex justify-between items-center">
          <div>
@@ -62,7 +62,7 @@ export default function OrdersPage() {
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-hidden">
+      <div className="flex-1">
         {viewMode === 'builder' ? (
             <QuoteBuilder onSuccess={() => setViewMode('list')} />
         ) : (

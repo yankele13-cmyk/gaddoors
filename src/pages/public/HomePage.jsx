@@ -28,20 +28,20 @@ function HomePage() {
                  <h2 className="text-3xl font-heading text-[#d4af37] mb-6">{t('home.seo_section.expertise_title')}</h2>
                  <p className="text-gray-300 leading-relaxed text-lg mb-6">{t('home.seo_section.expertise_text')}</p>
                  <a href="/contact" className="text-[#d4af37] underline hover:text-white transition">
-                    Contactez-nous pour un devis gratuit
+                    {t('home.seo_section.contact_cta')}
                  </a>
             </div>
             <div>
                  <h2 className="text-3xl font-heading text-[#d4af37] mb-6">{t('home.seo_section.services_title')}</h2>
                  <p className="text-gray-300 leading-relaxed text-lg mb-6">{t('home.seo_section.services_text')}</p>
                    <ul className="text-gray-400 space-y-2 mb-6">
-                       <li>✓ Installation de portes sur mesure</li>
-                       <li>✓ Pose de portes d'intérieur design</li>
-                       <li>✓ Rénovation de menuiserie intérieure</li>
-                       <li>✓ Conseils en décoration et acoustique</li>
+                       <li>✓ {t('home.seo_section.services_list.install')}</li>
+                       <li>✓ {t('home.seo_section.services_list.design')}</li>
+                       <li>✓ {t('home.seo_section.services_list.renovation')}</li>
+                       <li>✓ {t('home.seo_section.services_list.advice')}</li>
                    </ul>
                  <a href="/realisations" className="text-[#d4af37] underline hover:text-white transition">
-                    Voir nos dernières réalisations
+                    {t('home.seo_section.realisations_cta')}
                  </a>
             </div>
         </div>
@@ -72,12 +72,12 @@ function HomePage() {
       {/* Internal Links Sections (SEO Footer) */}
       <section className="bg-zinc-900 py-12 px-4 border-t border-zinc-800">
           <div className="max-w-7xl mx-auto">
-              <h2 className="text-xl font-bold text-white mb-4">Navigation Rapide</h2>
+              <h2 className="text-xl font-bold text-white mb-4">{t('home.quick_nav', 'Navigation Rapide')}</h2>
               <div className="flex flex-wrap gap-4 text-gray-400">
-                  <a href="/catalogue" className="hover:text-[#d4af37] transition">Portes Intérieures</a> | 
-                  <a href="/catalogue" className="hover:text-[#d4af37] transition">Poignées Design</a> | 
-                  <a href="/realisations" className="hover:text-[#d4af37] transition">Galerie Photos</a> | 
-                  <a href="/contact" className="hover:text-[#d4af37] transition">Devis Gratuit</a>
+                  <a href="/catalogue" className="hover:text-[#d4af37] transition">{t('footer.links.catalogue')}</a> | 
+                  <a href="/catalogue" className="hover:text-[#d4af37] transition">{t('catalog.filters.handles')}</a> | 
+                  <a href="/realisations" className="hover:text-[#d4af37] transition">{t('footer.links.realisations')}</a> | 
+                  <a href="/contact" className="hover:text-[#d4af37] transition">{t('product.quote')}</a>
               </div>
           </div>
       </section>

@@ -1,30 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Calendar, dateFnsLocalizer } from 'react-big-calendar';
-import format from 'date-fns/format';
-import parse from 'date-fns/parse';
-import startOfWeek from 'date-fns/startOfWeek';
-import getDay from 'date-fns/getDay';
-import fr from 'date-fns/locale/fr';
-import 'react-big-calendar/lib/css/react-big-calendar.css';
-import '../../components/admin/calendar/CalendarStyles.css';
+import CalendarComponent from '../../components/admin/calendar/CalendarComponent';
 import { getAppointments, addAppointment, deleteAppointment } from '../../services/db';
 import { Plus, X, Trash2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
-
-// Setup Localizer
-const locales = {
-  'fr': fr,
-};
-
-const localizer = dateFnsLocalizer({
-  format,
-  parse,
-  startOfWeek,
-  getDay,
-  locales,
-});
 
 export default function CalendarPage() {
   const [events, setEvents] = useState([]);
@@ -126,23 +106,7 @@ export default function CalendarPage() {
     }
   };
 
-  // Custom Event Style
-  const eventStyleGetter = (event) => {
-    let backgroundColor = '#d4af37'; // Default Gold
-    if (event.type === 'installation') backgroundColor = '#10b981'; // Green
-    if (event.type === 'meeting') backgroundColor = '#3b82f6'; // Blue
-    
-    return {
-      style: {
-        backgroundColor,
-        borderRadius: '5px',
-        opacity: 0.8,
-        color: 'white',
-        border: '0px',
-        display: 'block'
-      }
-    };
-  };
+
 
   return (
     <div className="h-[calc(100vh-64px)] p-6 bg-black text-white flex flex-col">
@@ -160,34 +124,16 @@ export default function CalendarPage() {
         </button>
       </div>
 
-      <div className="flex-1 bg-zinc-900 border border-zinc-800 rounded-xl p-4 calendar-dark-theme">
-        <Calendar
-          localizer={localizer}
+      <div className="flex-1 overflow-hidden">
+        <CalendarComponent
           events={events}
-          startAccessor="start"
-          endAccessor="end"
-          style={{ height: '100%' }}
-          culture="fr"
           onSelectEvent={handleSelectEvent}
-          eventPropGetter={eventStyleGetter}
-          // Controlled Props
-          view={view}
-          date={date}
-          onView={(newView) => setView(newView)}
-          onNavigate={(newDate) => setDate(newDate)}
-          messages={{
-            next: "Suivant",
-            previous: "Précédent",
-            today: "Aujourd'hui",
-            month: "Mois",
-            week: "Semaine",
-            day: "Jour",
-            agenda: "Agenda",
-            date: "Date",
-            time: "Heure",
-            event: "Événement",
-            noEventsInRange: "Aucun événement dans cette plage."
-          }}
+          defaultView={view}
+
+          // We don't need to control view/date here unless we really want sync.
+          // CalendarComponent manages its own state for view/date if not passed, 
+          // or we can pass it if we want to control it from outside (like url params).
+          // For now let the component handle it or pass defaults.
         />
       </div>
 

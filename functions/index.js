@@ -2,7 +2,7 @@
  * Cloud Functions for Gaddoors
  */
 const { onCall, HttpsError } = require("firebase-functions/v2/https");
-const { onDocumentCreated } = require("firebase-functions/v2/firestore"); // Import Trigger
+const { onDocumentCreated, onDocumentWritten } = require("firebase-functions/v2/firestore"); // Import Trigger
 const { initializeApp } = require("firebase-admin/app");
 const { getFirestore, FieldValue } = require("firebase-admin/firestore");
 const nodemailer = require("nodemailer");
@@ -140,7 +140,7 @@ exports.onNewMessage = onDocumentCreated("messages/{messageId}", async (event) =
  * 3. Audit Log Trigger: Securely record all Product changes
  * Replaces client-side _logAudit
  */
-const { onDocumentWritten } = require("firebase-functions/v2/firestore");
+
 
 exports.onProductWrite = onDocumentWritten("products/{productId}", async (event) => {
     const eventType = !event.data.before.exists ? 'create' 

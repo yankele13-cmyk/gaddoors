@@ -354,5 +354,49 @@ export const FinanceService = {
      } catch (error) {
        return { success: false, error: error.message };
      }
+  },
+
+  // --- GENERIC INVOICE METHODS (Merged from invoiceService.js) ---
+
+  async createInvoice(invoiceData) {
+    try {
+        const docRef = await addDoc(collection(db, COLLECTION_INVOICES), {
+            ...invoiceData,
+            status: 'pending',
+            createdAt: serverTimestamp()
+        });
+        return { success: true, data: { id: docRef.id } }; // Returning standardized object
+    } catch (error) {
+        return { success: false, error: error.message };
+    }
+  },
+
+  async getInvoices() {
+    try {
+        const q = query(collection(db, COLLECTION_INVOICES), orderBy("createdAt", "desc"));
+        const snapshot = await getDocs(q);
+        const invoices = snapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data(),
+            createdAt: doc.data().createdAt?.toDate() || new Date(),
+            date: doc.data().date || new Date().toISOString().split('T')[0]
+        }));
+        return { success: true, data: invoices };
+    } catch (error) {
+        return { success: false, error: error.message };
+    }
+  },
+
+  async updateInvoiceStatus(invoiceId, status) {
+    try {
+        const docRef = doc(db, COLLECTION_INVOICES, invoiceId);
+        await updateDoc(docRef, { 
+            status,
+            updatedAt: serverTimestamp()
+        });
+        return { success: true };
+    } catch (error) {
+        return { success: false, error: error.message };
+    }
   }
 };

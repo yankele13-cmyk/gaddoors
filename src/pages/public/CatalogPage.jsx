@@ -36,8 +36,6 @@ function CatalogPage() {
       str.toLowerCase().includes('handle') || 
       str.toLowerCase().includes('poignée') ||
       str.toLowerCase().includes('poigné') ||
-      str.toLowerCase().includes('poignée') ||
-      str.toLowerCase().includes('poigné') ||
       str.toLowerCase().includes('modello') ||
       str.toLowerCase().includes('maniglia') // Fix: Allow renormalized handles to show
     );
@@ -48,6 +46,7 @@ function CatalogPage() {
                      product.category === 'Poignées';
 
     const isDoor = product.category === 'Portes Intérieures' || 
+                   product.category === 'Portes' || // Fix: Match DB category
                    product.name.toLowerCase().includes('porte') ||
                    product.name.toLowerCase().includes('door') ||
                    (product.originalName && (product.originalName.toLowerCase().includes('porte') || product.originalName.toLowerCase().includes('door')));
@@ -55,18 +54,51 @@ function CatalogPage() {
     // First filter: only doors and handles allowed
     if (!isDoor && !isHandle) return false;
     
-    // Then apply user's filter selection
-    if (filter === 'all') return true;
-    if (filter === 'doors') return isDoor;
-    if (filter === 'handles') return isHandle;
-    return false;
+    // We do NOT strictly filter by 'doors' or 'handles' anymore, 
+    // because the user requested "Handles first, THEN doors" for the Poignées view.
+    // So all valid items (Door/Handle) are shown, just sorted differently.
+    return true;
   }).sort((a, b) => {
-    // Helper for sorting
-    const isHandleA = a.name.includes('Modello') || (a.originalName && a.originalName.toLowerCase().includes('handle'));
-    const isHandleB = b.name.includes('Modello') || (b.originalName && b.originalName.toLowerCase().includes('handle'));
-    
-    if (!isHandleA && isHandleB) return -1;
-    if (isHandleA && !isHandleB) return 1;
+    // Helper to check for handle keywords
+    const isHandle = (p) => {
+      const str = (p.name + " " + (p.originalName || "")).toLowerCase();
+      return p.category === 'Poignées' || 
+             str.includes('modello') || 
+             str.includes('maniglia') || 
+             str.includes('handle') || 
+             str.includes('poignée');
+    };
+
+    const isDoor = (p) => {
+       const str = (p.name + " " + (p.originalName || "")).toLowerCase();
+       return p.category === 'Portes Intérieures' || 
+              p.category === 'Portes' || // Fix: Match DB category
+              str.includes('porte') || 
+              str.includes('door');
+    };
+
+    const aIsHandle = isHandle(a);
+    const bIsHandle = isHandle(b);
+    const aIsDoor = isDoor(a);
+    const bIsDoor = isDoor(b);
+
+    // Explicit Priority: depends on Filter
+    if (filter === 'handles') {
+        // Handles First
+        if (aIsHandle && !bIsHandle) return -1;
+        if (!aIsHandle && bIsHandle) return 1;
+        // If items are mixed or same type, fallback to name
+        if (aIsDoor && !bIsDoor) return 1; // Doors after
+        if (!aIsDoor && bIsDoor) return -1;
+    } else {
+        // Default / All / Doors selected: Doors First
+        if (aIsDoor && !bIsDoor) return -1;
+        if (!aIsDoor && bIsDoor) return 1;
+        // Handles after
+        if (aIsHandle && !bIsHandle) return 1;
+        if (!aIsHandle && bIsHandle) return -1;
+    }
+
     return a.name.localeCompare(b.name);
   });
 
@@ -136,8 +168,8 @@ function CatalogPage() {
         <h2 className="text-2xl font-semibold text-white mb-4">{t('catalog.seo_outro.title')}</h2>
         <p className="text-gray-400 mb-6">{t('catalog.seo_outro.text')}</p>
         <div className="flex gap-4">
-            <a href="/contact" className="text-[#d4af37] underline hover:text-white">Demander conseil</a>
-            <a href="/realisations" className="text-[#d4af37] underline hover:text-white">Voir les réalisations</a>
+            <a href="/contact" className="text-[#d4af37] underline hover:text-white">{t('catalog.filters.ask_advice')}</a>
+            <a href="/realisations" className="text-[#d4af37] underline hover:text-white">{t('catalog.filters.see_projects')}</a>
         </div>
       </section>
 

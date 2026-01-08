@@ -4,23 +4,41 @@ import { CRMService } from '../../../../services/crm.service';
 import { X, Save, Loader2, MapPin, Phone, User, Building, ArrowUp } from 'lucide-react';
 import toast from 'react-hot-toast';
 
-export default function AppointmentModal({ isOpen, onClose, leadToConvert = null, onSuccess }) {
+export default function AppointmentModal({ isOpen, onClose, leadToConvert = null, appointmentToEdit = null, onSuccess }) {
   const { register, handleSubmit, reset, setValue, formState: { errors, result } } = useForm();
   const loading = false; // TODO: Local loading state if needed, or pass from parent
 
   useEffect(() => {
     if (isOpen) {
-        if (leadToConvert) {
-            // Pre-fill from Lead
+        if (appointmentToEdit) {
+            // EDIT MODE
+            setValue('clientName', appointmentToEdit.clientName || appointmentToEdit.title || '');
+            setValue('clientPhone', appointmentToEdit.clientPhone || appointmentToEdit.phone || '');
+            setValue('city', appointmentToEdit.city || '');
+            setValue('street', appointmentToEdit.address || ''); 
+            setValue('floor', appointmentToEdit.floor || '');
+            setValue('elevator', appointmentToEdit.elevator ? 'yes' : 'no');
+            setValue('entranceCode', appointmentToEdit.entranceCode || '');
+            setValue('type', appointmentToEdit.type || 'measurements');
+            // Date formatting for datetime-local
+            if (appointmentToEdit.start) {
+                const dateObj = new Date(appointmentToEdit.start);
+                // Adjust to local ISO string for input
+                dateObj.setMinutes(dateObj.getMinutes() - dateObj.getTimezoneOffset());
+                setValue('date', dateObj.toISOString().slice(0, 16));
+            }
+        } else if (leadToConvert) {
+            // CONVERT MODE
             setValue('clientName', leadToConvert.name || '');
             setValue('clientPhone', leadToConvert.phone || '');
             setValue('city', leadToConvert.city || '');
-            setValue('street', leadToConvert.address || ''); // assuming address might be just street
+            setValue('street', leadToConvert.address || ''); 
         } else {
+            // CREATE MODE
             reset();
         }
     }
-  }, [isOpen, leadToConvert, setValue, reset]);
+  }, [isOpen, leadToConvert, appointmentToEdit, setValue, reset]);
 
   const onSubmit = async (data) => {
     try {
@@ -82,8 +100,13 @@ export default function AppointmentModal({ isOpen, onClose, leadToConvert = null
   
   const handleFormSubmit = async (data) => {
       // Wrapper to handle logic
-      let res;
-      if (leadToConvert) {
+       let res;
+      if (appointmentToEdit) {
+           // EDIT
+            // Assuming CRMService.updateAppointment exists, or fallback to direct DB call if needed.
+            // Using generic structure.
+            res = await CRMService.updateAppointment(appointmentToEdit.id, data);
+      } else if (leadToConvert) {
           res = await CRMService.convertLeadToAppointment(leadToConvert.id, data);
       } else {
            // Standalone Create Logic
@@ -110,7 +133,7 @@ export default function AppointmentModal({ isOpen, onClose, leadToConvert = null
           <div>
             <h2 className="text-xl font-bold text-white flex items-center gap-2">
                 <Building className="text-[#d4af37]" size={24} />
-                {leadToConvert ? 'Convertir en Rendez-vous' : 'Nouveau Rendez-vous'}
+                {appointmentToEdit ? 'Modifier le Rendez-vous' : (leadToConvert ? 'Convertir en Rendez-vous' : 'Nouveau Rendez-vous')}
             </h2>
             <p className="text-gray-400 text-sm mt-1">Saisissez les détails logistiques (Tech / Israël)</p>
           </div>

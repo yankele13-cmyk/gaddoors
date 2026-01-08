@@ -98,9 +98,9 @@ export default function QuoteBuilder({ onSuccess }) {
 
   return (
     <>
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[calc(100vh-140px)]">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 pb-20">
         {/* LEFT: CATALOG & CONFIG */}
-        <div className="lg:col-span-2 bg-zinc-900 border border-zinc-800 rounded-xl flex flex-col overflow-hidden">
+        <div className="lg:col-span-2 bg-zinc-900 border border-zinc-800 rounded-xl flex flex-col">
             <div className="p-4 border-b border-zinc-800 bg-zinc-950">
                 <input 
                     type="text" 
@@ -111,7 +111,7 @@ export default function QuoteBuilder({ onSuccess }) {
                 />
             </div>
             
-            <div className="flex-1 overflow-y-auto p-4">
+            <div className="p-4 h-[60vh] min-h-[500px] overflow-y-auto">
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                     {filteredProducts.map(product => (
                         <div 
@@ -120,7 +120,9 @@ export default function QuoteBuilder({ onSuccess }) {
                             className="bg-black border border-zinc-800 rounded-lg p-4 cursor-pointer hover:border-[#d4af37] transition group"
                         >
                             <div className="h-24 bg-zinc-800 rounded mb-3 flex items-center justify-center overflow-hidden">
-                                {product.image ? <img src={product.image} className="w-full h-full object-cover" /> : <Package className="text-gray-600" />}
+                                {(product.imageUrl || (product.images && product.images.length > 0) || product.image) ? (
+                                    <img src={product.imageUrl || product.images[0] || product.image} className="w-full h-full object-cover" />
+                                ) : <Package className="text-gray-600" />}
                             </div>
                             <h4 className="font-bold text-white text-sm truncate">{product.name}</h4>
                             <div className="text-[#d4af37] font-mono text-xs mt-1">{product.price} ₪</div>
@@ -131,7 +133,7 @@ export default function QuoteBuilder({ onSuccess }) {
         </div>
 
         {/* RIGHT: CART & CLIENT */}
-        <div className="bg-zinc-900 border border-zinc-800 rounded-xl flex flex-col h-full">
+        <div className="bg-zinc-900 border border-zinc-800 rounded-xl flex flex-col h-auto">
             <div className="p-4 border-b border-zinc-800 bg-zinc-950">
                 <h3 className="font-bold text-white mb-3">Informations Client</h3>
                 <div className="space-y-2">
@@ -164,7 +166,7 @@ export default function QuoteBuilder({ onSuccess }) {
                 </div>
             </div>
             
-            <div className="flex-1 overflow-y-auto p-4 space-y-4">
+            <div className="p-4 space-y-4">
                 {items.length === 0 && <div className="text-center text-gray-500 text-sm py-10">Le panier est vide.</div>}
                 
                 {items.map((item, idx) => (
@@ -228,26 +230,21 @@ export default function QuoteBuilder({ onSuccess }) {
 
             </div>
 
-            <div className="p-4 bg-zinc-950 border-t border-zinc-800 flex gap-2 items-center">
-                {/* Language Switcher */}
-                <div className="flex bg-zinc-900 rounded border border-zinc-800 p-1 mr-2">
-                    <button onClick={() => setPdfLanguage('fr')} className={`px-2 text-xs font-bold rounded ${pdfLanguage === 'fr' ? 'bg-[#d4af37] text-black' : 'text-gray-400'}`}>FR</button>
-                    <button onClick={() => setPdfLanguage('en')} className={`px-2 text-xs font-bold rounded ${pdfLanguage === 'en' ? 'bg-[#d4af37] text-black' : 'text-gray-400'}`}>EN</button>
-                    <button onClick={() => setPdfLanguage('he')} className={`px-2 text-xs font-bold rounded ${pdfLanguage === 'he' ? 'bg-[#d4af37] text-black' : 'text-gray-400'}`}>HE</button>
-                </div>
+            <div className="p-4 bg-zinc-950 border-t border-zinc-800 flex flex-col gap-2">
+                 {/* Toolbar moved above button for space */}
+                 <div className="flex justify-between items-center w-full">
+                    <div className="flex items-center gap-2 bg-zinc-900 rounded-lg p-1 border border-zinc-800">
+                        <span className="text-[10px] text-gray-500 px-2 font-medium">Langue PDF :</span>
+                        <button onClick={() => setPdfLanguage('fr')} className={`px-2 py-1 text-[10px] font-bold rounded transition ${pdfLanguage === 'fr' ? 'bg-[#d4af37] text-black' : 'text-gray-400 hover:text-white'}`}>FR</button>
+                        <button onClick={() => setPdfLanguage('en')} className={`px-2 py-1 text-[10px] font-bold rounded transition ${pdfLanguage === 'en' ? 'bg-[#d4af37] text-black' : 'text-gray-400 hover:text-white'}`}>EN</button>
+                        <button onClick={() => setPdfLanguage('he')} className={`px-2 py-1 text-[10px] font-bold rounded transition ${pdfLanguage === 'he' ? 'bg-[#d4af37] text-black' : 'text-gray-400 hover:text-white'}`}>HE</button>
+                    </div>
+                 </div>
 
-                <PDFDownloadLink
-                    document={<InvoiceDocument data={printData} language={pdfLanguage} docType="quote" />}
-                    fileName={`devis_brouillon.pdf`}
-                    className="bg-zinc-800 hover:bg-zinc-700 text-white p-3 rounded-lg"
-                    title="Télécharger PDF"
-                >
-                    {({ loading }) => (loading ? '...' : <Printer size={18} />)}
-                </PDFDownloadLink>
                 <button 
                   onClick={handleSave}
                   disabled={saving}
-                  className="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg flex items-center justify-center gap-2 disabled:opacity-50"
+                  className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg flex items-center justify-center gap-2 disabled:opacity-50 mt-2"
                 >
                     <Save size={18} /> {saving ? '...' : 'Valider le Devis'}
                 </button>

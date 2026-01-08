@@ -90,13 +90,13 @@ function InstallationsPage() {
       </div>
 
       <div className="text-center mt-12 mb-8">
-          <p className="text-white mb-4">Vous aimez nos réalisations ?</p>
+          <p className="text-white mb-4">{t('installations.cta_text')}</p>
           <div className="flex justify-center gap-6">
                  <a href="/catalogue" className="px-6 py-2 border border-[#d4af37] text-[#d4af37] rounded hover:bg-[#d4af37] hover:text-black transition">
-                    Voir le catalogue
+                    {t('installations.see_catalog')}
                  </a>
                  <a href="/contact" className="px-6 py-2 bg-[#d4af37] text-black rounded hover:bg-white transition">
-                    Demander un devis
+                    {t('installations.get_quote')}
                  </a>
           </div>
       </div>

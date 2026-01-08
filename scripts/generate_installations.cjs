@@ -7,7 +7,7 @@ const OUTPUT_FILE = path.join(__dirname, '../installations.json');
 // Helper to generate description
 const generateDescription = (filename) => {
    const descriptions = [
-       "Installation récente d'une porte blindée sur mesure.",
+       "Installation récente d'une porte intérieure sur mesure.",
        "Rénovation complète avec nos portes intérieures haut de gamme.",
        "Pose d'une porte sécurisée design pour un appartement moderne.",
        "Installation de portes coupe-feu dans un complexe résidentiel.",

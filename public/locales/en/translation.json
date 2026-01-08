@@ -31,7 +31,9 @@
     "filters": {
       "all": "View All",
       "doors": "Doors",
-      "handles": "Design Handles"
+      "handles": "Design Handles",
+      "ask_advice": "Ask for Advice",
+      "see_projects": "See Projects"
     }
   },
   "installations": {
@@ -42,7 +44,10 @@
     },
     "title": "OUR PROJECTS",
     "loading": "Loading projects...",
-    "error": "Unable to load projects."
+    "error": "Unable to load projects.",
+    "cta_text": "Do you like our projects?",
+    "see_catalog": "View Catalog",
+    "get_quote": "Get a Quote"
   },
   "product": {
     "technical": {
@@ -60,6 +65,7 @@
       "title": "Warranty & Service",
       "text": "By choosing this model, you benefit from our full warranty on structure and mechanisms. Our after-sales service is at your disposal for any questions regarding the maintenance of your doors."
     },
+    "see_others": "See other models",
     "loading": "Loading product...",
     "error": "Error loading product.",
     "notFound": "Product not found.",
@@ -155,7 +161,15 @@
       "expertise_title": "Expertise & Design: Why Choose Gad Doors?",
       "expertise_text": "For over 18 years, Gad Doors has been the reference for high-end interior joinery in Israel. Specialists in designer interior doors, we combine Italian style finesse with absolute finishing standards. Each project is a signature: we don't just install doors, we create harmonious living spaces with custom acoustic and aesthetic solutions.",
       "services_title": "Premium Support from A to Z",
-      "services_text": "Our commitment goes far beyond sales. We offer a turnkey experience (Full Service): home decor consultation, laser measurements, careful delivery, and installation by our own certified carpenters. Your satisfaction is our priority."
+      "services_text": "Our commitment goes far beyond sales. We offer a turnkey experience (Full Service): home decor consultation, laser measurements, careful delivery, and installation by our own certified carpenters. Your satisfaction is our priority.",
+      "contact_cta": "Contact us for a free quote",
+      "services_list": {
+        "install": "Custom door installation",
+        "design": "Design interior door installation",
+        "renovation": "Interior carpentry renovation",
+        "advice": "Decoration and acoustic advice"
+      },
+      "realisations_cta": "See our latest projects"
     },
     "faq": {
       "title": "Frequently Asked Questions - Interior Doors",
@@ -208,7 +222,8 @@
       },
       "experienceLabel": "18 YEARS",
       "experienceText": "OF EXPERTISE IN IMPORTING AND INSTALLING SUPERIOR QUALITY DOORS"
-    }
+    },
+    "quick_nav": "Quick Navigation"
   },
   "productDescriptions": {
     "Modello Roma": "A timeless handle design, inspired by the grandeur of ancient Rome. Robust finish and ergonomic grip.",

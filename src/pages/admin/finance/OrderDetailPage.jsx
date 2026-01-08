@@ -113,10 +113,14 @@ export default function OrderDetailPage() {
             
             <div className="flex flex-wrap gap-2">
                 {/* PDF Configuration */}
-                <div className="flex items-center gap-1 bg-zinc-800 rounded-lg p-1 border border-zinc-700">
-                    <button onClick={() => setPdfLanguage('fr')} className={`px-2 py-1 text-xs font-bold rounded ${pdfLanguage === 'fr' ? 'bg-[#d4af37] text-black' : 'text-gray-400 hover:text-white'}`}>FR</button>
-                    <button onClick={() => setPdfLanguage('en')} className={`px-2 py-1 text-xs font-bold rounded ${pdfLanguage === 'en' ? 'bg-[#d4af37] text-black' : 'text-gray-400 hover:text-white'}`}>EN</button>
-                    <button onClick={() => setPdfLanguage('he')} className={`px-2 py-1 text-xs font-bold rounded ${pdfLanguage === 'he' ? 'bg-[#d4af37] text-black' : 'text-gray-400 hover:text-white'}`}>HE</button>
+                {/* Language Switcher - Moved to be subtle */}
+                <div className="flex items-center bg-zinc-900 rounded-lg p-1 border border-zinc-800">
+                    <span className="text-xs text-gray-500 px-2 hidden md:block">Langue PDF:</span>
+                     <button onClick={() => setPdfLanguage('fr')} className={`px-2 py-1 text-xs font-bold rounded ${pdfLanguage === 'fr' ? 'text-[#d4af37]' : 'text-zinc-600 hover:text-zinc-400'}`}>FR</button>
+                     <span className="text-zinc-800">|</span>
+                     <button onClick={() => setPdfLanguage('en')} className={`px-2 py-1 text-xs font-bold rounded ${pdfLanguage === 'en' ? 'text-[#d4af37]' : 'text-zinc-600 hover:text-zinc-400'}`}>EN</button>
+                     <span className="text-zinc-800">|</span>
+                     <button onClick={() => setPdfLanguage('he')} className={`px-2 py-1 text-xs font-bold rounded ${pdfLanguage === 'he' ? 'text-[#d4af37]' : 'text-zinc-600 hover:text-zinc-400'}`}>HE</button>
                 </div>
 
                 <button
@@ -134,18 +138,11 @@ export default function OrderDetailPage() {
                             doc: <InvoiceDocument data={order} language={pdfLanguage} isWorkOrder={true} customTexts={pdfCustomTexts} />,
                             name: `ordre_travail_${order.id}.pdf`
                         })}
-                        className="text-gray-400 hover:text-white hover:bg-zinc-700 p-2 rounded transition"
+                        className="text-gray-400 hover:text-white hover:bg-zinc-700 px-3 py-2 rounded flex items-center gap-2 transition text-sm font-medium"
                         title="Aperçu Fiche Travail"
                     >
-                        <Eye size={18} />
-                    </button>
-                    <PDFDownloadLink
-                        document={<InvoiceDocument data={order} language={pdfLanguage} isWorkOrder={true} customTexts={pdfCustomTexts} />}
-                        fileName={`ordre_travail_${order.id}.pdf`}
-                        className="text-white hover:bg-zinc-700 px-3 py-2 rounded flex items-center gap-2 transition text-sm font-medium"
-                    >
                         <Hammer size={16} /> Fiche Travail
-                    </PDFDownloadLink>
+                    </button>
                 </div>
 
                 {/* QUOTE/INVOICE ACTIONS */}
@@ -155,18 +152,11 @@ export default function OrderDetailPage() {
                             doc: <InvoiceDocument data={order} language={pdfLanguage} isWorkOrder={false} docType="invoice" customTexts={pdfCustomTexts} />,
                             name: `devis_${order.humanId || order.id}.pdf`
                         })}
-                        className="text-black/70 hover:text-black hover:bg-white/20 p-2 rounded transition"
+                        className="text-black font-bold hover:bg-white/20 px-3 py-2 rounded flex items-center gap-2 transition text-sm"
                         title="Aperçu Devis/Facture"
                     >
-                        <Eye size={18} />
+                        <FileText size={16} /> Facture / Devis
                     </button>
-                    <PDFDownloadLink
-                        document={<InvoiceDocument data={order} language={pdfLanguage} isWorkOrder={false} docType="invoice" customTexts={pdfCustomTexts} />}
-                        fileName={`devis_${order.humanId || order.id}.pdf`}
-                        className="text-black font-bold hover:bg-white/20 px-3 py-2 rounded flex items-center gap-2 transition text-sm"
-                    >
-                        <FileText size={16} /> Facture
-                    </PDFDownloadLink>
                 </div>
 
                  {/* DELETE ORDER BUTTON */}

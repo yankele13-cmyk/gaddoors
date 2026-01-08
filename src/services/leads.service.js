@@ -12,6 +12,11 @@ import {
   import { db } from '../config/firebase';
   import { LEAD_STATUS } from '../config/constants';
   
+  /* 
+   * LEGACY SERVICE - based on 'messages' collection 
+   * Used by LeadKanban.jsx. 
+   * Ideally should be migrated to `crm.service.js` ('leads' collection) in future.
+   */
   const COLLECTION_NAME = 'messages'; // Using 'messages' as leads source for now as per schema analysis
   
   export const leadsService = {

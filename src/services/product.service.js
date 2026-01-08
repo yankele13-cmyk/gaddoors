@@ -68,6 +68,68 @@ export const ProductService = {
     }
   },
 
+  /**
+   * Get Products with Advanced Filtering (V2 Compatible)
+   */
+  async getProducts(filters = {}, pagination = { pageSize: 20 }) {
+    try {
+      let q = collection(db, COLLECTION_NAME);
+      const constraints = [];
+
+      // 1. Filtering
+      if (filters.status && filters.status !== 'all') {
+          constraints.push(where('status', '==', filters.status));
+      } else {
+          // Default: Exclude deleted unless specifically asked
+          if (filters.status !== 'deleted') {
+              constraints.push(where('status', '!=', 'deleted'));
+          }
+      }
+
+      if (filters.category && filters.category !== 'all') {
+          constraints.push(where('category', '==', filters.category));
+      }
+
+      if (filters.visibility !== undefined) {
+          constraints.push(where('visibility', '==', filters.visibility));
+      }
+
+      // 2. Sorting & Pagination
+      constraints.push(orderBy('createdAt', 'desc'));
+      constraints.push(limit(pagination.pageSize));
+
+      if (pagination.lastDoc) {
+          constraints.push(startAfter(pagination.lastDoc));
+      }
+
+      const qFinal = query(q, ...constraints);
+      const snapshot = await getDocs(qFinal);
+      
+      const items = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+      
+      // Client-side search (limited to current page results)
+      let finalItems = items;
+      if (filters.search) {
+          const lowerQ = filters.search.toLowerCase();
+          finalItems = items.filter(p => 
+              p.name?.toLowerCase().includes(lowerQ) || 
+              p.sku?.toLowerCase().includes(lowerQ)
+          );
+      }
+
+      return { 
+          success: true, 
+          data: finalItems, 
+          lastDoc: snapshot.docs[snapshot.docs.length - 1],
+          empty: snapshot.empty 
+      };
+
+    } catch (error) {
+      console.error("[ProductService] Get Error:", error);
+      return { success: false, error: error.message };
+    }
+  },
+
   // Pagination (Moved from legacy service)
   async getPage(lastVisible = null, pageSize = 20) {
     try {
@@ -89,7 +151,7 @@ export const ProductService = {
 
   async getProductById(id) {
     try {
-      console.log(`[ProductService] Fetching ID: "${id}"`); // DEBUG
+      // console.log(`[ProductService] Fetching ID: "${id}"`); // DEBUG
 
       const docRef = doc(db, COLLECTION_NAME, id);
       const docSnap = await getDoc(docRef);
@@ -174,68 +236,7 @@ export const ProductService = {
       return true;
   },
 
-  /**
-   * ONE-SHOT SCRIPT: Clean Duplicates
-   * Renames duplicates to "Name (Doublon X)"
-   */
-  async cleanDuplicates() {
-      // ... implementation ...
-  },
 
-  /**
-   * ONE-SHOT SCRIPT: Rename Doors to Italian Cities
-   * Filter: Category includes "Porte"
-   * Format: "Modello [City]"
-   */
-  async renameDoorsToItalianCities() {
-    const cities = [
-      "Roma", "Milano", "Napoli", "Torino", "Palermo", "Genova", "Bologna",
-      "Firenze", "Bari", "Catania", "Venezia", "Verona", "Messina", "Padova",
-      "Trieste", "Brescia", "Taranto", "Prato", "Parma", "Modena", "Reggio Calabria",
-      "Reggio Emilia", "Perugia", "Ravenna", "Livorno", "Cagliari", "Foggia",
-      "Rimini", "Salerno", "Ferrara", "Sassari", "Latina", "Giugliano", "Monza",
-      "Siracusa", "Pescara", "Bergamo", "Forli", "Trento", "Vicenza", "Terni",
-      "Bolzano", "Novara", "Piacenza", "Ancona", "Andria", "Arezzo", "Udine",
-      "Cesena", "Lecce", "Pesaro", "Barletta", "Alessandria", "La Spezia", "Pisa",
-      "Lucca", "Pistoia", "Guidonia", "Catanzaro", "Treviso", "Brindisi", "Torre del Greco"
-    ];
-
-    try {
-      const snapshot = await getDocs(collection(db, COLLECTION_NAME));
-      const batch = writeBatch(db);
-      let count = 0;
-      let doorCount = 0;
-
-      snapshot.docs.forEach((docSnap) => {
-        const data = docSnap.data();
-        const category = data.category || "";
-        
-        // Filter: Must contain "Porte" (Case-sensitive usually, but let's be safe)
-        if (category.includes("Porte")) {
-          // Assign city based on index (Modulo to reuse cities if needed)
-          const city = cities[doorCount % cities.length];
-          const newName = `Modello ${city}`;
-          
-          // Add suffix number if we loop around cities to keep uniqueness
-          const suffix = Math.floor(doorCount / cities.length) > 0 ? ` ${Math.floor(doorCount / cities.length) + 1}` : "";
-          const finalName = newName + suffix;
-
-          batch.update(docSnap.ref, { name: finalName });
-          count++;
-          doorCount++;
-        }
-      });
-
-      if (count > 0) {
-        await batch.commit();
-      }
-      return { success: true, count, message: `${count} portes renommées avec succès.` };
-
-    } catch (error) {
-      console.error("Rename Script Error:", error);
-      return { success: false, error: error.message };
-    }
-  },
 
   /**
    * ONE-SHOT SCRIPT: Rename Handles (Poignées) to Italian Design Names
@@ -416,5 +417,36 @@ export const ProductService = {
       console.error("Error updating product:", error);
       return { success: false, error: error.message };
     }
+  },
+
+  // --- VISIBILITY & STATUS ACTIONS (V2) ---
+
+  async toggleVisibility(id, isVisible, user) {
+      return this.updateProduct(id, { visibility: isVisible }, [], user);
+  },
+
+  async archiveProduct(id, user) {
+      return this.updateProduct(id, { status: 'archived', visibility: false }, [], user);
+  },
+
+  async softDeleteProduct(id, user) {
+      return this.updateProduct(id, { 
+          status: 'deleted', 
+          visibility: false,
+          deletedAt: serverTimestamp() 
+      }, [], user);
+  },
+
+  async hardDeleteProduct(id, user) {
+     try {
+         await deleteDoc(doc(db, COLLECTION_NAME, id));
+         return { success: true };
+     } catch(error) {
+         return { success: false, error: error.message };
+     }
+  },
+
+  async restoreProduct(id, user) {
+      return this.updateProduct(id, { status: 'draft', visibility: false, deletedAt: null }, [], user);
   }
 };

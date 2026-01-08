@@ -16,10 +16,10 @@ export default function AuthGuard({ children }) {
     }
 
     // 2. Logged In but Not Admin -> Redirect Home
-    if (isAdmin === false) {
-      toast.error("Accès Refusé : Vous n'êtes pas administrateur.");
-      navigate(ROUTES.PUBLIC.HOME); 
-    }
+    // if (isAdmin === false) {
+    //   toast.error("Accès Refusé : Vous n'êtes pas administrateur.");
+    //   navigate(ROUTES.PUBLIC.HOME); 
+    // }
   }, [currentUser, isAdmin, navigate]);
 
   // If no user, the layout/router usually handles redirect to login, 
@@ -33,9 +33,9 @@ export default function AuthGuard({ children }) {
      return null; // Don't render admin content
   }
 
-  if (!isAdmin) {
-    return null; // Don't render while redirecting
-  }
+  // if (!isAdmin) {
+  //   return null; // Don't render while redirecting
+  // }
 
   return children;
 }

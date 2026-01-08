@@ -16,6 +16,11 @@ export default function QuoteBuilder() {
   const [loading, setLoading] = useState(true);
   const [quoteData, setQuoteData] = useState(null); // For PDF Generation
 
+  // Product Picker State
+  const [isPickerOpen, setIsPickerOpen] = useState(false);
+  const [pickerTargetIndex, setPickerTargetIndex] = useState(null); // To know which line to update, or if adding new
+
+
   // Form Setup
   const { register, control, handleSubmit, watch, setValue } = useForm({
     defaultValues: {
@@ -57,10 +62,33 @@ export default function QuoteBuilder() {
       if (product) {
           setValue(`items.${index}.name`, product.name);
           setValue(`items.${index}.price`, product.price);
-          setValue(`items.${index}.description`, product.description || ""); // Pre-fill desc but allow edit
-          // Snapshot Logic: We just set the values. The user can override them, 
-          // but if they don't, these values are what gets saved.
+          setValue(`items.${index}.description`, product.description || ""); 
       }
+  };
+
+  const handlePickerSelect = (product) => {
+      if (pickerTargetIndex !== null) {
+          // Update existing line
+          setValue(`items.${pickerTargetIndex}.productId`, product.id);
+          handleProductSelect(pickerTargetIndex, product.id);
+      } else {
+          // Append new line
+          append({ 
+              productId: product.id, 
+              name: product.name, 
+              price: product.price, 
+              quantity: 1, 
+              description: product.description || "" 
+          });
+      }
+      setIsPickerOpen(false);
+      setPickerTargetIndex(null);
+      toast.success("Produit ajouté !");
+  };
+
+  const openPicker = (index = null) => {
+      setPickerTargetIndex(index);
+      setIsPickerOpen(true);
   };
 
   const onSubmit = async (data) => {
@@ -107,13 +135,9 @@ export default function QuoteBuilder() {
                 <p className="text-gray-400">Nouvelle proposition commerciale</p>
             </div>
             {quoteData && (
-                 <PDFDownloadLink
-                    document={<InvoiceDocument data={quoteData} language="he" />}
-                    fileName={`devis_${quoteData.id}.pdf`}
-                    className="flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded font-bold hover:bg-red-700 transition"
-                 >
-                    {({ loading }) => (loading ? 'Génération PDF...' : 'Télécharger PDF (Hébreu)')}
-                 </PDFDownloadLink>
+                <div className="text-green-500 font-bold flex items-center gap-2">
+                    <CheckCircle size={20} /> Devis prêt
+                </div>
             )}
        </div>
 
@@ -140,7 +164,12 @@ export default function QuoteBuilder() {
 
                 {/* Items Builder */}
                 <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
-                    <h2 className="text-lg font-bold text-white mb-4">Articles & Prestations</h2>
+                    <div className="flex justify-between items-center mb-4">
+                        <h2 className="text-lg font-bold text-white">Articles & Prestations</h2>
+                        <button type="button" onClick={() => openPicker(null)} className="text-xs bg-zinc-800 hover:bg-zinc-700 text-white px-3 py-1 rounded border border-zinc-700 flex items-center gap-2">
+                            <Plus size={14} /> Catalogue Visuel
+                        </button>
+                    </div>
                     
                     <div className="space-y-4">
                         {fields.map((field, index) => (
@@ -257,6 +286,30 @@ export default function QuoteBuilder() {
            </div>
 
        </div>
+
+       {/* PRODUCT PICKER MODAL (Ported from FinancePage) */}
+       {isPickerOpen && (
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
+          <div className="bg-zinc-900 border border-zinc-700 rounded-xl w-full max-w-lg p-6 max-h-[80vh] flex flex-col">
+            <h2 className="text-xl font-bold mb-4 font-heading text-white">Choisir un Produit</h2>
+            <div className="flex-1 overflow-y-auto space-y-2 pr-2 min-h-0">
+                {products.map(p => (
+                    <div key={p.id} onClick={() => handlePickerSelect(p)} className="p-3 bg-zinc-800 hover:bg-zinc-700 rounded cursor-pointer flex gap-3 items-center transition border border-zinc-700 hover:border-[#d4af37]">
+                        {(p.imageUrl || (p.images && p.images.length > 0) || p.image) ? (
+                            <img src={p.imageUrl || p.images[0] || p.image} className="w-12 h-12 object-cover rounded bg-black" />
+                        ) : <div className="w-12 h-12 bg-zinc-800 rounded flex items-center justify-center text-[10px] text-gray-500">No Img</div>}
+                        <div>
+                            <div className="font-bold text-white">{p.name}</div>
+                            <div className="text-xs text-gray-400">{p.category}</div>
+                        </div>
+                        <div className="ml-auto font-mono text-[#d4af37]">{p.price} ₪</div>
+                    </div>
+                ))}
+            </div>
+             <button onClick={() => setIsPickerOpen(false)} className="mt-4 w-full bg-zinc-800 text-gray-400 py-2 rounded hover:text-white">Fermer</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

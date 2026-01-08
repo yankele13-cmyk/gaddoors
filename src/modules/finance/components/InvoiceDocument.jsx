@@ -139,7 +139,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#eee',
     alignItems: 'center',
-    alignItems: 'center',
     minHeight: 40 // Increased height for images
   },
   tableHeader: {

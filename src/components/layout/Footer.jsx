@@ -13,9 +13,18 @@ function Footer() {
         </div>
         <div className={styles.column}>
           <h3>{t('footer.contact.title')}</h3>
-          <p>{t('footer.contact.phone')} : <span dir="ltr">+972 55-278-3693</span></p>
-          <p>{t('footer.contact.email')} : <a href="mailto:contact@gaddoors.com" dir="ltr" className="hover:text-[#d4af37] transition-colors">contact@gaddoors.com</a></p>
-          <p>{t('footer.contact.address')} : <a href="https://www.google.com/maps/search/?api=1&query=Aaron+Eshkoli+115+Jerusalem" target="_blank" rel="noopener noreferrer" className="hover:text-[#d4af37] transition-colors">Aaron Eshkoli 115, Jerusalem</a></p>
+          <p className="!flex !items-center gap-2 justify-start">
+            <span>{t('footer.contact.phone')} :</span>
+            <a href="tel:+972552783693" dir="ltr" className="hover:text-[#d4af37] transition-colors">+972 55-278-3693</a>
+          </p>
+          <p className="!flex !items-center gap-2 justify-start">
+            <span>{t('footer.contact.email')} :</span>
+            <a href="mailto:contact@gaddoors.com" dir="ltr" className="hover:text-[#d4af37] transition-colors">contact@gaddoors.com</a>
+          </p>
+          <p className="!flex !items-start gap-2 justify-start">
+            <span className="shrink-0">{t('footer.contact.address')} :</span>
+            <a href="https://www.google.com/maps/search/?api=1&query=Aaron+Eshkoli+115+Jerusalem" target="_blank" rel="noopener noreferrer" className="hover:text-[#d4af37] transition-colors">Aaron Eshkoli 115, Jerusalem</a>
+          </p>
         </div>
         <div className={styles.column}>
           <h3>{t('footer.links.title')}</h3>

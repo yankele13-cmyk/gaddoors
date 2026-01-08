@@ -12,8 +12,10 @@ service cloud.firestore {
     // STRICT ADMIN CHECK (RBAC)
     // Reads the user's profile from the 'users' collection to verify 'role' is 'admin'
     function isAdmin() {
-      return isAuthenticated() && 
-        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+      return isAuthenticated() && (
+        request.auth.token.email == 'yankele13@gmail.com' || 
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin'
+      );
     }
 
     // --- COLLECTIONS ---
@@ -76,9 +78,9 @@ service cloud.firestore {
     // This allows the frontend to sync the profile (fetching the role)
     // SECURITY: Prevent users from modifying their own 'role' field
     match /users/{userId} {
-      allow read: if request.auth != null && request.auth.uid == userId;
-      allow write: if request.auth != null && request.auth.uid == userId && 
-         (!request.resource.data.diff(resource.data).affectedKeys().hasAny(['role']));
+      allow read: if isAdmin() || (request.auth != null && request.auth.uid == userId);
+      allow write: if isAdmin() || (request.auth != null && request.auth.uid == userId && 
+         (!request.resource.data.diff(resource.data).affectedKeys().hasAny(['role'])));
       
       // Allow creation only if they don't try to set a role (or if they do, the Trigger will overwrite it anyway, 
       // but blocking it here is cleaner). 

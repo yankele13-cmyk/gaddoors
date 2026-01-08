@@ -168,6 +168,40 @@ export const CRMService = {
     }
   },
 
+  async updateAppointment(id, appointmentData) {
+    try {
+        // Prepare Calendar-compatible fields
+        const updates = { ...appointmentData, updatedAt: serverTimestamp() };
+        
+        if (appointmentData.date) {
+            const start = new Date(appointmentData.date);
+            const end = new Date(start.getTime() + 60 * 60 * 1000);
+            updates.start = start;
+            updates.end = end;
+        }
+        
+        if (appointmentData.clientName || appointmentData.type) {
+             // If title wasn't manually overridden (we don't track that easily, so we just rebuild if parts change)
+             // or we just trust the title passed?
+             // Since form only has clientName/Type, we rebuild title unless passed differently.
+             // Actually, title might be missing from form data if not explicitly set. 
+             // Let's rebuild it to stay safe if components change.
+             /* 
+                Issue: appointmentData might be partial. 
+                For robustness, would need current data. 
+                But for this Modal, we submit full form data. 
+             */
+             updates.title = `${appointmentData.clientName} - ${appointmentData.type}`;
+        }
+
+        const docRef = doc(db, COLLECTION_APPOINTMENTS, id);
+        await updateDoc(docRef, updates);
+        return { success: true };
+    } catch (error) {
+        return { success: false, error: error.message };
+    }
+  },
+
   // --- MEASUREMENTS (MEDIDOT) ---
 
   async createMeasurementReport(reportData) {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ProductServiceV2 } from '../../../services/product.service.v2';
+import { ProductService as ProductServiceV2 } from '../../../services/product.service'; // Aliased for compatibility
 import { 
     Search, Plus, Filter, MoreVertical, 
     Edit, Archive, Trash, Eye, EyeOff, RotateCcw, AlertTriangle, CheckSquare, Square, Save, X

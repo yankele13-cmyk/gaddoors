@@ -31,7 +31,9 @@
     "filters": {
       "all": "Tout le Catalogue",
       "doors": "Portes d'Intérieur",
-      "handles": "Poignées Design"
+      "handles": "Poignées Design",
+      "ask_advice": "Demander conseil",
+      "see_projects": "Voir les réalisations"
     }
   },
   "installations": {
@@ -42,7 +44,10 @@
       "text2": "Découvrez ci-dessous une sélection de nos chantiers récents : rénovations d'appartements design à Tel Aviv, installation de portes filomuro pour villas modernes, et aménagement de bureaux à Jérusalem."
     },
     "loading": "Chargement des réalisations...",
-    "error": "Impossible de charger les réalisations."
+    "error": "Impossible de charger les réalisations.",
+    "cta_text": "Vous aimez nos réalisations ?",
+    "see_catalog": "Voir le catalogue",
+    "get_quote": "Demander un devis"
   },
   "product": {
     "loading": "Chargement du produit...",
@@ -66,7 +71,8 @@
     "warranty": {
       "title": "Garantie et Service",
       "text": "En choisissant ce modèle, vous bénéficiez de notre garantie complète sur la structure et les mécanismes. Notre service après-vente est à votre disposition pour toute question concernant l'entretien de vos portes."
-    }
+    },
+    "see_others": "Voir d'autres modèles"
   },
   "contact": {
     "title": "Contactez nos Experts Gad Doors",
@@ -160,7 +166,15 @@
       "expertise_title": "Expertise & Design : Pourquoi choisir Gad Doors ?",
       "expertise_text": "Depuis plus de 18 ans, Gad Doors est la référence en menuiserie intérieure haut de gamme en Israël. Spécialistes de la porte d'intérieur design, nous allions la finesse du style italien à une exigence de finition absolue. Chaque projet est une signature : nous ne posons pas simplement des portes, nous créons des espaces de vie harmonieux avec des solutions acoustiques et esthétiques sur mesure.",
       "services_title": "Un Accompagnement Premium de A à Z",
-      "services_text": "Notre engagement va bien au-delà de la vente. Nous offrons une expérience clé en main (Full Service) : conseil déco à domicile, prise de mesures au laser, livraison soignée et installation par nos propres menuisiers certifiés. Votre satisfaction est notre priorité."
+      "services_text": "Notre engagement va bien au-delà de la vente. Nous offrons une expérience clé en main (Full Service) : conseil déco à domicile, prise de mesures au laser, livraison soignée et installation par nos propres menuisiers certifiés. Votre satisfaction est notre priorité.",
+      "contact_cta": "Contactez-nous pour un devis gratuit",
+      "services_list": {
+        "install": "Installation de portes sur mesure",
+        "design": "Pose de portes d'intérieur design",
+        "renovation": "Rénovation de menuiserie intérieure",
+        "advice": "Conseils en décoration et acoustique"
+      },
+      "realisations_cta": "Voir nos dernières réalisations"
     },
     "faq": {
       "title": "Questions Fréquentes - Portes d'Intérieur",
@@ -208,7 +222,8 @@
       },
       "experienceLabel": "18 ANS",
       "experienceText": "D'EXPERTISE DANS L'IMPORTATION ET LA POSE DE PORTES DE QUALITÉ SUPÉRIEURE"
-    }
+    },
+    "quick_nav": "Navigation Rapide"
   },
   "productDescriptions": {
     "Modello Roma": "Une poignée au design intemporel, inspirée de la grandeur de la Rome antique. Finition robuste et prise en main ergonomique.",

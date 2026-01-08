@@ -114,7 +114,7 @@ export default function ProductDetailPage() {
              <p className="text-gray-400 mb-6">{t('product.warranty.text')}</p>
 
              <div className="flex gap-4 text-sm mt-4">
-                 <a href="/catalogue" className="text-[#d4af37] border-b border-[#d4af37] hover:text-white pb-1">Voir d'autres modèles</a>
+                 <a href="/catalogue" className="text-[#d4af37] border-b border-[#d4af37] hover:text-white pb-1">{t('product.see_others')}</a>
              </div>
         </div>
 

@@ -14,7 +14,8 @@ import {
   Shield, 
   Mail 
 } from 'lucide-react';
-import { useState, useRef, useEffect } from 'react'; // Added hooks
+import { useState, useRef, useEffect } from 'react'; 
+import { useTranslation } from 'react-i18next';
 
 import { auth } from '../config/firebase';
 
@@ -24,7 +25,17 @@ export default function AdminLayout() {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const user = auth.currentUser;
   const location = useLocation();
+  const { i18n } = useTranslation();
   const scrollRef = useRef(null); // Ref for the scrollable container
+
+  // Force French & LTR for Admin
+  useEffect(() => {
+    if (i18n.language !== 'fr') {
+      i18n.changeLanguage('fr');
+    }
+    document.dir = 'ltr'; // Enforce LTR
+    document.documentElement.lang = 'fr';
+  }, [i18n]);
 
   // Scroll to top on route change
   useEffect(() => {
@@ -41,7 +52,7 @@ export default function AdminLayout() {
 
 
   return (
-    <div className="min-h-screen w-full bg-zinc-950 text-white flex">
+    <div className="min-h-screen w-full bg-zinc-950 text-white flex" dir="ltr">
       {/* Mobile Sidebar Overlay */}
       {isSidebarOpen && (
         <div 
